@@ -5,95 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>해외인증지원단 멘토링 상담예약</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap');
-
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#f0f4f8;color:#1a202c;min-height:100vh;font-size:14px;}
+body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif;background:#f0f4f8;color:#1a202c;min-height:100vh;}
 
 /* ── 헤더 ── */
-.header{background:linear-gradient(135deg,#0f2744 0%,#1a4080 60%,#1d55b0 100%);padding:0 28px;display:flex;align-items:center;gap:14px;height:64px;box-shadow:0 2px 16px rgba(0,0,0,.25);}
-.header-icon{width:38px;height:38px;background:rgba(255,255,255,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0;}
-.header-title{color:#fff;font-weight:800;font-size:17px;letter-spacing:-.3px;}
-.header-sub{color:rgba(255,255,255,.55);font-size:12px;margin-top:2px;}
-.header-badge{margin-left:auto;font-size:12px;font-weight:700;background:rgba(255,255,255,.12);color:#fff;padding:5px 13px;border-radius:20px;white-space:nowrap;}
+.header{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:0 20px;display:flex;align-items:center;gap:12px;height:56px;box-shadow:0 2px 12px rgba(0,0,0,.18);}
+.header-icon{width:32px;height:32px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.header-title{color:#fff;font-weight:800;font-size:15px;}
+.header-sub{color:rgba(255,255,255,.6);font-size:11px;margin-top:1px;}
+.header-badge{margin-left:auto;font-size:11px;font-weight:700;background:rgba(255,255,255,.15);color:#fff;padding:4px 10px;border-radius:20px;}
 
 /* ── 로딩 ── */
-#loadingScreen{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
-.spinner{width:40px;height:40px;border:3px solid #e5e7eb;border-top-color:#2563eb;border-radius:50%;animation:spin .7s linear infinite;}
+#loadingScreen{min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+.spinner{width:36px;height:36px;border:3px solid #e5e7eb;border-top-color:#2563eb;border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── 메인 ── */
 #mainScreen{display:none;}
-.content{padding:24px 28px;max-width:1160px;margin:0 auto;}
+.content{padding:20px 24px;max-width:1100px;margin:0 auto;}
 
 /* ── 가용시간 입력 전용 화면 ── */
-#availScreen{display:none;min-height:calc(100vh - 64px);}
+#availScreen{display:none;min-height:calc(100vh - 56px);}
 
 /* ── KPI 카드 ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
-.kpi-card{border-radius:12px;padding:16px 18px;text-align:center;cursor:pointer;transition:all .18s;border:1.5px solid transparent;}
-.kpi-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);}
-.kpi-val{font-size:28px;font-weight:900;line-height:1;letter-spacing:-1px;}
-.kpi-lbl{font-size:12px;font-weight:700;margin-top:5px;}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;}
+.kpi-card{border-radius:10px;padding:12px 14px;text-align:center;cursor:pointer;transition:transform .15s;}
+.kpi-card:hover{transform:translateY(-2px);}
+.kpi-val{font-size:22px;font-weight:800;line-height:1;}
+.kpi-lbl{font-size:10px;font-weight:600;margin-top:3px;}
 
 /* ── 툴바 ── */
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
-.toolbar input,.toolbar select{border:1.5px solid #d1d5db;border-radius:9px;padding:9px 14px;font-size:13px;outline:none;background:#fff;font-family:inherit;transition:border-color .15s;}
-.toolbar input:focus,.toolbar select:focus{border-color:#2563eb;}
-.toolbar input{flex:1;min-width:220px;}
-.cnt-badge{font-size:13px;color:#6b7280;font-weight:700;white-space:nowrap;padding:7px 14px;background:#f3f4f6;border-radius:8px;}
-.add-btn{padding:10px 22px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(37,99,235,.35);white-space:nowrap;letter-spacing:-.2px;}
-.add-btn:hover{opacity:.9;transform:translateY(-1px);}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px;}
+.toolbar input,.toolbar select{border:1.5px solid #d1d5db;border-radius:8px;padding:7px 12px;font-size:12px;outline:none;background:#fff;font-family:inherit;}
+.toolbar input{flex:1;min-width:200px;}
+.cnt-badge{font-size:12px;color:#6b7280;font-weight:600;white-space:nowrap;padding:5px 10px;background:#f3f4f6;border-radius:6px;}
+.add-btn{padding:9px 18px;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(37,99,235,.3);white-space:nowrap;}
+.add-btn:hover{opacity:.9;}
 
-/* ── 매칭 카드 ── */
-.match-list{display:flex;flex-direction:column;gap:10px;}
-.match-card{background:#fff;border-radius:14px;border:1.5px solid #e5e7eb;padding:18px 22px;cursor:pointer;transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.05);}
-.match-card:hover{border-color:#2563eb;transform:translateY(-2px);box-shadow:0 6px 18px rgba(37,99,235,.13);}
-.empty-state{text-align:center;padding:56px 24px;color:#9ca3af;font-size:14px;background:#fff;border-radius:14px;border:1.5px dashed #e5e7eb;}
+/* ── 매칭 카드 목록 ── */
+.match-list{display:flex;flex-direction:column;gap:8px;}
+.match-card{background:#fff;border-radius:12px;border:1.5px solid #e5e7eb;padding:14px 18px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+.match-card:hover{border-color:#2563eb;transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,.12);}
+.empty-state{text-align:center;padding:48px 24px;color:#9ca3af;font-size:13px;background:#fff;border-radius:12px;border:1.5px dashed #e5e7eb;}
 
 /* ── 폼 ── */
-.form-wrap{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.07);}
-.form-section-title{font-size:13px;font-weight:800;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;}
-.form-field label{display:block;font-size:12px;font-weight:700;color:#6b7280;margin-bottom:5px;}
-.form-field input,.form-field textarea{width:100%;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+.form-wrap{background:#fff;border-radius:14px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+.form-section-title{font-size:12px;font-weight:700;margin-bottom:12px;padding-bottom:6px;border-bottom:2px solid;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.form-field label{display:block;font-size:11px;font-weight:600;color:#6b7280;margin-bottom:4px;}
+.form-field input,.form-field textarea{width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:8px;font-size:12px;font-family:inherit;outline:none;}
 .form-field input:focus,.form-field textarea:focus{border-color:#2563eb;}
-.form-actions{display:flex;gap:10px;}
-.btn-cancel{flex:1;padding:12px;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
-.btn-submit{flex:2;padding:12px;border:none;border-radius:11px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(37,99,235,.3);}
+.form-actions{display:flex;gap:8px;}
+.btn-cancel{flex:1;padding:11px;border:1.5px solid #d1d5db;border-radius:10px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;}
+.btn-submit{flex:2;padding:11px;border:none;border-radius:10px;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(37,99,235,.3);}
 .btn-submit:disabled{opacity:.6;cursor:not-allowed;}
 
 /* ── 상세 ── */
-.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
-.detail-field{background:#f8fafc;border-radius:10px;padding:11px 15px;}
-.detail-key{font-size:10px;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
-.detail-val{font-size:14px;color:#1e3a5f;font-weight:700;}
-.avail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
-.avail-box{border-radius:14px;padding:18px 20px;border:1.5px solid;}
-.matched-box{background:#faf5ff;border-radius:14px;padding:20px 22px;border:1.5px solid #c4b5fd;margin-bottom:16px;}
-.avail-input-box{background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.detail-field{background:#f8fafc;border-radius:8px;padding:8px 12px;}
+.detail-key{font-size:9px;font-weight:700;color:#9ca3af;text-transform:uppercase;margin-bottom:2px;}
+.detail-val{font-size:12px;color:#1e3a5f;font-weight:600;}
+.avail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.avail-box{border-radius:12px;padding:14px 16px;border:1.5px solid;}
+.matched-box{background:#faf5ff;border-radius:12px;padding:16px 18px;border:1.5px solid #c4b5fd;margin-bottom:14px;}
+.avail-input-box{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.07);}
 
 /* ── 뒤로가기 ── */
-.back-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
-.back-btn{background:#f3f4f6;border:none;border-radius:9px;padding:8px 15px;cursor:pointer;font-size:13px;font-family:inherit;color:#374151;font-weight:600;}
+.back-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.back-btn{background:#f3f4f6;border:none;border-radius:8px;padding:7px 12px;cursor:pointer;font-size:12px;font-family:inherit;color:#374151;}
 .back-btn:hover{background:#e5e7eb;}
 
 /* ── 뱃지 ── */
-.badge{display:inline-block;font-size:11px;padding:4px 12px;border-radius:20px;font-weight:800;}
+.badge{display:inline-block;font-size:10px;padding:3px 10px;border-radius:20px;font-weight:700;}
 
 /* ── 슬롯 버튼 ── */
-.slot-confirm-btn{padding:7px 13px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid #c4b5fd;background:#f5f3ff;color:#5b21b6;font-family:inherit;transition:all .15s;}
+.slot-confirm-btn{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #c4b5fd;background:#f5f3ff;color:#5b21b6;font-family:inherit;transition:all .15s;}
 .slot-confirm-btn:hover{background:#5b21b6;color:#fff;}
 
 /* ── 알림 안내 박스 ── */
-.info-box{background:#eff6ff;border-radius:10px;padding:13px 16px;margin-bottom:22px;font-size:13px;color:#1d4ed8;line-height:1.7;}
-
-/* ── 가용시간 날짜 항목 ── */
-.avail-row{display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05);}
-.avail-row:last-child{border-bottom:none;}
-.avail-date{font-size:13px;font-weight:800;min-width:100px;}
-.avail-times{font-size:13px;color:#374151;display:flex;flex-wrap:wrap;gap:6px;}
-.avail-time-chip{background:rgba(0,0,0,.06);border-radius:6px;padding:2px 9px;font-size:12px;font-weight:700;}
+.info-box{background:#eff6ff;border-radius:8px;padding:10px 14px;margin-bottom:20px;font-size:11.5px;color:#1d4ed8;line-height:1.7;}
 </style>
 </head>
 <body>
@@ -111,7 +101,7 @@ body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif
 <!-- 로딩 -->
 <div id="loadingScreen">
   <div class="spinner"></div>
-  <div style="font-size:14px;color:#6b7280;font-weight:600;">데이터를 불러오는 중입니다...</div>
+  <div style="font-size:13px;color:#6b7280;">데이터를 불러오는 중입니다...</div>
 </div>
 
 <!-- 가용시간 입력 전용 화면 (이메일 링크로 접근) -->
@@ -125,8 +115,12 @@ body{font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif
 </div>
 
 <script>
+// ★ 새 Apps Script 배포 URL로 교체하세요 ★
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwzvCqJJjwrawISx2FywHHlAlavwCeimAK-w0XZgdZaDWViIEm0BJ3RIy1-iRozxTjX/exec';
 
+// ══════════════════════════════════════════════════════════════
+//  전역 상태
+// ══════════════════════════════════════════════════════════════
 let DATA = { matches: [], avail: [] };
 let VIEW = { page: 'list', selectedId: null };
 let FORM = {};
@@ -141,46 +135,10 @@ const STATUS_CFG = {
 };
 const MEET_TYPES = ['화상미팅', '전화상담', '방문상담'];
 const HOURS = ['09:00','10:00','11:00','13:00','14:00','15:00','16:00','17:00'];
-const KO_DAYS = ['일','월','화','수','목','금','토'];
 
 let _searchQ = '';
 let _statusFilter = '전체';
 let _selDate = '';
-
-// ══════════════════════════════════════════════════════════════
-//  날짜 유틸
-// ══════════════════════════════════════════════════════════════
-function toDateStr(d) {
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-
-// "Fri Jun 19 2026 00:00:00 GMT+0900..." 또는 "2026-06-19" 모두 → "2026-06-19"
-function normalizeDateStr(raw) {
-  if (!raw) return '';
-  var s = String(raw).trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-  var d = new Date(s);
-  if (!isNaN(d.getTime())) return toDateStr(d);
-  return s;
-}
-
-// "2026-06-19" → "06.19 (금)"
-function displayDate(raw) {
-  var norm = normalizeDateStr(raw);
-  if (!norm) return String(raw);
-  var d = new Date(norm + 'T00:00:00');
-  if (isNaN(d.getTime())) return norm;
-  return norm.slice(5).replace('-','.') + ' (' + KO_DAYS[d.getDay()] + ')';
-}
-
-// "2026-06-19" → "2026.06.19 (금)"
-function displayDateFull(raw) {
-  var norm = normalizeDateStr(raw);
-  if (!norm) return String(raw);
-  var d = new Date(norm + 'T00:00:00');
-  if (isNaN(d.getTime())) return norm;
-  return norm.replace(/-/g,'.') + ' (' + KO_DAYS[d.getDay()] + ')';
-}
 
 // ══════════════════════════════════════════════════════════════
 //  초기화
@@ -188,10 +146,12 @@ function displayDateFull(raw) {
 window.onload = function() {
   var params = getUrlParams();
   if (params.id && params.role) {
+    // 가용시간 입력 전용 모드
     document.getElementById('loadingScreen').style.display = 'none';
     document.getElementById('availScreen').style.display = 'block';
     loadAvailPage(params.id, params.role);
   } else {
+    // 관리자 대시보드 모드
     loadDashboard();
   }
 };
@@ -210,8 +170,8 @@ function loadDashboard() {
     })
     .catch(function(err) {
       document.getElementById('loadingScreen').innerHTML =
-        '<div style="text-align:center;color:#dc2626;font-size:14px;">❌ 데이터 불러오기 실패<br><small style="color:#9ca3af;">' + err.message + '</small><br><br>'
-        + '<button onclick="loadDashboard()" style="padding:10px 20px;background:#2563eb;color:#fff;border:none;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;">다시 시도</button></div>';
+        '<div style="text-align:center;color:#dc2626;font-size:13px;">❌ 데이터 불러오기 실패<br><small>' + err.message + '</small><br><br>'
+        + '<button onclick="loadDashboard()" style="padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:inherit;">다시 시도</button></div>';
     });
 }
 
@@ -238,32 +198,31 @@ function buildList() {
 
   var kpiHtml = ['대기중','입력중','매칭완료','확정완료','취소'].map(function(s) {
     var cfg = STATUS_CFG[s] || { bg:'#f3f4f6', color:'#374151' };
-    var isActive = _statusFilter === s;
-    return '<div class="kpi-card" style="background:'+cfg.bg+';border-color:'+(isActive?cfg.color:'transparent')+'" onclick="setStatusFilter(\''+s+'\')">'
+    return '<div class="kpi-card" style="background:'+cfg.bg+'" onclick="setStatusFilter(\''+s+'\')">'
       + '<div class="kpi-val" style="color:'+cfg.color+'">'+(counts[s]||0)+'</div>'
       + '<div class="kpi-lbl" style="color:'+cfg.color+'">'+s+'</div>'
       + '</div>';
   }).join('');
 
   var cardsHtml = filtered.length === 0
-    ? '<div class="empty-state"><div style="font-size:42px;margin-bottom:12px;">📭</div><div style="font-weight:700;margin-bottom:6px;">매칭 내역이 없습니다</div><span style="font-size:13px;">+ 새 매칭 추가 버튼으로 시작하세요.</span></div>'
+    ? '<div class="empty-state"><div style="font-size:36px;margin-bottom:10px;">📭</div>매칭 내역이 없습니다.<br><span style="font-size:11px;">+ 새 매칭 추가 버튼으로 시작하세요.</span></div>'
     : filtered.map(buildMatchCard).join('');
 
-  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;">'
-    + '<div><div style="font-size:20px;font-weight:900;color:#1e3a5f;letter-spacing:-.5px;">📅 멘토링 상담예약 관리</div>'
-    + '<div style="font-size:13px;color:#6b7280;margin-top:4px;">배정된 기업-전문가 매칭의 일정 조율 현황</div></div>'
+  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">'
+    + '<div><div style="font-size:16px;font-weight:800;color:#1e3a5f;">📅 멘토링 상담예약 관리</div>'
+    + '<div style="font-size:11px;color:#6b7280;margin-top:2px;">배정된 기업-전문가 매칭의 일정 조율 현황</div></div>'
     + '<button class="add-btn" onclick="showAdd()">+ 새 매칭 추가</button>'
     + '</div>'
     + '<div class="kpi-grid">' + kpiHtml + '</div>'
     + '<div class="toolbar">'
-    + '<input type="text" placeholder="🔍  기업명, 전문가명 검색..." value="'+_searchQ+'" oninput="_searchQ=this.value; render()">'
-    + '<select onchange="_statusFilter=this.value; render()" style="padding:9px 14px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">'
-    + '<option value="전체"'+(_statusFilter==='전체'?' selected':'')+'>전체 상태</option>'
+    + '<input type="text" placeholder="기업명, 전문가명 검색..." value="'+_searchQ+'" oninput="_searchQ=this.value; render()">'
+    + '<select onchange="_statusFilter=this.value; render()" style="padding:7px 12px;border:1.5px solid #d1d5db;border-radius:8px;font-size:12px;font-family:inherit;outline:none;">'
+    + '<option value="전체"'+(_statusFilter==='전체'?' selected':'')+'> 전체 상태</option>'
     + Object.keys(STATUS_CFG).map(function(s) {
         return '<option value="'+s+'"'+(_statusFilter===s?' selected':'')+'>'+s+'</option>';
       }).join('')
     + '</select>'
-    + '<span class="cnt-badge">총 '+filtered.length+'건</span>'
+    + '<span class="cnt-badge">'+filtered.length+'건</span>'
     + '</div>'
     + '<div class="match-list">' + cardsHtml + '</div>';
 }
@@ -277,34 +236,34 @@ function buildMatchCard(m) {
   var matched   = calcMatchedSlots(id);
 
   return '<div class="match-card" onclick="showDetail(\''+id+'\')">'
-    + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">'
+    + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">'
     + '<div style="flex:1;min-width:0;">'
-    + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">'
-    + '<span style="font-size:16px;font-weight:900;color:#1e3a5f;letter-spacing:-.3px;">'+(m['기업명']||'-')+'</span>'
-    + '<span style="font-size:13px;color:#9ca3af;font-weight:500;">↔</span>'
-    + '<span style="font-size:15px;font-weight:800;color:#374151;">'+(m['전문가명']||'-')+'</span>'
+    + '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">'
+    + '<span style="font-size:14px;font-weight:800;color:#1e3a5f;">'+(m['기업명']||'-')+'</span>'
+    + '<span style="font-size:11px;color:#6b7280;">↔</span>'
+    + '<span style="font-size:13px;font-weight:700;color:#374151;">'+(m['전문가명']||'-')+'</span>'
     + '<span class="badge" style="background:'+cfg.bg+';color:'+cfg.color+';">'+stat+'</span>'
-    + (m['확정슬롯'] ? '<span style="font-size:12px;color:#065f46;background:#f0fdf4;padding:3px 10px;border-radius:20px;border:1px solid #d1fae5;font-weight:700;">📅 '+m['확정슬롯']+'</span>' : '')
+    + (m['확정슬롯'] ? '<span style="font-size:10px;color:#6b7280;background:#f0fdf4;padding:2px 8px;border-radius:20px;border:1px solid #d1fae5;">📅 '+m['확정슬롯']+'</span>' : '')
     + '</div>'
-    + '<div style="font-size:13px;color:#6b7280;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">'
+    + '<div style="font-size:11px;color:#6b7280;display:flex;gap:12px;flex-wrap:wrap;">'
     + '<span>👤 '+(m['기업담당자']||'-')+'</span>'
     + '<span>🎓 '+(m['전문분야']||'-')+'</span>'
     + (m['희망인증'] ? '<span>📋 '+m['희망인증']+'</span>' : '')
-    + '<span style="color:#c4c9d4;font-size:12px;">'+(m['생성일시']||'')+'</span>'
+    + '<span style="color:#9ca3af;font-size:10px;">'+(m['생성일시']||'')+'</span>'
     + '</div></div>'
-    + '<div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:7px;">'
-    + '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(compAvail>0?'#d1fae5':'#fee2e2')+';color:'+(compAvail>0?'#065f46':'#991b1b')+';">🏢 기업 '+(compAvail>0?'✓ 완료':'미입력')+'</span>'
-    + '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(expAvail>0?'#d1fae5':'#fee2e2')+';color:'+(expAvail>0?'#065f46':'#991b1b')+';">👨‍💼 전문가 '+(expAvail>0?'✓ 완료':'미입력')+'</span>'
-    + (matched.length > 0 ? '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:800;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd;">✨ 겹치는 슬롯 '+matched.length+'개</span>' : '')
+    + '<div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:5px;">'
+    + '<span style="font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600;background:'+(compAvail>0?'#d1fae5':'#fee2e2')+';color:'+(compAvail>0?'#065f46':'#991b1b')+';">🏢 기업 '+(compAvail>0?'✓':'미입력')+'</span>'
+    + '<span style="font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600;background:'+(expAvail>0?'#d1fae5':'#fee2e2')+';color:'+(expAvail>0?'#065f46':'#991b1b')+';">👨‍💼 전문가 '+(expAvail>0?'✓':'미입력')+'</span>'
+    + (matched.length > 0 ? '<span style="font-size:10px;padding:3px 8px;border-radius:6px;font-weight:700;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd;">✨ 매칭 '+matched.length+'개</span>' : '')
     + '</div></div></div>';
 }
 
 // ── 새 매칭 추가 ──
 function buildAdd() {
   var f = FORM;
-  return '<div style="max-width:720px;">'
+  return '<div style="max-width:680px;">'
     + '<div class="back-row"><button class="back-btn" onclick="VIEW.page=\'list\'; render()">← 목록으로</button>'
-    + '<div style="font-size:17px;font-weight:900;color:#1e3a5f;">새 매칭 추가</div></div>'
+    + '<div style="font-size:15px;font-weight:800;color:#1e3a5f;">새 매칭 추가</div></div>'
     + '<div class="form-wrap">'
     + '<div class="form-section-title" style="color:#2563eb;border-color:#dbeafe;">🏢 기업 정보</div>'
     + '<div class="form-grid">'
@@ -313,16 +272,16 @@ function buildAdd() {
     + fld('기업이메일','기업 이메일 *',f.기업이메일,true,'email')
     + fld('기업연락처','연락처',f.기업연락처,false,'tel')
     + '</div>'
-    + '<div class="form-section-title" style="color:#d97706;border-color:#fef3c7;">👨‍💼 전문가 정보</div>'
+    + '<div class="form-section-title" style="color:#f59e0b;border-color:#fef3c7;">👨‍💼 전문가 정보</div>'
     + '<div class="form-grid">'
     + fld('전문가명','전문가명 *',f.전문가명,true)
     + fld('전문가이메일','전문가 이메일 *',f.전문가이메일,true,'email')
     + fld('전문분야','전문분야',f.전문분야)
     + fld('희망인증','희망인증명',f.희망인증)
     + '</div>'
-    + '<div class="form-field" style="margin-bottom:22px;">'
+    + '<div class="form-field" style="margin-bottom:20px;">'
     + '<label>메모 (선택)</label>'
-    + '<textarea id="fi-메모" rows="2" style="width:100%;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;font-family:inherit;resize:vertical;outline:none;" placeholder="특이사항 등">'+(f.메모||'')+'</textarea>'
+    + '<textarea id="fi-메모" rows="2" style="width:100%;padding:9px 12px;border:1.5px solid #d1d5db;border-radius:8px;font-size:12px;font-family:inherit;resize:vertical;outline:none;" placeholder="특이사항 등">'+(f.메모||'')+'</textarea>'
     + '</div>'
     + '<div class="info-box">📧 <b>추가 즉시</b> 기업 담당자와 전문가에게 가용시간 입력 안내 이메일이 자동 발송됩니다.</div>'
     + '<div class="form-actions">'
@@ -333,7 +292,8 @@ function buildAdd() {
 
 function fld(key, label, val, required, type) {
   return '<div class="form-field"><label>'+label+'</label>'
-    + '<input type="'+(type||'text')+'" id="fi-'+key+'" value="'+(val||'')+'"'+(required?' required':'')+'></div>';
+    + '<input type="'+(type||'text')+'" id="fi-'+key+'" value="'+(val||'')+'"'
+    + (required?' required':'')+'></div>';
 }
 
 // ── 상세 ──
@@ -348,18 +308,18 @@ function buildDetail(matchId) {
   var matched  = calcMatchedSlots(matchId);
   var role     = AVAIL_INPUT.role;
 
-  return '<div style="max-width:860px;">'
+  return '<div style="max-width:800px;">'
     + '<div class="back-row">'
     + '<button class="back-btn" onclick="VIEW.page=\'list\'; render()">← 목록으로</button>'
-    + '<div style="font-size:16px;font-weight:900;color:#1e3a5f;">'+m['기업명']+' ↔ '+m['전문가명']+'</div>'
+    + '<div style="font-size:14px;font-weight:800;color:#1e3a5f;">'+m['기업명']+' ↔ '+m['전문가명']+'</div>'
     + '<span class="badge" style="background:'+cfg.bg+';color:'+cfg.color+';">'+stat+'</span>'
     + (stat !== '취소' && stat !== '확정완료'
-        ? '<button onclick="cancelMatch(\''+matchId+'\')" style="margin-left:auto;padding:6px 13px;background:#fee2e2;color:#991b1b;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">취소</button>'
+        ? '<button onclick="cancelMatch(\''+matchId+'\')" style="margin-left:auto;padding:5px 10px;background:#fee2e2;color:#991b1b;border:none;border-radius:6px;font-size:11px;cursor:pointer;font-family:inherit;">취소</button>'
         : '')
     + '</div>'
 
     // 매칭 정보
-    + '<div class="form-wrap" style="margin-bottom:18px;">'
+    + '<div class="form-wrap" style="margin-bottom:14px;">'
     + '<div class="detail-grid">'
     + [['기업명',m['기업명']],['전문가명',m['전문가명']],['기업담당자',m['기업담당자']],['전문분야',m['전문분야']],
        ['기업이메일',m['기업이메일']],['전문가이메일',m['전문가이메일']],['희망인증',m['희망인증']],['확정슬롯',m['확정슬롯']||'-']]
@@ -383,44 +343,40 @@ function buildDetail(matchId) {
 }
 
 function buildAvailSummaryBox(role, rows, name) {
-  var color  = role === '기업' ? '#2563eb' : '#d97706';
-  var bg     = role === '기업' ? '#eff6ff' : '#fffbeb';
-  var border = role === '기업' ? '#bfdbfe' : '#fde68a';
+  var color   = role === '기업' ? '#2563eb' : '#f59e0b';
+  var bg      = role === '기업' ? '#eff6ff' : '#fffbeb';
+  var border  = role === '기업' ? '#bfdbfe' : '#fde68a';
   var hasData = rows.length > 0;
 
   var slotsHtml = hasData
     ? rows.map(function(r) {
         var times = (r['시간목록']||'').split(',').filter(Boolean);
-        return '<div class="avail-row">'
-          + '<span class="avail-date" style="color:'+color+';">'+displayDateFull(r['날짜'])+'</span>'
-          + '<div class="avail-times">'
-          + times.map(function(t) { return '<span class="avail-time-chip">'+t+'</span>'; }).join('')
-          + '</div></div>';
+        return '<div style="margin-bottom:3px;font-size:11px;"><b style="color:'+color+';">'+r['날짜']+'</b>'
+          + '<span style="color:#6b7280;margin-left:6px;">'+times.join(' / ')+'</span></div>';
       }).join('')
-    : '<div style="font-size:13px;color:#9ca3af;padding:8px 0;">아직 입력되지 않았습니다.</div>';
+    : '<div style="font-size:11px;color:#9ca3af;">아직 입력되지 않았습니다.</div>';
 
   return '<div class="avail-box" style="background:'+bg+';border-color:'+border+';">'
-    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'
-    + '<div style="font-size:14px;font-weight:800;color:'+color+';">'+(role==='기업'?'🏢':'👨‍💼')+' '+(name||role)+' 가용시간</div>'
-    + '<span style="font-size:12px;padding:4px 11px;border-radius:20px;font-weight:700;background:'+(hasData?'#d1fae5':'#fee2e2')+';color:'+(hasData?'#065f46':'#991b1b')+';">'+(hasData?'✓ 입력완료':'미입력')+'</span>'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+    + '<div style="font-size:12px;font-weight:700;color:'+color+';">'+(role==='기업'?'🏢':'👨‍💼')+' '+(name||role)+' 가용시간</div>'
+    + '<span style="font-size:10px;padding:2px 7px;border-radius:10px;font-weight:600;background:'+(hasData?'#d1fae5':'#fee2e2')+';color:'+(hasData?'#065f46':'#991b1b')+'">'+(hasData?'✓ 입력완료':'미입력')+'</span>'
     + '</div>' + slotsHtml + '</div>';
 }
 
 function buildMatchedUI(slots, matchId, confirmedSlot, stat) {
   var html = '<div class="matched-box">'
-    + '<div style="font-size:14px;font-weight:900;color:#5b21b6;margin-bottom:14px;letter-spacing:-.2px;">✨ 겹치는 가용 슬롯 — '+slots.length+'개</div>'
-    + '<div style="display:flex;flex-direction:column;gap:10px;">';
+    + '<div style="font-size:12px;font-weight:800;color:#5b21b6;margin-bottom:12px;">✨ 겹치는 가용 슬롯 — '+slots.length+'개</div>'
+    + '<div style="display:flex;flex-direction:column;gap:8px;">';
 
   slots.forEach(function(s) {
     var isConfirmed = confirmedSlot === s.label;
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;'
-      + 'background:'+(isConfirmed?'#ede9fe':'#fff')+';border-radius:11px;border:1.5px solid '+(isConfirmed?'#8b5cf6':'#e5e7eb')+';">'
-      + '<div style="display:flex;align-items:center;gap:10px;">'
-      + '<span style="font-size:15px;font-weight:900;color:#1e3a5f;">'+s.label+'</span>'
-      + (isConfirmed ? '<span style="font-size:12px;color:#5b21b6;font-weight:800;background:#ede9fe;padding:2px 9px;border-radius:6px;">✓ 확정됨</span>' : '')
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;'
+      + 'background:'+(isConfirmed?'#ede9fe':'#fff')+';border-radius:9px;border:1.5px solid '+(isConfirmed?'#8b5cf6':'#e5e7eb')+';">'
+      + '<div><span style="font-size:13px;font-weight:700;color:#1e3a5f;">'+s.label+'</span>'
+      + (isConfirmed ? '<span style="font-size:10px;color:#5b21b6;margin-left:8px;font-weight:700;">✓ 확정됨</span>' : '')
       + '</div>';
     if (stat !== '확정완료' && stat !== '취소') {
-      html += '<div style="display:flex;gap:7px;">'
+      html += '<div style="display:flex;gap:6px;">'
         + MEET_TYPES.map(function(mt) {
             return '<button class="slot-confirm-btn" onclick="confirmSlot(\''+matchId+'\',\''+s.label+'\',\''+mt+'\')">'
               + (mt==='화상미팅'?'🎥':mt==='전화상담'?'📞':'🏢')+' '+mt+'</button>';
@@ -448,43 +404,45 @@ function buildAvailInputUI(matchId, role, m) {
   if (!_selDate) _selDate = selDate;
 
   var roleHtml = ['기업','전문가'].map(function(r) {
-    var nm      = r === '기업' ? m['기업담당자'] : m['전문가명'];
+    var name    = r === '기업' ? m['기업담당자'] : m['전문가명'];
     var isActive = role === r;
-    return '<button onclick="AVAIL_INPUT.role=\''+r+'\'; AVAIL_INPUT.name=\''+nm+'\'; render();"'
-      + ' style="flex:1;padding:12px;border-radius:10px;cursor:pointer;font-family:inherit;'
-      + 'border:2px solid '+(isActive?'#2563eb':'#e5e7eb')+';'
+    return '<button onclick="AVAIL_INPUT.role=\''+r+'\'; AVAIL_INPUT.name=\''+name+'\'; render();"'
+      + ' style="flex:1;padding:10px;border-radius:9px;cursor:pointer;font-family:inherit;'
+      + 'border:1.5px solid '+(isActive?'#2563eb':'#d1d5db')+';'
       + 'background:'+(isActive?'#eff6ff':'#fff')+';'
-      + 'font-size:13px;font-weight:'+(isActive?'900':'600')+';'
+      + 'font-size:12px;font-weight:'+(isActive?'800':'600')+';'
       + 'color:'+(isActive?'#2563eb':'#6b7280')+';">'
-      + (r==='기업'?'🏢':'👨‍💼')+' '+nm+' ('+r+')</button>';
+      + (r==='기업'?'🏢':'👨‍💼')+' '+name+' ('+r+')</button>';
   }).join('');
 
   var dateHtml = '';
   if (role) {
-    dateHtml = '<div style="margin-bottom:16px;">'
-      + '<div style="font-size:13px;font-weight:800;color:#374151;margin-bottom:10px;">📅 날짜 선택</div>'
-      + '<div style="display:flex;flex-wrap:wrap;gap:7px;">'
+    dateHtml = '<div style="margin-bottom:14px;">'
+      + '<div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px;">날짜 선택</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:6px;">'
       + dateOptions.map(function(d) {
+          var dayNames = ['일','월','화','수','목','금','토'];
           var dt  = new Date(d + 'T00:00:00');
+          var day = dayNames[dt.getDay()];
           var isSelected = d === selDate;
           var hasSlots   = slots[d] && slots[d].length > 0;
           return '<button onclick="selectDate(\''+d+'\')"'
-            + ' style="padding:8px 12px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;'
+            + ' style="padding:7px 10px;border-radius:7px;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;'
             + 'border:1.5px solid '+(isSelected?'#2563eb':hasSlots?'#0e9f6e':'#e5e7eb')+';'
             + 'background:'+(isSelected?'#2563eb':hasSlots?'#f0fdf4':'#fff')+';'
             + 'color:'+(isSelected?'#fff':hasSlots?'#065f46':'#374151')+';">'
-            + displayDate(d)+(hasSlots&&!isSelected?' ✓':'')+'</button>';
+            + d.slice(5)+' ('+day+')'+(hasSlots&&!isSelected?' ✓':'')+'</button>';
         }).join('')
       + '</div></div>'
 
-      + '<div style="margin-bottom:16px;">'
-      + '<div style="font-size:13px;font-weight:800;color:#374151;margin-bottom:10px;">🕐 '+displayDateFull(selDate)+' 가능 시간 선택 <span style="font-size:12px;font-weight:600;color:#9ca3af;">(복수 선택 가능)</span></div>'
-      + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'
+      + '<div style="margin-bottom:14px;">'
+      + '<div style="font-size:11px;font-weight:600;color:#6b7280;margin-bottom:6px;">'+selDate+' 가능한 시간 선택 (복수)</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:6px;">'
       + HOURS.map(function(h) {
           var isOn = slots[selDate] && slots[selDate].includes(h);
           return '<button onclick="toggleTime(\''+selDate+'\',\''+h+'\')"'
-            + ' style="padding:10px 18px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:800;'
-            + 'border:2px solid '+(isOn?'#2563eb':'#e5e7eb')+';'
+            + ' style="padding:8px 14px;border-radius:7px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;'
+            + 'border:1.5px solid '+(isOn?'#2563eb':'#e5e7eb')+';'
             + 'background:'+(isOn?'#2563eb':'#fff')+';'
             + 'color:'+(isOn?'#fff':'#374151')+';">'+h+'</button>';
         }).join('')
@@ -493,23 +451,26 @@ function buildAvailInputUI(matchId, role, m) {
     // 선택 요약
     var summaryEntries = Object.entries(slots).filter(function(e) { return e[1].length > 0; });
     if (summaryEntries.length > 0) {
-      dateHtml += '<div style="padding:14px 16px;background:#f0fdf4;border-radius:10px;border:1.5px solid #d1fae5;margin-bottom:16px;">'
-        + '<div style="font-size:13px;font-weight:800;color:#065f46;margin-bottom:10px;">✅ 선택된 가용시간</div>'
+      dateHtml += '<div style="padding:10px 14px;background:#f0fdf4;border-radius:8px;border:1px solid #d1fae5;margin-bottom:14px;">'
+        + '<div style="font-size:11px;font-weight:600;color:#065f46;margin-bottom:6px;">✅ 선택된 가용시간</div>'
         + summaryEntries.map(function(e) {
-            return '<div class="avail-row"><span class="avail-date" style="color:#065f46;">'+displayDateFull(e[0])+'</span>'
-              + '<div class="avail-times">'+e[1].map(function(t){return '<span class="avail-time-chip" style="background:rgba(5,150,105,.1);color:#065f46;">'+t+'</span>';}).join('')+'</div></div>';
+            return '<div style="font-size:11px;color:#065f46;margin-bottom:2px;"><b>'+e[0]+'</b>: '+e[1].join(', ')+'</div>';
           }).join('')
         + '</div>';
     }
 
-    dateHtml += '<button onclick="submitAdminAvail(\''+matchId+'\')" style="width:100%;padding:13px;border:none;border-radius:11px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:-.2px;">가용시간 제출 →</button>';
+    dateHtml += '<button onclick="submitAdminAvail(\''+matchId+'\')"'
+      + ' style="width:100%;padding:11px;border:none;border-radius:10px;'
+      + 'background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;'
+      + 'font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;">'
+      + '가용시간 제출 →</button>';
   } else {
-    dateHtml = '<div style="font-size:13px;color:#9ca3af;text-align:center;padding:12px;background:#f9fafb;border-radius:9px;">위에서 기업 또는 전문가를 선택하세요</div>';
+    dateHtml = '<div style="font-size:12px;color:#9ca3af;text-align:center;padding:8px;">위에서 기업 또는 전문가를 선택하세요</div>';
   }
 
   return '<div class="avail-input-box">'
-    + '<div style="font-size:14px;font-weight:900;color:#1e3a5f;margin-bottom:16px;letter-spacing:-.2px;">📝 가용시간 직접 입력 <span style="font-size:12px;color:#9ca3af;font-weight:600;">(담당자 대신 입력 시)</span></div>'
-    + '<div style="display:flex;gap:10px;margin-bottom:16px;">' + roleHtml + '</div>'
+    + '<div style="font-size:12px;font-weight:800;color:#1e3a5f;margin-bottom:14px;">📝 가용시간 직접 입력 (담당자 대신 입력 시)</div>'
+    + '<div style="display:flex;gap:8px;margin-bottom:14px;">' + roleHtml + '</div>'
     + dateHtml
     + '</div>';
 }
@@ -549,7 +510,7 @@ function toggleTime(date, time) {
   render();
 }
 
-// ── API ──
+// ── API 호출 ──
 function submitAdd() {
   var keys = ['기업명','기업담당자','기업이메일','기업연락처','전문가명','전문가이메일','전문분야','희망인증','메모'];
   var data = {};
@@ -673,7 +634,7 @@ function cancelMatch(matchId) {
 // ══════════════════════════════════════════════════════════════
 function loadAvailPage(matchId, role) {
   var screen = document.getElementById('availScreen');
-  screen.innerHTML = '<div style="padding:60px;text-align:center;"><div class="spinner" style="margin:0 auto;"></div></div>';
+  screen.innerHTML = '<div style="padding:40px;text-align:center;"><div class="spinner" style="margin:0 auto;"></div></div>';
 
   fetch(SCRIPT_URL)
     .then(function(r) { return r.json(); })
@@ -682,21 +643,21 @@ function loadAvailPage(matchId, role) {
       var match   = matches.find(function(m) { return m['매칭ID'] === matchId; });
 
       if (!match) {
-        screen.innerHTML = '<div style="text-align:center;padding:80px 24px;"><div style="font-size:52px;margin-bottom:18px;">❌</div><div style="font-size:17px;font-weight:800;">유효하지 않은 링크입니다.</div><div style="font-size:14px;color:#6b7280;margin-top:10px;">담당자에게 문의해주세요.</div></div>';
+        screen.innerHTML = '<div style="text-align:center;padding:80px 24px;"><div style="font-size:48px;margin-bottom:16px;">❌</div><div style="font-size:16px;font-weight:700;">유효하지 않은 링크입니다.</div><div style="font-size:13px;color:#6b7280;margin-top:8px;">담당자에게 문의해주세요.</div></div>';
         return;
       }
       if (match['상태'] === '확정완료') {
-        screen.innerHTML = '<div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:#f0fdf4;">'
-          + '<div style="text-align:center;padding:48px;"><div style="font-size:52px;margin-bottom:18px;">✅</div>'
-          + '<div style="font-size:20px;font-weight:900;color:#065f46;">이미 일정이 확정되었습니다.</div>'
-          + '<div style="font-size:14px;color:#6b7280;margin-top:10px;">확정 일정: '+(match['확정슬롯']||'')+'</div></div></div>';
+        screen.innerHTML = '<div style="min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;background:#f0fdf4;">'
+          + '<div style="text-align:center;padding:40px;"><div style="font-size:48px;margin-bottom:16px;">✅</div>'
+          + '<div style="font-size:18px;font-weight:800;color:#065f46;">이미 일정이 확정되었습니다.</div>'
+          + '<div style="font-size:13px;color:#6b7280;margin-top:8px;">확정 일정: '+(match['확정슬롯']||'')+'</div></div></div>';
         return;
       }
 
       renderAvailInput(match, role, data['가용시간'] || []);
     })
     .catch(function(err) {
-      screen.innerHTML = '<div style="text-align:center;padding:60px;color:#dc2626;font-size:14px;">데이터를 불러오지 못했습니다.<br><small style="color:#9ca3af;">'+err.message+'</small></div>';
+      screen.innerHTML = '<div style="text-align:center;padding:60px;color:#dc2626;">데이터를 불러오지 못했습니다.<br><small>'+err.message+'</small></div>';
     });
 }
 
@@ -727,7 +688,7 @@ function renderAvailInput(match, role, existingAvail) {
   if (alreadySubmitted) {
     myAvail.forEach(function(a) {
       var times = (a['시간목록']||'').split(',').filter(Boolean);
-      if (times.length > 0) window._availSlots[normalizeDateStr(a['날짜'])] = times;
+      if (times.length > 0) window._availSlots[a['날짜']] = times;
     });
   }
   window._availSelDate = dateOptions[0] || '';
@@ -735,101 +696,180 @@ function renderAvailInput(match, role, existingAvail) {
   screen.innerHTML = buildAvailPageHTML(match, role, name, dateOptions, alreadySubmitted);
 }
 
+function buildCalendarHTML(dateOptions) {
+  if (!dateOptions.length) return '';
+  // 첫날~마지막날 기준으로 달력 월 목록 구성
+  var months = {};
+  dateOptions.forEach(function(d) {
+    var ym = d.slice(0,7);
+    if (!months[ym]) months[ym] = [];
+    months[ym].push(d);
+  });
+
+  var html = '';
+  Object.keys(months).sort().forEach(function(ym) {
+    var year = parseInt(ym.slice(0,4));
+    var month = parseInt(ym.slice(5,7));
+    var monthName = year + '년 ' + month + '월';
+
+    // 해당 월의 1일 요일
+    var firstDay = new Date(year, month-1, 1).getDay(); // 0=일
+    // 해당 월 마지막 일
+    var lastDate = new Date(year, month, 0).getDate();
+
+    html += '<div style="margin-bottom:20px;">';
+    html += '<div style="font-size:14px;font-weight:800;color:#1e3a5f;margin-bottom:12px;text-align:center;">'+monthName+'</div>';
+    // 요일 헤더
+    html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;">';
+    ['일','월','화','수','목','금','토'].forEach(function(d,i) {
+      html += '<div style="text-align:center;font-size:11px;font-weight:700;color:'+(i===0?'#ef4444':i===6?'#3b82f6':'#9ca3af')+';padding:4px 0;">'+d+'</div>';
+    });
+    html += '</div>';
+    // 날짜 칸
+    html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
+    // 앞 빈칸
+    for (var e=0;e<firstDay;e++) html += '<div></div>';
+
+    var availSet = {};
+    dateOptions.forEach(function(d){ availSet[d]=true; });
+
+    for (var day=1; day<=lastDate; day++) {
+      var dd = ym + '-' + String(day).padStart(2,'0');
+      var dt = new Date(dd+'T00:00:00');
+      var dow = dt.getDay();
+      var isAvail = !!availSet[dd];
+      var isSelected = dd === window._availSelDate;
+      var hasSlots = window._availSlots[dd] && window._availSlots[dd].length > 0;
+      var isWeekend = dow===0||dow===6;
+
+      if (isAvail) {
+        var bg = isSelected ? '#2563eb' : hasSlots ? '#dcfce7' : '#f8fafc';
+        var border = isSelected ? '#2563eb' : hasSlots ? '#16a34a' : '#e2e8f0';
+        var color = isSelected ? '#fff' : hasSlots ? '#15803d' : '#1e3a5f';
+        html += '<button id="datebtn-'+dd+'" onclick="selectAvailDate(\''+dd+'\')"'
+          + ' style="position:relative;aspect-ratio:1;border-radius:10px;cursor:pointer;font-family:inherit;'
+          + 'border:2px solid '+border+';background:'+bg+';color:'+color+';'
+          + 'font-size:13px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;'
+          + 'transition:all .15s;padding:0;">'
+          + '<span>'+day+'</span>'
+          + (hasSlots && !isSelected ? '<span style="width:6px;height:6px;border-radius:50%;background:#16a34a;display:block;"></span>' : '')
+          + (isSelected ? '<span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);display:block;"></span>' : '')
+          + '</button>';
+      } else {
+        var txtColor = isWeekend ? (dow===0?'#fca5a5':'#93c5fd') : '#d1d5db';
+        html += '<div style="aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;'
+          + 'font-size:13px;font-weight:500;color:'+txtColor+';background:transparent;">'
+          + day+'</div>';
+      }
+    }
+    html += '</div></div>';
+  });
+  return html;
+}
+
 function buildAvailPageHTML(match, role, name, dateOptions, alreadySubmitted) {
-  var color    = role === '기업' ? '#2563eb' : '#d97706';
+  var color    = role === '기업' ? '#2563eb' : '#f59e0b';
   var icon     = role === '기업' ? '🏢' : '👨‍💼';
   var otherName = role === '기업' ? match['전문가명'] : match['기업명'];
-
-  var dateHtml = dateOptions.map(function(d) {
-    var dt  = new Date(d + 'T00:00:00');
-    var isSelected = d === window._availSelDate;
-    var hasSlots   = window._availSlots[d] && window._availSlots[d].length > 0;
-    return '<button onclick="selectAvailDate(\''+d+'\')" id="datebtn-'+d+'"'
-      + ' style="padding:9px 14px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;'
-      + 'border:2px solid '+(isSelected?'#2563eb':hasSlots?'#0e9f6e':'#e5e7eb')+';'
-      + 'background:'+(isSelected?'#2563eb':hasSlots?'#f0fdf4':'#fff')+';'
-      + 'color:'+(isSelected?'#fff':hasSlots?'#065f46':'#374151')+';">'
-      + displayDate(d)+(hasSlots&&!isSelected?' ✓':'')+'</button>';
-  }).join('');
 
   var timeHtml = HOURS.map(function(h) {
     var isOn = window._availSlots[window._availSelDate] && window._availSlots[window._availSelDate].includes(h);
     return '<button onclick="toggleAvailTime(\''+h+'\')" id="timebtn-'+h.replace(':','-')+'"'
-      + ' style="padding:14px 6px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;'
+      + ' style="padding:14px 8px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:800;'
       + 'border:2px solid '+(isOn?'#2563eb':'#e5e7eb')+';'
       + 'background:'+(isOn?'#2563eb':'#fff')+';'
-      + 'color:'+(isOn?'#fff':'#374151')+';">'
+      + 'color:'+(isOn?'#fff':'#374151')+';transition:all .15s;">'
       + h+'</button>';
   }).join('');
 
-  return '<div style="min-height:calc(100vh - 64px);background:#f0f4f8;">'
-    + '<div style="padding:24px;max-width:580px;margin:0 auto;">'
+  var calHtml = buildCalendarHTML(dateOptions);
+  var selDateLabel = window._availSelDate ? (function(){
+    var d=new Date(window._availSelDate+'T00:00:00');
+    return window._availSelDate.replace(/-/g,'.')+' ('+['일','월','화','수','목','금','토'][d.getDay()]+')';
+  })() : '날짜를 선택하세요';
+
+  return '<div style="min-height:calc(100vh - 56px);background:#f0f4f8;">'
+    + '<div style="padding:24px;max-width:800px;margin:0 auto;">'
 
     // 안내 카드
-    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'
-    + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">'
-    + '<div style="width:48px;height:48px;border-radius:13px;background:'+color+'18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">'+icon+'</div>'
-    + '<div><div style="font-size:17px;font-weight:900;color:#1e3a5f;letter-spacing:-.3px;">'+name+'님, 안녕하세요!</div>'
-    + '<div style="font-size:13px;color:#6b7280;margin-top:3px;">상담 상대: <b style="color:#374151;">'+otherName+'</b></div></div>'
+    + '<div style="background:#fff;border-radius:16px;padding:20px 24px;margin-bottom:16px;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+    + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">'
+    + '<div style="width:42px;height:42px;border-radius:11px;background:'+color+'18;display:flex;align-items:center;justify-content:center;font-size:22px;">'+icon+'</div>'
+    + '<div><div style="font-size:16px;font-weight:900;color:#1e3a5f;">'+name+'님, 안녕하세요!</div>'
+    + '<div style="font-size:13px;color:#6b7280;margin-top:2px;">상담 상대: <b>'+otherName+'</b></div></div>'
     + '</div>'
-    + '<div style="background:#f8fafc;border-radius:11px;padding:14px 16px;font-size:13px;color:#374151;line-height:1.9;">'
-    + '📋 <b>기업명:</b> '+match['기업명']+'<br>'
-    + '👨‍💼 <b>전문가:</b> '+match['전문가명']+'<br>'
+    + '<div style="background:#f8fafc;border-radius:10px;padding:12px 16px;font-size:13px;color:#374151;line-height:1.8;">'
+    + '📋 <b>기업명:</b> '+match['기업명']+'&nbsp;&nbsp;'
+    + '👨‍💼 <b>전문가:</b> '+match['전문가명']+'&nbsp;&nbsp;'
     + '📌 <b>희망인증:</b> '+(match['희망인증']||'-')
     + '</div></div>'
 
     + (alreadySubmitted
-      ? '<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:#92400e;font-weight:600;">⚠️ 이미 가용시간을 입력하셨습니다. 다시 입력하면 기존 내용이 교체됩니다.</div>'
+      ? '<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#92400e;font-weight:600;">⚠️ 이미 가용시간을 입력하셨습니다. 다시 입력하면 기존 내용이 교체됩니다.</div>'
       : '')
 
-    // 날짜 선택
-    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'
-    + '<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:16px;letter-spacing:-.3px;">📅 날짜 선택</div>'
-    + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+dateHtml+'</div>'
+    // 달력 + 시간 선택 (가로 2단)
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">'
+
+    // 좌: 달력
+    + '<div style="background:#fff;border-radius:16px;padding:22px 20px;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+    + '<div style="font-size:14px;font-weight:800;color:#1e3a5f;margin-bottom:16px;">📅 날짜 선택</div>'
+    + calHtml
+    + '<div style="margin-top:12px;display:flex;align-items:center;gap:12px;font-size:11px;color:#6b7280;">'
+    + '<span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:50%;background:#16a34a;display:inline-block;"></span>선택된 날짜 있음</span>'
+    + '<span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:3px;background:#2563eb;display:inline-block;"></span>현재 날짜</span>'
+    + '</div></div>'
+
+    // 우: 시간 선택
+    + '<div style="background:#fff;border-radius:16px;padding:22px 20px;box-shadow:0 1px 4px rgba(0,0,0,.08);">'
+    + '<div style="font-size:14px;font-weight:800;color:#1e3a5f;margin-bottom:4px;">🕐 시간 선택</div>'
+    + '<div style="font-size:12px;color:#6b7280;margin-bottom:16px;font-weight:600;" id="timeTitle">'+selDateLabel+'</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">'+timeHtml+'</div>'
+    + '<div id="availSummary">'+buildAvailSummaryHTML()+'</div>'
     + '</div>'
 
-    // 시간 선택
-    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'
-    + '<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:4px;letter-spacing:-.3px;">🕐 <span id="timeTitle">'+(window._availSelDate ? displayDateFull(window._availSelDate) : '')+'</span></div>'
-    + '<div style="font-size:13px;color:#6b7280;margin-bottom:16px;">가능한 시간을 모두 선택해주세요</div>'
-    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">'+timeHtml+'</div>'
     + '</div>'
 
-    + '<div id="availSummary" style="margin-bottom:16px;">'+buildAvailSummaryHTML()+'</div>'
-
-    + '<button onclick="submitAvailPage()"'
-    + ' style="width:100%;padding:16px;border:none;border-radius:13px;'
-    + 'background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;'
-    + 'font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:-.3px;'
-    + 'box-shadow:0 5px 18px rgba(37,99,235,.38);">가용시간 제출하기 →</button>'
-    + '<div style="text-align:center;margin-top:18px;font-size:12px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'
+    + '<button onclick="submitAvailPage()" style="width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#1e3a5f,#2563eb);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(37,99,235,.35);">가용시간 제출하기 →</button>'
+    + '<div style="text-align:center;margin-top:16px;font-size:11px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'
     + '</div></div>';
 }
 
 function buildAvailSummaryHTML() {
   var entries = Object.entries(window._availSlots || {}).filter(function(e) { return e[1].length > 0; });
   if (entries.length === 0) return '';
-  var html = '<div style="background:#f0fdf4;border:1.5px solid #d1fae5;border-radius:13px;padding:16px 18px;">'
-    + '<div style="font-size:13px;font-weight:800;color:#065f46;margin-bottom:12px;">✅ 선택된 가용시간</div>';
+  var html = '<div style="background:#f0fdf4;border:1.5px solid #d1fae5;border-radius:12px;padding:14px 16px;">'
+    + '<div style="font-size:12px;font-weight:700;color:#065f46;margin-bottom:8px;">✅ 선택된 가용시간</div>';
   entries.forEach(function(e) {
-    html += '<div class="avail-row"><span class="avail-date" style="color:#065f46;">'+displayDateFull(e[0])+'</span>'
-      + '<div class="avail-times">'+e[1].map(function(t){return '<span class="avail-time-chip" style="background:rgba(5,150,105,.1);color:#065f46;">'+t+'</span>';}).join('')+'</div></div>';
+    html += '<div style="font-size:12px;color:#065f46;margin-bottom:3px;"><b>'+e[0]+'</b>: '+e[1].join(', ')+'</div>';
   });
   return html + '</div>';
 }
 
 function selectAvailDate(date) {
   window._availSelDate = date;
+  // 달력 셀 스타일 갱신
   document.querySelectorAll('[id^="datebtn-"]').forEach(function(btn) {
     var d = btn.id.replace('datebtn-','');
     var hasSlots   = window._availSlots[d] && window._availSlots[d].length > 0;
     var isSelected = d === date;
-    btn.style.borderColor = isSelected?'#2563eb':hasSlots?'#0e9f6e':'#e5e7eb';
-    btn.style.background  = isSelected?'#2563eb':hasSlots?'#f0fdf4':'#fff';
-    btn.style.color       = isSelected?'#fff':hasSlots?'#065f46':'#374151';
+    btn.style.borderColor = isSelected?'#2563eb':hasSlots?'#16a34a':'#e2e8f0';
+    btn.style.background  = isSelected?'#2563eb':hasSlots?'#dcfce7':'#f8fafc';
+    btn.style.color       = isSelected?'#fff':hasSlots?'#15803d':'#1e3a5f';
+    // 내부 dot 갱신
+    var dots = btn.querySelectorAll('span:last-child');
+    // 가장 간단하게: innerHTML 재구성
+    btn.innerHTML = '<span>'+parseInt(d.slice(8))+'</span>'
+      + (hasSlots && !isSelected ? '<span style="width:6px;height:6px;border-radius:50%;background:#16a34a;display:block;"></span>' : '')
+      + (isSelected ? '<span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);display:block;"></span>' : '');
   });
+  // timeTitle 갱신
   var titleEl = document.getElementById('timeTitle');
-  if (titleEl) titleEl.textContent = displayDateFull(date);
+  if (titleEl) {
+    var d2 = new Date(date+'T00:00:00');
+    titleEl.textContent = date.replace(/-/g,'.')+' ('+['일','월','화','수','목','금','토'][d2.getDay()]+')';
+  }
+  // 시간 버튼 스타일 갱신
   HOURS.forEach(function(h) {
     var btn = document.getElementById('timebtn-'+h.replace(':','-'));
     if (!btn) return;
@@ -858,13 +898,13 @@ function toggleAvailTime(time) {
   var dateBtn = document.getElementById('datebtn-'+date);
   if (dateBtn) {
     var hasSlots = window._availSlots[date].length > 0;
-    var dt = new Date(date+'T00:00:00');
-    dateBtn.textContent = displayDate(date)+(hasSlots?' ✓':'');
-    if (date !== window._availSelDate) {
-      dateBtn.style.borderColor = hasSlots?'#0e9f6e':'#e5e7eb';
-      dateBtn.style.background  = hasSlots?'#f0fdf4':'#fff';
-      dateBtn.style.color       = hasSlots?'#065f46':'#374151';
-    }
+    var isSelected = date === window._availSelDate;
+    dateBtn.style.borderColor = isSelected?'#2563eb':hasSlots?'#16a34a':'#e2e8f0';
+    dateBtn.style.background  = isSelected?'#2563eb':hasSlots?'#dcfce7':'#f8fafc';
+    dateBtn.style.color       = isSelected?'#fff':hasSlots?'#15803d':'#1e3a5f';
+    dateBtn.innerHTML = '<span>'+parseInt(date.slice(8))+'</span>'
+      + (hasSlots && !isSelected ? '<span style="width:6px;height:6px;border-radius:50%;background:#16a34a;display:block;"></span>' : '')
+      + (isSelected ? '<span style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);display:block;"></span>' : '');
   }
   document.getElementById('availSummary').innerHTML = buildAvailSummaryHTML();
 }
@@ -892,18 +932,15 @@ function submitAvailPage() {
   .then(function(res) {
     if (res.ok) {
       document.getElementById('availScreen').innerHTML =
-        '<div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:#f0f4f8;">'
-        + '<div style="text-align:center;padding:48px;background:#fff;border-radius:22px;box-shadow:0 6px 28px rgba(0,0,0,.1);max-width:420px;width:90%;">'
-        + '<div style="font-size:60px;margin-bottom:20px;">✅</div>'
-        + '<div style="font-size:20px;font-weight:900;color:#1e3a5f;margin-bottom:10px;letter-spacing:-.3px;">가용시간이 제출되었습니다!</div>'
-        + '<div style="font-size:14px;color:#6b7280;line-height:1.8;">담당자가 상대방의 가용시간과 비교하여<br>최적 일정을 확정 후 안내드릴 예정입니다.</div>'
-        + '<div style="margin-top:22px;padding:16px 18px;background:#f0fdf4;border-radius:12px;">'
-        + entries.map(function(e) {
-            return '<div class="avail-row"><span class="avail-date" style="font-size:13px;color:#065f46;">'+displayDateFull(e[0])+'</span>'
-              + '<div class="avail-times">'+e[1].map(function(t){return '<span class="avail-time-chip" style="background:rgba(5,150,105,.1);color:#065f46;">'+t+'</span>';}).join('')+'</div></div>';
-          }).join('')
+        '<div style="min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;background:#f0f4f8;">'
+        + '<div style="text-align:center;padding:40px;background:#fff;border-radius:20px;box-shadow:0 4px 24px rgba(0,0,0,.1);max-width:400px;width:90%;">'
+        + '<div style="font-size:56px;margin-bottom:16px;">✅</div>'
+        + '<div style="font-size:18px;font-weight:800;color:#1e3a5f;margin-bottom:8px;">가용시간이 제출되었습니다!</div>'
+        + '<div style="font-size:13px;color:#6b7280;line-height:1.7;">담당자가 상대방의 가용시간과 비교하여<br>최적 일정을 확정 후 안내드릴 예정입니다.</div>'
+        + '<div style="margin-top:20px;padding:12px 16px;background:#f0fdf4;border-radius:10px;font-size:12px;color:#065f46;">'
+        + entries.map(function(e) { return '<b>'+e[0]+'</b>: '+e[1].join(', '); }).join('<br>')
         + '</div>'
-        + '<div style="margin-top:20px;font-size:12px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'
+        + '<div style="margin-top:16px;font-size:11px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'
         + '</div></div>';
     } else {
       alert('❌ 오류: ' + (res.error||'다시 시도해주세요.'));
@@ -925,9 +962,9 @@ function calcMatchedSlots(matchId) {
   if (compRows.length === 0 || expRows.length === 0) return [];
 
   var compMap = {};
-  compRows.forEach(function(r) { compMap[normalizeDateStr(r['날짜'])] = (r['시간목록']||'').split(',').filter(Boolean); });
+  compRows.forEach(function(r) { compMap[r['날짜']] = (r['시간목록']||'').split(',').filter(Boolean); });
   var expMap = {};
-  expRows.forEach(function(r) { expMap[normalizeDateStr(r['날짜'])] = (r['시간목록']||'').split(',').filter(Boolean); });
+  expRows.forEach(function(r) { expMap[r['날짜']] = (r['시간목록']||'').split(',').filter(Boolean); });
 
   var matched = [];
   Object.keys(compMap).forEach(function(date) {
@@ -935,10 +972,10 @@ function calcMatchedSlots(matchId) {
     var expSet = {};
     expMap[date].forEach(function(t) { expSet[t] = true; });
     compMap[date].forEach(function(t) {
-      if (expSet[t]) matched.push({ date: date, time: t, label: displayDateFull(date) + ' ' + t });
+      if (expSet[t]) matched.push({ date: date, time: t, label: date + ' ' + t });
     });
   });
-  return matched.sort(function(a,b) { return a.date.localeCompare(b.date) || a.time.localeCompare(b.time); });
+  return matched.sort(function(a,b) { return a.label.localeCompare(b.label); });
 }
 
 function getUrlParams() {
@@ -947,6 +984,10 @@ function getUrlParams() {
     params[k] = decodeURIComponent(v);
   });
   return params;
+}
+
+function toDateStr(d) {
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 </script>
 </body>
