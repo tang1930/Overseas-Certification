@@ -239,9 +239,9 @@ function buildList() {
   var kpiHtml = ['대기중','입력중','매칭완료','확정완료','취소'].map(function(s) {
     var cfg = STATUS_CFG[s] || { bg:'#f3f4f6', color:'#374151' };
     var isActive = _statusFilter === s;
-    return '<div class="kpi-card" style="background:'+cfg.bg+';border-color:'+(isActive?cfg.color:'transparent')+'" onclick="setStatusFilter(\''+s+'\')">'\
-      + '<div class="kpi-val" style="color:'+cfg.color+'">'+(counts[s]||0)+'</div>'\
-      + '<div class="kpi-lbl" style="color:'+cfg.color+'">'+s+'</div>'\
+    return '<div class="kpi-card" style="background:'+cfg.bg+';border-color:'+(isActive?cfg.color:'transparent')+'" onclick="setStatusFilter(\''+s+'\')">'
+      + '<div class="kpi-val" style="color:'+cfg.color+'">'+(counts[s]||0)+'</div>'
+      + '<div class="kpi-lbl" style="color:'+cfg.color+'">'+s+'</div>'
       + '</div>';
   }).join('');
 
@@ -249,22 +249,22 @@ function buildList() {
     ? '<div class="empty-state"><div style="font-size:42px;margin-bottom:12px;">📭</div><div style="font-weight:700;margin-bottom:6px;">매칭 내역이 없습니다</div><span style="font-size:13px;">+ 새 매칭 추가 버튼으로 시작하세요.</span></div>'
     : filtered.map(buildMatchCard).join('');
 
-  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;">'\
-    + '<div><div style="font-size:20px;font-weight:900;color:#1e3a5f;letter-spacing:-.5px;">📅 멘토링 상담예약 관리</div>'\
-    + '<div style="font-size:13px;color:#6b7280;margin-top:4px;">배정된 기업-전문가 매칭의 일정 조율 현황</div></div>'\
-    + '<button class="add-btn" onclick="showAdd()">+ 새 매칭 추가</button>'\
-    + '</div>'\
-    + '<div class="kpi-grid">' + kpiHtml + '</div>'\
-    + '<div class="toolbar">'\
-    + '<input type="text" placeholder="🔍  기업명, 전문가명 검색..." value="'+_searchQ+'" oninput="_searchQ=this.value; render()">'\
-    + '<select onchange="_statusFilter=this.value; render()" style="padding:9px 14px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">'\
-    + '<option value="전체"'+(_statusFilter==='전체'?' selected':'')+'>전체 상태</option>'\
+  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px;">'
+    + '<div><div style="font-size:20px;font-weight:900;color:#1e3a5f;letter-spacing:-.5px;">📅 멘토링 상담예약 관리</div>'
+    + '<div style="font-size:13px;color:#6b7280;margin-top:4px;">배정된 기업-전문가 매칭의 일정 조율 현황</div></div>'
+    + '<button class="add-btn" onclick="showAdd()">+ 새 매칭 추가</button>'
+    + '</div>'
+    + '<div class="kpi-grid">' + kpiHtml + '</div>'
+    + '<div class="toolbar">'
+    + '<input type="text" placeholder="🔍  기업명, 전문가명 검색..." value="'+_searchQ+'" oninput="_searchQ=this.value; render()">'
+    + '<select onchange="_statusFilter=this.value; render()" style="padding:9px 14px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;font-family:inherit;outline:none;cursor:pointer;">'
+    + '<option value="전체"'+(_statusFilter==='전체'?' selected':'')+'>전체 상태</option>'
     + Object.keys(STATUS_CFG).map(function(s) {
         return '<option value="'+s+'"'+(_statusFilter===s?' selected':'')+'>'+s+'</option>';
-      }).join('')\
-    + '</select>'\
-    + '<span class="cnt-badge">총 '+filtered.length+'건</span>'\
-    + '</div>'\
+      }).join('')
+    + '</select>'
+    + '<span class="cnt-badge">총 '+filtered.length+'건</span>'
+    + '</div>'
     + '<div class="match-list">' + cardsHtml + '</div>';
 }
 
@@ -276,65 +276,64 @@ function buildMatchCard(m) {
   var expAvail  = DATA.avail.filter(function(a) { return a['매칭ID'] === id && a['역할'] === '전문가'; }).length;
   var matched   = calcMatchedSlots(id);
 
-  return '<div class="match-card" onclick="showDetail(\''+id+'\')">'\
-    + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">'\
-    + '<div style="flex:1;min-width:0;">'\
-    + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">'\
-    + '<span style="font-size:16px;font-weight:900;color:#1e3a5f;letter-spacing:-.3px;">'+(m['기업명']||'-')+'</span>'\
-    + '<span style="font-size:13px;color:#9ca3af;font-weight:500;">↔</span>'\
-    + '<span style="font-size:15px;font-weight:800;color:#374151;">'+(m['전문가명']||'-')+'</span>'\
-    + '<span class="badge" style="background:'+cfg.bg+';color:'+cfg.color+';">'+stat+'</span>'\
-    + (m['확정슬롯'] ? '<span style="font-size:12px;color:#065f46;background:#f0fdf4;padding:3px 10px;border-radius:20px;border:1px solid #d1fae5;font-weight:700;">📅 '+m['확정슬롯']+'</span>' : '')\
-    + '</div>'\
-    + '<div style="font-size:13px;color:#6b7280;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">'\
-    + '<span>👤 '+(m['기업담당자']||'-')+'</span>'\
-    + '<span>🎓 '+(m['전문분야']||'-')+'</span>'\
-    + (m['희망인증'] ? '<span>📋 '+m['희망인증']+'</span>' : '')\
-    + '<span style="color:#c4c9d4;font-size:12px;">'+(m['생성일시']||'')+'</span>'\
-    + '</div></div>'\
-    + '<div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:7px;">'\
-    + '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(compAvail>0?'#d1fae5':'#fee2e2')+';color:'+(compAvail>0?'#065f46':'#991b1b')+';">🏢 기업 '+(compAvail>0?'✓ 완료':'미입력')+'</span>'\
-    + '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(expAvail>0?'#d1fae5':'#fee2e2')+';color:'+(expAvail>0?'#065f46':'#991b1b')+';">👨‍💼 전문가 '+(expAvail>0?'✓ 완료':'미입력')+'</span>'\
-    + (matched.length > 0 ? '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:800;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd;">✨ 겹치는 슬롯 '+matched.length+'개</span>' : '')\
+  return '<div class="match-card" onclick="showDetail(\''+id+'\')">'
+    + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;">'
+    + '<div style="flex:1;min-width:0;">'
+    + '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">'
+    + '<span style="font-size:16px;font-weight:900;color:#1e3a5f;letter-spacing:-.3px;">'+(m['기업명']||'-')+'</span>'
+    + '<span style="font-size:13px;color:#9ca3af;font-weight:500;">↔</span>'
+    + '<span style="font-size:15px;font-weight:800;color:#374151;">'+(m['전문가명']||'-')+'</span>'
+    + '<span class="badge" style="background:'+cfg.bg+';color:'+cfg.color+';">'+stat+'</span>'
+    + (m['확정슬롯'] ? '<span style="font-size:12px;color:#065f46;background:#f0fdf4;padding:3px 10px;border-radius:20px;border:1px solid #d1fae5;font-weight:700;">📅 '+m['확정슬롯']+'</span>' : '')
+    + '</div>'
+    + '<div style="font-size:13px;color:#6b7280;display:flex;gap:16px;flex-wrap:wrap;align-items:center;">'
+    + '<span>👤 '+(m['기업담당자']||'-')+'</span>'
+    + '<span>🎓 '+(m['전문분야']||'-')+'</span>'
+    + (m['희망인증'] ? '<span>📋 '+m['희망인증']+'</span>' : '')
+    + '<span style="color:#c4c9d4;font-size:12px;">'+(m['생성일시']||'')+'</span>'
+    + '</div></div>'
+    + '<div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:7px;">'
+    + '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(compAvail>0?'#d1fae5':'#fee2e2')+';color:'+(compAvail>0?'#065f46':'#991b1b')+';">🏢 기업 '+(compAvail>0?'✓ 완료':'미입력')+'</span>'
+    + '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(expAvail>0?'#d1fae5':'#fee2e2')+';color:'+(expAvail>0?'#065f46':'#991b1b')+';">👨‍💼 전문가 '+(expAvail>0?'✓ 완료':'미입력')+'</span>'
+    + (matched.length > 0 ? '<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:800;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd;">✨ 겹치는 슬롯 '+matched.length+'개</span>' : '')
     + '</div></div></div>';
 }
 
 // ── 새 매칭 추가 ──
 function buildAdd() {
   var f = FORM;
-  return '<div style="max-width:720px;">'\
-    + '<div class="back-row"><button class="back-btn" onclick="VIEW.page=\'list\'; render()">← 목록으로</button>'\
-    + '<div style="font-size:17px;font-weight:900;color:#1e3a5f;">새 매칭 추가</div></div>'\
-    + '<div class="form-wrap">'\
-    + '<div class="form-section-title" style="color:#2563eb;border-color:#dbeafe;">🏢 기업 정보</div>'\
-    + '<div class="form-grid">'\
-    + fld('기업명','기업명 *',f.기업명,true)\
-    + fld('기업담당자','담당자명 *',f.기업담당자,true)\
-    + fld('기업이메일','기업 이메일 *',f.기업이메일,true,'email')\
-    + fld('기업연락처','연락처',f.기업연락처,false,'tel')\
-    + '</div>'\
-    + '<div class="form-section-title" style="color:#d97706;border-color:#fef3c7;">👨‍💼 전문가 정보</div>'\
-    + '<div class="form-grid">'\
-    + fld('전문가명','전문가명 *',f.전문가명,true)\
-    + fld('전문가이메일','전문가 이메일 *',f.전문가이메일,true,'email')\
-    + fld('전문분야','전문분야',f.전문분야)\
-    + fld('희망인증','희망인증명',f.희망인증)\
-    + '</div>'\
-    + '<div class="form-field" style="margin-bottom:22px;">'\
-    + '<label>메모 (선택)</label>'\
-    + '<textarea id="fi-메모" rows="2" style="width:100%;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;font-family:inherit;resize:vertical;outline:none;" placeholder="특이사항 등">'+(f.메모||'')+'</textarea>'\
-    + '</div>'\
-    + '<div class="info-box">📧 <b>추가 즉시</b> 기업 담당자와 전문가에게 가용시간 입력 안내 이메일이 자동 발송됩니다.</div>'\
-    + '<div class="form-actions">'\
-    + '<button class="btn-cancel" onclick="VIEW.page=\'list\'; render()">취소</button>'\
-    + '<button class="btn-submit" id="submitAddBtn" onclick="submitAdd()">매칭 추가 + 이메일 발송</button>'\
+  return '<div style="max-width:720px;">'
+    + '<div class="back-row"><button class="back-btn" onclick="VIEW.page=\'list\'; render()">← 목록으로</button>'
+    + '<div style="font-size:17px;font-weight:900;color:#1e3a5f;">새 매칭 추가</div></div>'
+    + '<div class="form-wrap">'
+    + '<div class="form-section-title" style="color:#2563eb;border-color:#dbeafe;">🏢 기업 정보</div>'
+    + '<div class="form-grid">'
+    + fld('기업명','기업명 *',f.기업명,true)
+    + fld('기업담당자','담당자명 *',f.기업담당자,true)
+    + fld('기업이메일','기업 이메일 *',f.기업이메일,true,'email')
+    + fld('기업연락처','연락처',f.기업연락처,false,'tel')
+    + '</div>'
+    + '<div class="form-section-title" style="color:#d97706;border-color:#fef3c7;">👨‍💼 전문가 정보</div>'
+    + '<div class="form-grid">'
+    + fld('전문가명','전문가명 *',f.전문가명,true)
+    + fld('전문가이메일','전문가 이메일 *',f.전문가이메일,true,'email')
+    + fld('전문분야','전문분야',f.전문분야)
+    + fld('희망인증','희망인증명',f.희망인증)
+    + '</div>'
+    + '<div class="form-field" style="margin-bottom:22px;">'
+    + '<label>메모 (선택)</label>'
+    + '<textarea id="fi-메모" rows="2" style="width:100%;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:9px;font-size:13px;font-family:inherit;resize:vertical;outline:none;" placeholder="특이사항 등">'+(f.메모||'')+'</textarea>'
+    + '</div>'
+    + '<div class="info-box">📧 <b>추가 즉시</b> 기업 담당자와 전문가에게 가용시간 입력 안내 이메일이 자동 발송됩니다.</div>'
+    + '<div class="form-actions">'
+    + '<button class="btn-cancel" onclick="VIEW.page=\'list\'; render()">취소</button>'
+    + '<button class="btn-submit" id="submitAddBtn" onclick="submitAdd()">매칭 추가 + 이메일 발송</button>'
     + '</div></div></div>';
 }
 
 function fld(key, label, val, required, type) {
-  return '<div class="form-field"><label>'+label+'</label>'\
-    + '<input type="'+(type||'text')+'" id="fi-'+key+'" value="'+(val||'')+'"\
-    + (required?' required':'')+'></div>';
+  return '<div class="form-field"><label>'+label+'</label>'
+    + '<input type="'+(type||'text')+'" id="fi-'+key+'" value="'+(val||'')+'"'+(required?' required':'')+'></div>';
 }
 
 // ── 상세 ──
@@ -349,37 +348,37 @@ function buildDetail(matchId) {
   var matched  = calcMatchedSlots(matchId);
   var role     = AVAIL_INPUT.role;
 
-  return '<div style="max-width:860px;">'\
-    + '<div class="back-row">'\
-    + '<button class="back-btn" onclick="VIEW.page=\'list\'; render()">← 목록으로</button>'\
-    + '<div style="font-size:16px;font-weight:900;color:#1e3a5f;">'+m['기업명']+' ↔ '+m['전문가명']+'</div>'\
-    + '<span class="badge" style="background:'+cfg.bg+';color:'+cfg.color+';">'+stat+'</span>'\
-    + (stat !== '취소' && stat !== '확정완료'\
-        ? '<button onclick="cancelMatch(\''+matchId+'\')" style="margin-left:auto;padding:6px 13px;background:#fee2e2;color:#991b1b;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">취소</button>'\
-        : '')\
-    + '</div>'\
+  return '<div style="max-width:860px;">'
+    + '<div class="back-row">'
+    + '<button class="back-btn" onclick="VIEW.page=\'list\'; render()">← 목록으로</button>'
+    + '<div style="font-size:16px;font-weight:900;color:#1e3a5f;">'+m['기업명']+' ↔ '+m['전문가명']+'</div>'
+    + '<span class="badge" style="background:'+cfg.bg+';color:'+cfg.color+';">'+stat+'</span>'
+    + (stat !== '취소' && stat !== '확정완료'
+        ? '<button onclick="cancelMatch(\''+matchId+'\')" style="margin-left:auto;padding:6px 13px;background:#fee2e2;color:#991b1b;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">취소</button>'
+        : '')
+    + '</div>'
 
     // 매칭 정보
-    + '<div class="form-wrap" style="margin-bottom:18px;">'\
-    + '<div class="detail-grid">'\
+    + '<div class="form-wrap" style="margin-bottom:18px;">'
+    + '<div class="detail-grid">'
     + [['기업명',m['기업명']],['전문가명',m['전문가명']],['기업담당자',m['기업담당자']],['전문분야',m['전문분야']],
        ['기업이메일',m['기업이메일']],['전문가이메일',m['전문가이메일']],['희망인증',m['희망인증']],['확정슬롯',m['확정슬롯']||'-']]
       .map(function(kv) {
         return '<div class="detail-field"><div class="detail-key">'+kv[0]+'</div><div class="detail-val">'+(kv[1]||'-')+'</div></div>';
-      }).join('')\
-    + '</div></div>'\
+      }).join('')
+    + '</div></div>'
 
     // 가용시간 현황
-    + '<div class="avail-grid">'\
-    + buildAvailSummaryBox('기업', compRows, m['기업담당자'])\
-    + buildAvailSummaryBox('전문가', expRows, m['전문가명'])\
-    + '</div>'\
+    + '<div class="avail-grid">'
+    + buildAvailSummaryBox('기업', compRows, m['기업담당자'])
+    + buildAvailSummaryBox('전문가', expRows, m['전문가명'])
+    + '</div>'
 
     // 겹치는 슬롯
-    + (matched.length > 0 ? buildMatchedUI(matched, matchId, m['확정슬롯'], stat) : '')\
+    + (matched.length > 0 ? buildMatchedUI(matched, matchId, m['확정슬롯'], stat) : '')
 
     // 가용시간 직접 입력
-    + (stat !== '확정완료' && stat !== '취소' ? buildAvailInputUI(matchId, role, m) : '')\
+    + (stat !== '확정완료' && stat !== '취소' ? buildAvailInputUI(matchId, role, m) : '')
     + '</div>';
 }
 
@@ -392,40 +391,40 @@ function buildAvailSummaryBox(role, rows, name) {
   var slotsHtml = hasData
     ? rows.map(function(r) {
         var times = (r['시간목록']||'').split(',').filter(Boolean);
-        return '<div class="avail-row">'\
-          + '<span class="avail-date" style="color:'+color+';">'+displayDateFull(r['날짜'])+'</span>'\
-          + '<div class="avail-times">'\
-          + times.map(function(t) { return '<span class="avail-time-chip">'+t+'</span>'; }).join('')\
+        return '<div class="avail-row">'
+          + '<span class="avail-date" style="color:'+color+';">'+displayDateFull(r['날짜'])+'</span>'
+          + '<div class="avail-times">'
+          + times.map(function(t) { return '<span class="avail-time-chip">'+t+'</span>'; }).join('')
           + '</div></div>';
       }).join('')
     : '<div style="font-size:13px;color:#9ca3af;padding:8px 0;">아직 입력되지 않았습니다.</div>';
 
-  return '<div class="avail-box" style="background:'+bg+';border-color:'+border+';">'\
-    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'\
-    + '<div style="font-size:14px;font-weight:800;color:'+color+';">'+(role==='기업'?'🏢':'👨‍💼')+' '+(name||role)+' 가용시간</div>'\
-    + '<span style="font-size:12px;padding:4px 11px;border-radius:20px;font-weight:700;background:'+(hasData?'#d1fae5':'#fee2e2')+';color:'+(hasData?'#065f46':'#991b1b')+';">'+(hasData?'✓ 입력완료':'미입력')+'</span>'\
+  return '<div class="avail-box" style="background:'+bg+';border-color:'+border+';">'
+    + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'
+    + '<div style="font-size:14px;font-weight:800;color:'+color+';">'+(role==='기업'?'🏢':'👨‍💼')+' '+(name||role)+' 가용시간</div>'
+    + '<span style="font-size:12px;padding:4px 11px;border-radius:20px;font-weight:700;background:'+(hasData?'#d1fae5':'#fee2e2')+';color:'+(hasData?'#065f46':'#991b1b')+';">'+(hasData?'✓ 입력완료':'미입력')+'</span>'
     + '</div>' + slotsHtml + '</div>';
 }
 
 function buildMatchedUI(slots, matchId, confirmedSlot, stat) {
-  var html = '<div class="matched-box">'\
-    + '<div style="font-size:14px;font-weight:900;color:#5b21b6;margin-bottom:14px;letter-spacing:-.2px;">✨ 겹치는 가용 슬롯 — '+slots.length+'개</div>'\
+  var html = '<div class="matched-box">'
+    + '<div style="font-size:14px;font-weight:900;color:#5b21b6;margin-bottom:14px;letter-spacing:-.2px;">✨ 겹치는 가용 슬롯 — '+slots.length+'개</div>'
     + '<div style="display:flex;flex-direction:column;gap:10px;">';
 
   slots.forEach(function(s) {
     var isConfirmed = confirmedSlot === s.label;
-    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;'\
-      + 'background:'+(isConfirmed?'#ede9fe':'#fff')+';border-radius:11px;border:1.5px solid '+(isConfirmed?'#8b5cf6':'#e5e7eb')+';">'\
-      + '<div style="display:flex;align-items:center;gap:10px;">'\
-      + '<span style="font-size:15px;font-weight:900;color:#1e3a5f;">'+s.label+'</span>'\
-      + (isConfirmed ? '<span style="font-size:12px;color:#5b21b6;font-weight:800;background:#ede9fe;padding:2px 9px;border-radius:6px;">✓ 확정됨</span>' : '')\
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;'
+      + 'background:'+(isConfirmed?'#ede9fe':'#fff')+';border-radius:11px;border:1.5px solid '+(isConfirmed?'#8b5cf6':'#e5e7eb')+';">'
+      + '<div style="display:flex;align-items:center;gap:10px;">'
+      + '<span style="font-size:15px;font-weight:900;color:#1e3a5f;">'+s.label+'</span>'
+      + (isConfirmed ? '<span style="font-size:12px;color:#5b21b6;font-weight:800;background:#ede9fe;padding:2px 9px;border-radius:6px;">✓ 확정됨</span>' : '')
       + '</div>';
     if (stat !== '확정완료' && stat !== '취소') {
-      html += '<div style="display:flex;gap:7px;">'\
+      html += '<div style="display:flex;gap:7px;">'
         + MEET_TYPES.map(function(mt) {
-            return '<button class="slot-confirm-btn" onclick="confirmSlot(\''+matchId+'\',\''+s.label+'\',\''+mt+'\')">'\
+            return '<button class="slot-confirm-btn" onclick="confirmSlot(\''+matchId+'\',\''+s.label+'\',\''+mt+'\')">'
               + (mt==='화상미팅'?'🎥':mt==='전화상담'?'📞':'🏢')+' '+mt+'</button>';
-          }).join('')\
+          }).join('')
         + '</div>';
     }
     html += '</div>';
@@ -451,71 +450,67 @@ function buildAvailInputUI(matchId, role, m) {
   var roleHtml = ['기업','전문가'].map(function(r) {
     var nm      = r === '기업' ? m['기업담당자'] : m['전문가명'];
     var isActive = role === r;
-    return '<button onclick="AVAIL_INPUT.role=\''+r+'\'; AVAIL_INPUT.name=\''+nm+'\'; render();"'\
-      + ' style="flex:1;padding:12px;border-radius:10px;cursor:pointer;font-family:inherit;'\
-      + 'border:2px solid '+(isActive?'#2563eb':'#e5e7eb')+';'\
-      + 'background:'+(isActive?'#eff6ff':'#fff')+';'\
-      + 'font-size:13px;font-weight:'+(isActive?'900':'600')+';'\
-      + 'color:'+(isActive?'#2563eb':'#6b7280')+';">'\
+    return '<button onclick="AVAIL_INPUT.role=\''+r+'\'; AVAIL_INPUT.name=\''+nm+'\'; render();"'
+      + ' style="flex:1;padding:12px;border-radius:10px;cursor:pointer;font-family:inherit;'
+      + 'border:2px solid '+(isActive?'#2563eb':'#e5e7eb')+';'
+      + 'background:'+(isActive?'#eff6ff':'#fff')+';'
+      + 'font-size:13px;font-weight:'+(isActive?'900':'600')+';'
+      + 'color:'+(isActive?'#2563eb':'#6b7280')+';">'
       + (r==='기업'?'🏢':'👨‍💼')+' '+nm+' ('+r+')</button>';
   }).join('');
 
   var dateHtml = '';
   if (role) {
-    dateHtml = '<div style="margin-bottom:16px;">'\
-      + '<div style="font-size:13px;font-weight:800;color:#374151;margin-bottom:10px;">📅 날짜 선택</div>'\
-      + '<div style="display:flex;flex-wrap:wrap;gap:7px;">'\
+    dateHtml = '<div style="margin-bottom:16px;">'
+      + '<div style="font-size:13px;font-weight:800;color:#374151;margin-bottom:10px;">📅 날짜 선택</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:7px;">'
       + dateOptions.map(function(d) {
           var dt  = new Date(d + 'T00:00:00');
           var isSelected = d === selDate;
           var hasSlots   = slots[d] && slots[d].length > 0;
-          return '<button onclick="selectDate(\''+d+'\')"'\
-            + ' style="padding:8px 12px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;'\
-            + 'border:1.5px solid '+(isSelected?'#2563eb':hasSlots?'#0e9f6e':'#e5e7eb')+';'\
-            + 'background:'+(isSelected?'#2563eb':hasSlots?'#f0fdf4':'#fff')+';'\
-            + 'color:'+(isSelected?'#fff':hasSlots?'#065f46':'#374151')+';">'\
+          return '<button onclick="selectDate(\''+d+'\')"'
+            + ' style="padding:8px 12px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;'
+            + 'border:1.5px solid '+(isSelected?'#2563eb':hasSlots?'#0e9f6e':'#e5e7eb')+';'
+            + 'background:'+(isSelected?'#2563eb':hasSlots?'#f0fdf4':'#fff')+';'
+            + 'color:'+(isSelected?'#fff':hasSlots?'#065f46':'#374151')+';">'
             + displayDate(d)+(hasSlots&&!isSelected?' ✓':'')+'</button>';
-        }).join('')\
-      + '</div></div>'\
+        }).join('')
+      + '</div></div>'
 
-      + '<div style="margin-bottom:16px;">'\
-      + '<div style="font-size:13px;font-weight:800;color:#374151;margin-bottom:10px;">🕐 '+displayDateFull(selDate)+' 가능 시간 선택 <span style="font-size:12px;font-weight:600;color:#9ca3af;">(복수 선택 가능)</span></div>'\
-      + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'\
+      + '<div style="margin-bottom:16px;">'
+      + '<div style="font-size:13px;font-weight:800;color:#374151;margin-bottom:10px;">🕐 '+displayDateFull(selDate)+' 가능 시간 선택 <span style="font-size:12px;font-weight:600;color:#9ca3af;">(복수 선택 가능)</span></div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'
       + HOURS.map(function(h) {
           var isOn = slots[selDate] && slots[selDate].includes(h);
-          return '<button onclick="toggleTime(\''+selDate+'\',\''+h+'\')"'\
-            + ' style="padding:10px 18px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:800;'\
-            + 'border:2px solid '+(isOn?'#2563eb':'#e5e7eb')+';'\
-            + 'background:'+(isOn?'#2563eb':'#fff')+';'\
+          return '<button onclick="toggleTime(\''+selDate+'\',\''+h+'\')"'
+            + ' style="padding:10px 18px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:800;'
+            + 'border:2px solid '+(isOn?'#2563eb':'#e5e7eb')+';'
+            + 'background:'+(isOn?'#2563eb':'#fff')+';'
             + 'color:'+(isOn?'#fff':'#374151')+';">'+h+'</button>';
-        }).join('')\
+        }).join('')
       + '</div></div>';
 
     // 선택 요약
     var summaryEntries = Object.entries(slots).filter(function(e) { return e[1].length > 0; });
     if (summaryEntries.length > 0) {
-      dateHtml += '<div style="padding:14px 16px;background:#f0fdf4;border-radius:10px;border:1.5px solid #d1fae5;margin-bottom:16px;">'\
-        + '<div style="font-size:13px;font-weight:800;color:#065f46;margin-bottom:10px;">✅ 선택된 가용시간</div>'\
+      dateHtml += '<div style="padding:14px 16px;background:#f0fdf4;border-radius:10px;border:1.5px solid #d1fae5;margin-bottom:16px;">'
+        + '<div style="font-size:13px;font-weight:800;color:#065f46;margin-bottom:10px;">✅ 선택된 가용시간</div>'
         + summaryEntries.map(function(e) {
-            return '<div class="avail-row"><span class="avail-date" style="color:#065f46;">'+displayDateFull(e[0])+'</span>'\
+            return '<div class="avail-row"><span class="avail-date" style="color:#065f46;">'+displayDateFull(e[0])+'</span>'
               + '<div class="avail-times">'+e[1].map(function(t){return '<span class="avail-time-chip" style="background:rgba(5,150,105,.1);color:#065f46;">'+t+'</span>';}).join('')+'</div></div>';
-          }).join('')\
+          }).join('')
         + '</div>';
     }
 
-    dateHtml += '<button onclick="submitAdminAvail(\''+matchId+'\')"\
-      + ' style="width:100%;padding:13px;border:none;border-radius:11px;'\
-      + 'background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;'\
-      + 'font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:-.2px;">'\
-      + '가용시간 제출 →</button>';
+    dateHtml += '<button onclick="submitAdminAvail(\''+matchId+'\')" style="width:100%;padding:13px;border:none;border-radius:11px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:-.2px;">가용시간 제출 →</button>';
   } else {
     dateHtml = '<div style="font-size:13px;color:#9ca3af;text-align:center;padding:12px;background:#f9fafb;border-radius:9px;">위에서 기업 또는 전문가를 선택하세요</div>';
   }
 
-  return '<div class="avail-input-box">'\
-    + '<div style="font-size:14px;font-weight:900;color:#1e3a5f;margin-bottom:16px;letter-spacing:-.2px;">📝 가용시간 직접 입력 <span style="font-size:12px;color:#9ca3af;font-weight:600;">(담당자 대신 입력 시)</span></div>'\
-    + '<div style="display:flex;gap:10px;margin-bottom:16px;">' + roleHtml + '</div>'\
-    + dateHtml\
+  return '<div class="avail-input-box">'
+    + '<div style="font-size:14px;font-weight:900;color:#1e3a5f;margin-bottom:16px;letter-spacing:-.2px;">📝 가용시간 직접 입력 <span style="font-size:12px;color:#9ca3af;font-weight:600;">(담당자 대신 입력 시)</span></div>'
+    + '<div style="display:flex;gap:10px;margin-bottom:16px;">' + roleHtml + '</div>'
+    + dateHtml
     + '</div>';
 }
 
@@ -691,9 +686,9 @@ function loadAvailPage(matchId, role) {
         return;
       }
       if (match['상태'] === '확정완료') {
-        screen.innerHTML = '<div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:#f0fdf4;">'\
-          + '<div style="text-align:center;padding:48px;"><div style="font-size:52px;margin-bottom:18px;">✅</div>'\
-          + '<div style="font-size:20px;font-weight:900;color:#065f46;">이미 일정이 확정되었습니다.</div>'\
+        screen.innerHTML = '<div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:#f0fdf4;">'
+          + '<div style="text-align:center;padding:48px;"><div style="font-size:52px;margin-bottom:18px;">✅</div>'
+          + '<div style="font-size:20px;font-weight:900;color:#065f46;">이미 일정이 확정되었습니다.</div>'
           + '<div style="font-size:14px;color:#6b7280;margin-top:10px;">확정 일정: '+(match['확정슬롯']||'')+'</div></div></div>';
         return;
       }
@@ -749,75 +744,75 @@ function buildAvailPageHTML(match, role, name, dateOptions, alreadySubmitted) {
     var dt  = new Date(d + 'T00:00:00');
     var isSelected = d === window._availSelDate;
     var hasSlots   = window._availSlots[d] && window._availSlots[d].length > 0;
-    return '<button onclick="selectAvailDate(\''+d+'\')" id="datebtn-'+d+'"'\
-      + ' style="padding:9px 14px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;'\
-      + 'border:2px solid '+(isSelected?'#2563eb':hasSlots?'#0e9f6e':'#e5e7eb')+';'\
-      + 'background:'+(isSelected?'#2563eb':hasSlots?'#f0fdf4':'#fff')+';'\
-      + 'color:'+(isSelected?'#fff':hasSlots?'#065f46':'#374151')+';">'\
+    return '<button onclick="selectAvailDate(\''+d+'\')" id="datebtn-'+d+'"'
+      + ' style="padding:9px 14px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;'
+      + 'border:2px solid '+(isSelected?'#2563eb':hasSlots?'#0e9f6e':'#e5e7eb')+';'
+      + 'background:'+(isSelected?'#2563eb':hasSlots?'#f0fdf4':'#fff')+';'
+      + 'color:'+(isSelected?'#fff':hasSlots?'#065f46':'#374151')+';">'
       + displayDate(d)+(hasSlots&&!isSelected?' ✓':'')+'</button>';
   }).join('');
 
   var timeHtml = HOURS.map(function(h) {
     var isOn = window._availSlots[window._availSelDate] && window._availSlots[window._availSelDate].includes(h);
-    return '<button onclick="toggleAvailTime(\''+h+'\')" id="timebtn-'+h.replace(':','-')+'"'\
-      + ' style="padding:14px 6px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;'\
-      + 'border:2px solid '+(isOn?'#2563eb':'#e5e7eb')+';'\
-      + 'background:'+(isOn?'#2563eb':'#fff')+';'\
-      + 'color:'+(isOn?'#fff':'#374151')+';">'\
+    return '<button onclick="toggleAvailTime(\''+h+'\')" id="timebtn-'+h.replace(':','-')+'"'
+      + ' style="padding:14px 6px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;'
+      + 'border:2px solid '+(isOn?'#2563eb':'#e5e7eb')+';'
+      + 'background:'+(isOn?'#2563eb':'#fff')+';'
+      + 'color:'+(isOn?'#fff':'#374151')+';">'
       + h+'</button>';
   }).join('');
 
-  return '<div style="min-height:calc(100vh - 64px);background:#f0f4f8;">'\
-    + '<div style="padding:24px;max-width:580px;margin:0 auto;">'\
+  return '<div style="min-height:calc(100vh - 64px);background:#f0f4f8;">'
+    + '<div style="padding:24px;max-width:580px;margin:0 auto;">'
 
     // 안내 카드
-    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'\
-    + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">'\
-    + '<div style="width:48px;height:48px;border-radius:13px;background:'+color+'18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">'+icon+'</div>'\
-    + '<div><div style="font-size:17px;font-weight:900;color:#1e3a5f;letter-spacing:-.3px;">'+name+'님, 안녕하세요!</div>'\
-    + '<div style="font-size:13px;color:#6b7280;margin-top:3px;">상담 상대: <b style="color:#374151;">'+otherName+'</b></div></div>'\
-    + '</div>'\
-    + '<div style="background:#f8fafc;border-radius:11px;padding:14px 16px;font-size:13px;color:#374151;line-height:1.9;">'\
-    + '📋 <b>기업명:</b> '+match['기업명']+'<br>'\
-    + '👨‍💼 <b>전문가:</b> '+match['전문가명']+'<br>'\
-    + '📌 <b>희망인증:</b> '+(match['희망인증']||'-')\
-    + '</div></div>'\
+    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'
+    + '<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">'
+    + '<div style="width:48px;height:48px;border-radius:13px;background:'+color+'18;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;">'+icon+'</div>'
+    + '<div><div style="font-size:17px;font-weight:900;color:#1e3a5f;letter-spacing:-.3px;">'+name+'님, 안녕하세요!</div>'
+    + '<div style="font-size:13px;color:#6b7280;margin-top:3px;">상담 상대: <b style="color:#374151;">'+otherName+'</b></div></div>'
+    + '</div>'
+    + '<div style="background:#f8fafc;border-radius:11px;padding:14px 16px;font-size:13px;color:#374151;line-height:1.9;">'
+    + '📋 <b>기업명:</b> '+match['기업명']+'<br>'
+    + '👨‍💼 <b>전문가:</b> '+match['전문가명']+'<br>'
+    + '📌 <b>희망인증:</b> '+(match['희망인증']||'-')
+    + '</div></div>'
 
-    + (alreadySubmitted\
-      ? '<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:#92400e;font-weight:600;">⚠️ 이미 가용시간을 입력하셨습니다. 다시 입력하면 기존 내용이 교체됩니다.</div>'\
-      : '')\
+    + (alreadySubmitted
+      ? '<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:#92400e;font-weight:600;">⚠️ 이미 가용시간을 입력하셨습니다. 다시 입력하면 기존 내용이 교체됩니다.</div>'
+      : '')
 
     // 날짜 선택
-    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'\
-    + '<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:16px;letter-spacing:-.3px;">📅 날짜 선택</div>'\
-    + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+dateHtml+'</div>'\
-    + '</div>'\
+    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'
+    + '<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:16px;letter-spacing:-.3px;">📅 날짜 선택</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:8px;">'+dateHtml+'</div>'
+    + '</div>'
 
     // 시간 선택
-    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'\
-    + '<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:4px;letter-spacing:-.3px;">🕐 <span id="timeTitle">'+(window._availSelDate ? displayDateFull(window._availSelDate) : '')+'</span></div>'\
-    + '<div style="font-size:13px;color:#6b7280;margin-bottom:16px;">가능한 시간을 모두 선택해주세요</div>'\
-    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">'+timeHtml+'</div>'\
-    + '</div>'\
+    + '<div style="background:#fff;border-radius:18px;padding:22px 26px;margin-bottom:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);">'
+    + '<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:4px;letter-spacing:-.3px;">🕐 <span id="timeTitle">'+(window._availSelDate ? displayDateFull(window._availSelDate) : '')+'</span></div>'
+    + '<div style="font-size:13px;color:#6b7280;margin-bottom:16px;">가능한 시간을 모두 선택해주세요</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">'+timeHtml+'</div>'
+    + '</div>'
 
-    + '<div id="availSummary" style="margin-bottom:16px;">'+buildAvailSummaryHTML()+'</div>'\
+    + '<div id="availSummary" style="margin-bottom:16px;">'+buildAvailSummaryHTML()+'</div>'
 
-    + '<button onclick="submitAvailPage()"'\
-    + ' style="width:100%;padding:16px;border:none;border-radius:13px;'\
-    + 'background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;'\
-    + 'font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:-.3px;'\
-    + 'box-shadow:0 5px 18px rgba(37,99,235,.38);">가용시간 제출하기 →</button>'\
-    + '<div style="text-align:center;margin-top:18px;font-size:12px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'\
+    + '<button onclick="submitAvailPage()"'
+    + ' style="width:100%;padding:16px;border:none;border-radius:13px;'
+    + 'background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;'
+    + 'font-size:15px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:-.3px;'
+    + 'box-shadow:0 5px 18px rgba(37,99,235,.38);">가용시간 제출하기 →</button>'
+    + '<div style="text-align:center;margin-top:18px;font-size:12px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'
     + '</div></div>';
 }
 
 function buildAvailSummaryHTML() {
   var entries = Object.entries(window._availSlots || {}).filter(function(e) { return e[1].length > 0; });
   if (entries.length === 0) return '';
-  var html = '<div style="background:#f0fdf4;border:1.5px solid #d1fae5;border-radius:13px;padding:16px 18px;">'\
+  var html = '<div style="background:#f0fdf4;border:1.5px solid #d1fae5;border-radius:13px;padding:16px 18px;">'
     + '<div style="font-size:13px;font-weight:800;color:#065f46;margin-bottom:12px;">✅ 선택된 가용시간</div>';
   entries.forEach(function(e) {
-    html += '<div class="avail-row"><span class="avail-date" style="color:#065f46;">'+displayDateFull(e[0])+'</span>'\
+    html += '<div class="avail-row"><span class="avail-date" style="color:#065f46;">'+displayDateFull(e[0])+'</span>'
       + '<div class="avail-times">'+e[1].map(function(t){return '<span class="avail-time-chip" style="background:rgba(5,150,105,.1);color:#065f46;">'+t+'</span>';}).join('')+'</div></div>';
   });
   return html + '</div>';
@@ -897,18 +892,18 @@ function submitAvailPage() {
   .then(function(res) {
     if (res.ok) {
       document.getElementById('availScreen').innerHTML =
-        '<div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:#f0f4f8;">'\
-        + '<div style="text-align:center;padding:48px;background:#fff;border-radius:22px;box-shadow:0 6px 28px rgba(0,0,0,.1);max-width:420px;width:90%;">'\
-        + '<div style="font-size:60px;margin-bottom:20px;">✅</div>'\
-        + '<div style="font-size:20px;font-weight:900;color:#1e3a5f;margin-bottom:10px;letter-spacing:-.3px;">가용시간이 제출되었습니다!</div>'\
-        + '<div style="font-size:14px;color:#6b7280;line-height:1.8;">담당자가 상대방의 가용시간과 비교하여<br>최적 일정을 확정 후 안내드릴 예정입니다.</div>'\
-        + '<div style="margin-top:22px;padding:16px 18px;background:#f0fdf4;border-radius:12px;">'\
+        '<div style="min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;background:#f0f4f8;">'
+        + '<div style="text-align:center;padding:48px;background:#fff;border-radius:22px;box-shadow:0 6px 28px rgba(0,0,0,.1);max-width:420px;width:90%;">'
+        + '<div style="font-size:60px;margin-bottom:20px;">✅</div>'
+        + '<div style="font-size:20px;font-weight:900;color:#1e3a5f;margin-bottom:10px;letter-spacing:-.3px;">가용시간이 제출되었습니다!</div>'
+        + '<div style="font-size:14px;color:#6b7280;line-height:1.8;">담당자가 상대방의 가용시간과 비교하여<br>최적 일정을 확정 후 안내드릴 예정입니다.</div>'
+        + '<div style="margin-top:22px;padding:16px 18px;background:#f0fdf4;border-radius:12px;">'
         + entries.map(function(e) {
-            return '<div class="avail-row"><span class="avail-date" style="font-size:13px;color:#065f46;">'+displayDateFull(e[0])+'</span>'\
+            return '<div class="avail-row"><span class="avail-date" style="font-size:13px;color:#065f46;">'+displayDateFull(e[0])+'</span>'
               + '<div class="avail-times">'+e[1].map(function(t){return '<span class="avail-time-chip" style="background:rgba(5,150,105,.1);color:#065f46;">'+t+'</span>';}).join('')+'</div></div>';
-          }).join('')\
-        + '</div>'\
-        + '<div style="margin-top:20px;font-size:12px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'\
+          }).join('')
+        + '</div>'
+        + '<div style="margin-top:20px;font-size:12px;color:#9ca3af;">문의: 해외인증지원단 02-6240-4777</div>'
         + '</div></div>';
     } else {
       alert('❌ 오류: ' + (res.error||'다시 시도해주세요.'));
