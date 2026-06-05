@@ -351,7 +351,7 @@ function buildAvailSummaryBox(role, rows, name) {
   var slotsHtml = hasData
     ? rows.map(function(r) {
         var times = (r['시간목록']||'').split(',').filter(Boolean);
-        return '<div style="margin-bottom:3px;font-size:11px;"><b style="color:'+color+';">'+r['날짜']+'</b>'
+        return '<div style="margin-bottom:3px;font-size:11px;"><b style="color:'+color+';">'+displayDateStr(r['날짜'])+'</b>'
           + '<span style="color:#6b7280;margin-left:6px;">'+times.join(' / ')+'</span></div>';
       }).join('')
     : '<div style="font-size:11px;color:#9ca3af;">아직 입력되지 않았습니다.</div>';
@@ -688,7 +688,7 @@ function renderAvailInput(match, role, existingAvail) {
   if (alreadySubmitted) {
     myAvail.forEach(function(a) {
       var times = (a['시간목록']||'').split(',').filter(Boolean);
-      if (times.length > 0) window._availSlots[a['날짜']] = times;
+      if (times.length > 0) window._availSlots[normalizeDateStr(a['날짜'])] = times;
     });
   }
   window._availSelDate = dateOptions[0] || '';
@@ -885,9 +885,9 @@ function calcMatchedSlots(matchId) {
   if (compRows.length === 0 || expRows.length === 0) return [];
 
   var compMap = {};
-  compRows.forEach(function(r) { compMap[r['날짜']] = (r['시간목록']||'').split(',').filter(Boolean); });
+  compRows.forEach(function(r) { compMap[normalizeDateStr(r['날짜'])] = (r['시간목록']||'').split(',').filter(Boolean); });
   var expMap = {};
-  expRows.forEach(function(r) { expMap[r['날짜']] = (r['시간목록']||'').split(',').filter(Boolean); });
+  expRows.forEach(function(r) { expMap[normalizeDateStr(r['날짜'])] = (r['시간목록']||'').split(',').filter(Boolean); });
 
   var matched = [];
   Object.keys(compMap).forEach(function(date) {
@@ -895,10 +895,10 @@ function calcMatchedSlots(matchId) {
     var expSet = {};
     expMap[date].forEach(function(t) { expSet[t] = true; });
     compMap[date].forEach(function(t) {
-      if (expSet[t]) matched.push({ date: date, time: t, label: date + ' ' + t });
+      if (expSet[t]) matched.push({ date: date, time: t, label: displayDateStr(date) + ' ' + t });
     });
   });
-  return matched.sort(function(a,b) { return a.label.localeCompare(b.label); });
+  return matched.sort(function(a,b) { return a.date.localeCompare(b.date) || a.time.localeCompare(b.time); });
 }
 
 function getUrlParams() {
@@ -911,6 +911,29 @@ function getUrlParams() {
 
 function toDateStr(d) {
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+// 날짜 문자열을 YYYY-MM-DD 형식으로 정규화
+// "Fri Jun 19 2026 00:00:00 GMT+0900 ..." 또는 이미 "2026-06-19" 형태 모두 처리
+function normalizeDateStr(raw) {
+  if (!raw) return '';
+  var s = String(raw).trim();
+  // 이미 YYYY-MM-DD 형식이면 그대로
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  // Date 파싱 가능한 문자열이면 변환
+  var d = new Date(s);
+  if (!isNaN(d.getTime())) return toDateStr(d);
+  return s;
+}
+
+// 날짜 문자열을 보기 좋게 표시 (예: "2026-06-19" → "2026.06.19(금)")
+var KO_DAYS = ['일','월','화','수','목','금','토'];
+function displayDateStr(raw) {
+  var norm = normalizeDateStr(raw);
+  if (!norm) return raw;
+  var d = new Date(norm + 'T00:00:00');
+  if (isNaN(d.getTime())) return norm;
+  return norm.replace(/-/g, '.') + '(' + KO_DAYS[d.getDay()] + ')';
 }
 </script>
 </body>
