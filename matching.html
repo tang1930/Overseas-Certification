@@ -725,7 +725,7 @@ body {
 /* ── 3단 Schedule 레이아웃: 날짜 → 시간 → 결과 ── */
 .schedule-template-layout {
   display: grid;
-  grid-template-columns: minmax(480px, 620px) 190px 260px;
+  grid-template-columns: minmax(440px, 580px) 185px 340px;
   grid-template-areas: "cal time agenda";
   gap: 16px;
   align-items: start;
@@ -807,41 +807,140 @@ body {
 /* 오른쪽: Agenda 일정 리스트 */
 .agenda-panel {
   grid-area: agenda;
-  padding: 18px 16px;
+  padding: 0;
   position: sticky;
   top: 80px;
   max-height: calc(100vh - 240px);
   overflow-y: auto;
+  overflow-x: hidden;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
 }
 .agenda-panel::-webkit-scrollbar { width: 4px; }
-.agenda-panel::-webkit-scrollbar-thumb { background: #c8e6d4; border-radius: 4px; }
+.agenda-panel::-webkit-scrollbar-thumb { background: rgba(58,158,110,.25); border-radius: 4px; }
 
-.agenda-empty { text-align: center; padding: 20px 10px; color: #94a3b8; }
-.agenda-empty-icon { font-size: 28px; margin-bottom: 8px; }
-.agenda-empty-text { font-size: 11px; line-height: 1.7; }
+/* Agenda 패널 헤더 */
+.agenda-panel .sch-panel-title {
+  padding: 14px 18px 10px;
+  margin-bottom: 0;
+  background: rgba(255,255,255,.9);
+  border-radius: 18px 18px 0 0;
+  border-bottom: 1px solid rgba(58,158,110,.1);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+}
 
-.agenda-item {
-  display: flex; gap: 9px;
-  margin-bottom: 11px; padding-bottom: 11px;
-  border-bottom: 1px solid #f0f7f4;
+/* 일정 리스트 래퍼 */
+.agenda-list {
+  display: flex;
+  flex-direction: column;
 }
-.agenda-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.agenda-date-box {
-  flex-shrink: 0; width: 40px; text-align: center;
-  background: linear-gradient(135deg, #3a9e6e, #2d7a55);
-  border-radius: 10px; padding: 7px 4px; color: #fff;
+
+/* 각 날짜 행 */
+.agenda-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid rgba(255,255,255,.6);
+  transition: background .15s;
+  min-height: 64px;
 }
-.agenda-dow  { font-size: 9px; font-weight: 700; opacity: .85; }
-.agenda-day  { font-size: 17px; font-weight: 900; line-height: 1; }
-.agenda-detail { flex: 1; min-width: 0; }
-.agenda-date-lbl { font-size: 10px; color: #6b9e85; font-weight: 700; margin-bottom: 4px; }
-.agenda-times { display: flex; flex-wrap: wrap; gap: 3px; }
+.agenda-row:last-child { border-bottom: none; border-radius: 0 0 18px 18px; }
+.agenda-row:first-child { border-radius: 0; }
+.agenda-row:only-child { border-radius: 0 0 18px 18px; }
+
+/* 날짜 셀 (왼쪽 민트 컬럼) */
+.agenda-date-cell {
+  flex-shrink: 0;
+  width: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 6px;
+  background: linear-gradient(180deg, #b2dfc8 0%, #9ed4c4 100%);
+  color: #155a38;
+  text-align: center;
+}
+.agenda-row:last-child .agenda-date-cell { border-radius: 0 0 0 18px; }
+
+.agenda-dow {
+  font-size: 10px;
+  font-weight: 700;
+  opacity: .75;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+.agenda-day {
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* 일정 콘텐츠 (오른쪽 흰색/민트 영역) */
+.agenda-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(232,245,239,.85) 0%, rgba(232,242,247,.85) 100%);
+  min-width: 0;
+}
+
+.agenda-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.agenda-bullet {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #3a9e6e;
+  flex-shrink: 0;
+}
+.agenda-date-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #1a3d2b;
+  letter-spacing: -.2px;
+}
+
+.agenda-times {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-left: 13px;
+}
 .agenda-time-chip {
-  background: linear-gradient(135deg, #e8f5ef, #eef8fb);
-  border: 1px solid rgba(58,158,110,.2);
-  color: #1a6640; border-radius: 999px;
-  padding: 2px 7px; font-size: 10px; font-weight: 800;
+  background: rgba(255,255,255,.82);
+  border: 1px solid rgba(58,158,110,.22);
+  color: #1a6640;
+  border-radius: 8px;
+  padding: 3px 9px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: -.2px;
+  backdrop-filter: blur(4px);
 }
+
+/* 빈 상태 */
+.agenda-empty-wrap {
+  padding: 28px 18px;
+  background: linear-gradient(135deg, rgba(232,245,239,.7), rgba(232,242,247,.7));
+  border-radius: 0 0 18px 18px;
+  text-align: center;
+}
+.agenda-empty-icon { font-size: 32px; margin-bottom: 10px; }
+.agenda-empty-title { font-size: 13px; font-weight: 800; color: #1a3d2b; margin-bottom: 5px; }
+.agenda-empty-desc  { font-size: 11px; color: #6b9e85; line-height: 1.7; }
 
 /* 제출 버튼 fixed (PC) */
 .avail-submit-fixed {
@@ -899,7 +998,7 @@ body {
     justify-content: stretch;
   }
   .month-calendar-panel { max-height: none; overflow-y: visible; }
-  .agenda-panel, .time-ruler-panel { position: static; max-height: none; }
+  .agenda-panel, .time-ruler-panel { position: static; max-height: none; overflow: visible; }
   .avail-submit-fixed { position: static; background: transparent; border-top: none; padding: 0; backdrop-filter: none; }
   .avail-submit-btn { border-radius: 16px; }
   .admin-schedule-layout {
@@ -1608,7 +1707,7 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
     +'</div>'
 
     // 오른쪽: Agenda 일정 리스트
-    +'<div class="sch-panel agenda-panel">'
+    +'<div class="agenda-panel">'
     +'<div class="sch-panel-title">📋 선택한 가용일정</div>'
     +'<div id="agendaList">'+buildAgendaListHTML()+'</div>'
     +'</div>'
@@ -1640,30 +1739,39 @@ function buildAvailSummaryHTML(){
 function buildAgendaListHTML(){
   var KD=['일','월','화','수','목','금','토'];
   var entries=Object.entries(window._availSlots||{}).filter(function(e){return e[1].length>0;}).sort(function(a,b){return a[0].localeCompare(b[0]);});
+
   if(!entries.length){
-    return '<div style="text-align:center;padding:20px 10px;color:#94a3b8;">'
-      +'<div style="font-size:28px;margin-bottom:8px;">🗓️</div>'
-      +'<div style="font-size:11px;line-height:1.7;">아직 선택한 시간이 없습니다.<br>오른쪽 달력에서 날짜를<br>고르고 시간을 선택하세요.</div>'
+    return '<div class="agenda-empty-wrap">'
+      +'<div class="agenda-empty-icon">🗓️</div>'
+      +'<div class="agenda-empty-title">선택한 일정이 없습니다</div>'
+      +'<div class="agenda-empty-desc">날짜를 선택한 뒤<br>가능한 시간을 눌러주세요</div>'
       +'</div>';
   }
-  return entries.map(function(e){
-    var d=new Date(e[0]+'T00:00:00');
-    var dow=KD[d.getDay()];
-    var day=d.getDate();
-    var lbl=e[0].slice(5).replace('-','.')+'('+dow+')';
-    return '<div style="display:flex;gap:9px;margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid #f0f7f4;">'
-      +'<div style="flex-shrink:0;width:40px;text-align:center;background:linear-gradient(135deg,#3a9e6e,#2d7a55);border-radius:10px;padding:7px 4px;color:#fff;">'
-      +'<div style="font-size:9px;font-weight:700;opacity:.85;">'+dow+'</div>'
-      +'<div style="font-size:17px;font-weight:900;line-height:1;">'+day+'</div>'
+
+  var rows = entries.map(function(e){
+    var d   = new Date(e[0]+'T00:00:00');
+    var dow = KD[d.getDay()];
+    var day = d.getDate();
+    var lbl = e[0].slice(5).replace('-','.') + ' (' + dow + ')';
+    var chips = e[1].map(function(t){
+      return '<span class="agenda-time-chip">'+t+'</span>';
+    }).join('');
+    return '<div class="agenda-row">'
+      +'<div class="agenda-date-cell">'
+        +'<div class="agenda-dow">'+dow+'</div>'
+        +'<div class="agenda-day">'+day+'</div>'
       +'</div>'
-      +'<div style="flex:1;min-width:0;">'
-      +'<div style="font-size:10px;color:#6b9e85;font-weight:700;margin-bottom:4px;">'+lbl+'</div>'
-      +'<div style="display:flex;flex-wrap:wrap;gap:3px;">'+e[1].map(function(t){
-        return '<span style="background:linear-gradient(135deg,#e8f5ef,#eef8fb);border:1px solid rgba(58,158,110,.2);color:#1a6640;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:800;">'+t+'</span>';
-      }).join('')+'</div>'
+      +'<div class="agenda-content">'
+        +'<div class="agenda-title-row">'
+          +'<span class="agenda-bullet"></span>'
+          +'<span class="agenda-date-label">'+lbl+'</span>'
+        +'</div>'
+        +'<div class="agenda-times">'+chips+'</div>'
       +'</div>'
       +'</div>';
   }).join('');
+
+  return '<div class="agenda-list">'+rows+'</div>';
 }
 
 function selectAvailDate(date){
