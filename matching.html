@@ -5,124 +5,693 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>해외인증지원단 멘토링 상담예약</title>
 <style>
+
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh;font-size:14px;}
+body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:#f0f7f4;color:#1e3a2f;min-height:100vh;font-size:14px;}
 
 /* ── 헤더 ── */
-.hdr{background:linear-gradient(135deg,#0f2744 0%,#1a4080 60%,#2563eb 100%);padding:0 28px;display:flex;align-items:center;gap:14px;height:60px;box-shadow:0 2px 16px rgba(0,0,0,.22);position:sticky;top:0;z-index:100;}
-.hdr-icon{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.hdr-title{color:#fff;font-weight:900;font-size:16px;letter-spacing:-.3px;}
-.hdr-sub{color:rgba(255,255,255,.5);font-size:11px;margin-top:1px;}
-.hdr-badge{margin-left:auto;font-size:12px;font-weight:700;background:rgba(255,255,255,.12);color:#fff;padding:5px 13px;border-radius:20px;}
+.hdr{background:#ffffff;padding:0 28px;display:flex;align-items:center;gap:14px;height:62px;border-bottom:1.5px solid #c8e6d4;position:sticky;top:0;z-index:100;}
+.hdr-icon{width:36px;height:36px;background:#d4ede2;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.hdr-title{color:#1a3d2b;font-weight:900;font-size:16px;letter-spacing:-.3px;}
+.hdr-sub{color:#6b9e85;font-size:11px;margin-top:1px;}
+.hdr-badge{margin-left:auto;font-size:12px;font-weight:700;background:#e8f5ef;color:#2d7a55;padding:5px 14px;border-radius:7px;border:1.5px solid #c2ddd0;}
 
 /* ── 로딩 ── */
-#loadingScreen{min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
-.spinner{width:38px;height:38px;border:3px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:spin .7s linear infinite;}
+#loadingScreen{min-height:calc(100vh - 62px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+.spinner{width:38px;height:38px;border:3px solid #c8e6d4;border-top-color:#3a9e6e;border-radius:50%;animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* ── 메인 ── */
 #mainScreen{display:none;}
-.content{padding:24px 28px;}
+.content{padding:22px 26px;}
 
 /* ── avail 전용 ── */
-#availScreen{display:none;min-height:calc(100vh - 60px);}
+#availScreen{display:none;min-height:calc(100vh - 62px);}
 
 /* ── KPI 바 ── */
-.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:22px;}
-.kpi-card{border-radius:14px;padding:18px 20px;cursor:pointer;transition:all .18s;border:2px solid transparent;position:relative;overflow:hidden;}
-.kpi-card::after{content:'';position:absolute;right:-12px;bottom:-12px;width:60px;height:60px;border-radius:50%;background:rgba(0,0,0,.05);}
-.kpi-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.12);}
-.kpi-val{font-size:32px;font-weight:900;line-height:1;letter-spacing:-2px;}
-.kpi-lbl{font-size:12px;font-weight:700;margin-top:6px;opacity:.8;}
+.kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:20px;}
+.kpi-card{border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .18s;border:1.5px solid transparent;position:relative;overflow:hidden;}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08);}
+.kpi-val{font-size:28px;font-weight:900;line-height:1;letter-spacing:-1.5px;}
+.kpi-lbl{font-size:12px;font-weight:700;margin-top:5px;opacity:.85;}
 
 /* ── 툴바 ── */
-.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px;}
-.toolbar input,.toolbar select{border:1.5px solid #e2e8f0;border-radius:10px;padding:9px 14px;font-size:13px;outline:none;background:#fff;font-family:inherit;transition:border-color .15s;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-.toolbar input:focus,.toolbar select:focus{border-color:#2563eb;}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:16px;}
+.toolbar input,.toolbar select{border:1.5px solid #c8e6d4;border-radius:9px;padding:9px 13px;font-size:13px;outline:none;background:#fff;font-family:inherit;transition:border-color .15s;}
+.toolbar input:focus,.toolbar select:focus{border-color:#3a9e6e;}
 .toolbar input{flex:1;min-width:220px;}
-.cnt-badge{font-size:13px;color:#64748b;font-weight:700;white-space:nowrap;padding:8px 14px;background:#fff;border-radius:9px;border:1.5px solid #e2e8f0;}
-.add-btn{padding:10px 22px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(37,99,235,.35);white-space:nowrap;}
-.add-btn:hover{opacity:.9;transform:translateY(-1px);}
-.view-tabs{display:flex;gap:4px;background:#e2e8f0;border-radius:10px;padding:3px;}
-.view-tab{padding:6px 14px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:#64748b;transition:all .15s;}
-.view-tab.active{background:#fff;color:#1e3a5f;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.cnt-badge{font-size:13px;color:#5a8a72;font-weight:700;white-space:nowrap;padding:8px 13px;background:#fff;border-radius:8px;border:1.5px solid #c8e6d4;}
+.add-btn{padding:9px 20px;background:#2d7a55;color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s;}
+.add-btn:hover{background:#236644;transform:translateY(-1px);}
+.view-tabs{display:flex;gap:3px;background:#ddeee6;border-radius:9px;padding:3px;}
+.view-tab{padding:6px 13px;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;background:transparent;color:#5a8a72;transition:all .15s;}
+.view-tab.active{background:#fff;color:#1a3d2b;}
 
 /* ── 보드 뷰 ── */
 .board-wrap{overflow-x:auto;padding-bottom:8px;}
-.board{display:flex;gap:14px;min-width:max-content;}
-.board-col{width:280px;flex-shrink:0;}
-.board-col-hdr{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-radius:12px 12px 0 0;margin-bottom:2px;}
+.board{display:flex;gap:12px;min-width:max-content;}
+.board-col{width:275px;flex-shrink:0;}
+.board-col-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 15px;border-radius:11px 11px 0 0;margin-bottom:2px;}
 .board-col-title{font-size:13px;font-weight:800;letter-spacing:-.2px;}
-.board-col-cnt{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(0,0,0,.1);}
-.board-col-body{display:flex;flex-direction:column;gap:8px;padding:8px;background:#e9eef4;border-radius:0 0 12px 12px;min-height:120px;}
-.board-card{background:#fff;border-radius:11px;padding:14px 16px;cursor:pointer;transition:all .15s;border:1.5px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,.05);}
-.board-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.1);border-color:#93c5fd;}
-.board-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;}
-.board-card-company{font-size:14px;font-weight:900;color:#1e3a5f;letter-spacing:-.2px;line-height:1.3;}
-.board-card-expert{font-size:12px;color:#64748b;margin-top:2px;font-weight:600;}
-.board-card-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.board-col-cnt{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;background:rgba(0,0,0,.08);}
+.board-col-body{display:flex;flex-direction:column;gap:7px;padding:7px;background:#e4f0e9;border-radius:0 0 11px 11px;min-height:120px;}
+.board-card{background:#fff;border-radius:10px;padding:13px 15px;cursor:pointer;transition:all .15s;border:1.5px solid #daeee3;}
+.board-card:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(58,158,110,.12);border-color:#8dcaab;}
+.board-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:7px;}
+.board-card-company{font-size:14px;font-weight:900;color:#1a3d2b;letter-spacing:-.2px;line-height:1.3;}
+.board-card-expert{font-size:12px;color:#6b9e85;margin-top:2px;font-weight:600;}
+.board-card-meta{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px;}
 .chip{display:inline-flex;align-items:center;gap:3px;font-size:11px;padding:3px 8px;border-radius:6px;font-weight:700;}
-.avail-bar{display:flex;gap:4px;margin-top:8px;}
-.avail-dot{flex:1;height:5px;border-radius:3px;transition:all .2s;}
+.avail-bar{display:flex;gap:4px;margin-top:7px;}
+.avail-dot{flex:1;height:4px;border-radius:3px;transition:all .2s;}
 
 /* ── 리스트 뷰 ── */
-.match-list{display:flex;flex-direction:column;gap:8px;}
-.match-card{background:#fff;border-radius:13px;border:1.5px solid #e2e8f0;padding:16px 20px;cursor:pointer;transition:all .15s;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-.match-card:hover{border-color:#2563eb;transform:translateY(-1px);box-shadow:0 5px 16px rgba(37,99,235,.12);}
-.empty-state{text-align:center;padding:60px 24px;color:#94a3b8;background:#fff;border-radius:14px;border:1.5px dashed #e2e8f0;}
+.match-list{display:flex;flex-direction:column;gap:7px;}
+.match-card{background:#fff;border-radius:12px;border:1.5px solid #daeee3;padding:15px 19px;cursor:pointer;transition:all .15s;}
+.match-card:hover{border-color:#3a9e6e;transform:translateY(-1px);box-shadow:0 4px 14px rgba(58,158,110,.1);}
+.empty-state{text-align:center;padding:60px 24px;color:#8ab89e;background:#fff;border-radius:13px;border:1.5px dashed #c8e6d4;}
 
 /* ── 폼 ── */
-.form-wrap{background:#fff;border-radius:16px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.form-section-title{font-size:13px;font-weight:800;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid;}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;}
-.form-field label{display:block;font-size:12px;font-weight:700;color:#64748b;margin-bottom:5px;}
-.form-field input,.form-field textarea{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
-.form-field input:focus,.form-field textarea:focus{border-color:#2563eb;}
-.form-actions{display:flex;gap:10px;}
-.btn-cancel{flex:1;padding:12px;border:1.5px solid #e2e8f0;border-radius:11px;background:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
-.btn-submit{flex:2;padding:12px;border:none;border-radius:11px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 12px rgba(37,99,235,.3);}
+.form-wrap{background:#fff;border-radius:14px;padding:26px;border:1.5px solid #daeee3;}
+.form-section-title{font-size:13px;font-weight:800;margin-bottom:13px;padding-bottom:8px;border-bottom:2px solid;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:20px;}
+.form-field label{display:block;font-size:12px;font-weight:700;color:#5a8a72;margin-bottom:5px;}
+.form-field input,.form-field textarea{width:100%;padding:10px 13px;border:1.5px solid #c8e6d4;border-radius:8px;font-size:13px;font-family:inherit;outline:none;transition:border-color .15s;}
+.form-field input:focus,.form-field textarea:focus{border-color:#3a9e6e;box-shadow:0 0 0 3px rgba(58,158,110,.12);}
+.form-actions{display:flex;gap:9px;}
+.btn-cancel{flex:1;padding:11px;border:1.5px solid #c8e6d4;border-radius:10px;background:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;color:#5a8a72;}
+.btn-submit{flex:2;padding:11px;border:none;border-radius:10px;background:#2d7a55;color:#fff;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
 .btn-submit:disabled{opacity:.6;cursor:not-allowed;}
 
 /* ── 상세 ── */
-.back-row{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:13px 18px;background:#fff;border-radius:12px;border:1.5px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.05);}
-.back-btn{background:#f1f5f9;border:none;border-radius:8px;padding:7px 14px;cursor:pointer;font-size:13px;font-family:inherit;color:#1e3a5f;font-weight:700;}
-.back-btn:hover{background:#dbeafe;color:#2563eb;}
-.detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px;}
-.detail-field{background:#f8fafc;border-radius:10px;padding:10px 14px;}
-.detail-key{font-size:10px;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
-.detail-val{font-size:14px;color:#1e3a5f;font-weight:700;}
-.avail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
-.avail-box{border-radius:14px;padding:18px 20px;border:1.5px solid;}
+.back-row{display:flex;align-items:center;gap:11px;margin-bottom:18px;padding:12px 17px;background:#fff;border-radius:11px;border:1.5px solid #daeee3;}
+.back-btn{background:#e8f5ef;border:none;border-radius:7px;padding:7px 13px;cursor:pointer;font-size:13px;font-family:inherit;color:#1a3d2b;font-weight:700;}
+.back-btn:hover{background:#c8e6d4;color:#2d7a55;}
+.detail-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px;}
+.detail-field{background:#f3faf6;border-radius:9px;padding:10px 13px;border:1px solid #daeee3;}
+.detail-key{font-size:10px;font-weight:800;color:#8ab89e;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
+.detail-val{font-size:14px;color:#1a3d2b;font-weight:700;}
+.avail-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:14px;}
+.avail-box{border-radius:13px;padding:17px 19px;border:1.5px solid;}
 .avail-row{display:flex;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.05);}
 .avail-row:last-child{border-bottom:none;}
 .avail-date-lbl{font-size:13px;font-weight:800;min-width:110px;}
 .avail-times{display:flex;flex-wrap:wrap;gap:5px;}
-.time-chip{background:rgba(0,0,0,.06);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;}
-.matched-box{background:#faf5ff;border-radius:14px;padding:20px 22px;border:1.5px solid #c4b5fd;margin-bottom:16px;}
-.avail-input-box{background:#fff;border-radius:14px;padding:20px 22px;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.slot-confirm-btn{padding:7px 12px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid #c4b5fd;background:#f5f3ff;color:#5b21b6;font-family:inherit;transition:all .15s;}
-.slot-confirm-btn:hover{background:#5b21b6;color:#fff;}
-.badge{display:inline-block;font-size:11px;padding:4px 11px;border-radius:20px;font-weight:800;}
-.info-box{background:#eff6ff;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#1d4ed8;line-height:1.7;}
+.time-chip{background:rgba(58,158,110,.1);border-radius:6px;padding:2px 8px;font-size:12px;font-weight:700;color:#2d7a55;}
+.matched-box{background:#f3faf6;border-radius:13px;padding:19px 21px;border:1.5px solid #a0d4b8;margin-bottom:14px;}
+.avail-input-box{background:#fff;border-radius:13px;padding:19px 21px;border:1.5px solid #daeee3;}
+.slot-confirm-btn{padding:7px 11px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid #a0d4b8;background:#e8f5ef;color:#1a6640;font-family:inherit;transition:all .15s;}
+.slot-confirm-btn:hover{background:#2d7a55;color:#fff;}
+.badge{display:inline-block;font-size:11px;padding:4px 11px;border-radius:7px;font-weight:800;}
+.info-box{background:#e8f5ef;border-radius:9px;padding:11px 15px;margin-bottom:18px;font-size:13px;color:#1a6640;line-height:1.7;border:1px solid #b8deca;}
 
 /* ── 달력 ── */
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
-.cal-day-hdr{text-align:center;font-size:11px;font-weight:700;padding:6px 0;color:#94a3b8;}
-.cal-day-hdr.sun{color:#f87171;}
-.cal-day-hdr.sat{color:#60a5fa;}
-.cal-cell{aspect-ratio:1;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:13px;font-weight:700;transition:all .15s;}
-.cal-cell.avail{cursor:pointer;border:2px solid #e2e8f0;background:#f8fafc;color:#1e3a5f;}
-.cal-cell.avail:hover{border-color:#93c5fd;background:#eff6ff;}
-.cal-cell.avail.has-slots{border-color:#4ade80;background:#f0fdf4;color:#15803d;}
-.cal-cell.avail.selected{border-color:#2563eb;background:#2563eb;color:#fff;}
+.cal-day-hdr{text-align:center;font-size:11px;font-weight:700;padding:6px 0;color:#8ab89e;}
+.cal-day-hdr.sun{color:#e07070;}
+.cal-day-hdr.sat{color:#5a9ec4;}
+.cal-cell{aspect-ratio:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:13px;font-weight:700;transition:all .15s;}
+.cal-cell.avail{cursor:pointer;border:1.5px solid #daeee3;background:#f3faf6;color:#1a3d2b;}
+.cal-cell.avail:hover{border-color:#3a9e6e;background:#d4ede2;}
+.cal-cell.avail.has-slots{border-color:#3a9e6e;background:#c8e6d4;color:#1a6640;}
+.cal-cell.avail.selected{border-color:#2d7a55;background:#2d7a55;color:#fff;}
 .cal-cell.avail.selected .cal-dot{background:rgba(255,255,255,.7);}
-.cal-cell.disabled{color:#e2e8f0;font-weight:500;}
-.cal-cell.sun-col{color:#f87171;}
-.cal-cell.sat-col{color:#93c5fd;}
+.cal-cell.disabled{color:#c8e6d4;font-weight:500;}
+.cal-cell.sun-col{color:#e07070;}
+.cal-cell.sat-col{color:#5a9ec4;}
 .cal-cell.avail.selected.sun-col,.cal-cell.avail.selected.sat-col{color:#fff;}
-.cal-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;}
-.cal-month-title{font-size:14px;font-weight:800;color:#1e3a5f;text-align:center;margin-bottom:12px;padding:8px 0;border-bottom:1px solid #f1f5f9;}
+.cal-dot{width:5px;height:5px;border-radius:50%;background:#3a9e6e;}
+.cal-month-title{font-size:14px;font-weight:800;color:#1a3d2b;text-align:center;margin-bottom:11px;padding:7px 0;border-bottom:1px solid #e4f0e9;}
+
+/* =========================================================
+   Matching System Soft Calendar Theme Override
+   이미지 베이스: pastel mint / sky / clean schedule UI
+   기존 CSS 맨 아래에 추가해서 사용
+========================================================= */
+
+:root {
+  --bg-main: #eef8f4;
+  --bg-soft: #f7fcfa;
+  --card: rgba(255, 255, 255, 0.82);
+  --card-solid: #ffffff;
+
+  --mint-50: #eefaf4;
+  --mint-100: #d9f2e5;
+  --mint-200: #bfe7d4;
+  --mint-300: #93d3b3;
+  --mint-500: #3a9e6e;
+  --mint-700: #1f6b48;
+
+  --sky-50: #eef8fb;
+  --sky-100: #dceff5;
+  --sky-200: #bfe0ea;
+  --sky-500: #74b6ca;
+
+  --text-main: #213a33;
+  --text-sub: #6a8d81;
+  --line: #d6e9df;
+
+  --radius-xl: 24px;
+  --radius-lg: 18px;
+  --radius-md: 12px;
+
+  --shadow-soft: 0 14px 40px rgba(59, 117, 94, 0.12);
+  --shadow-card: 0 8px 24px rgba(59, 117, 94, 0.10);
+}
+
+/* 전체 배경 */
+body {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(182, 236, 205, 0.55), transparent 28%),
+    radial-gradient(circle at 90% 8%, rgba(189, 226, 238, 0.62), transparent 30%),
+    linear-gradient(135deg, #edf8f3 0%, #eaf6f7 48%, #e8f1f8 100%);
+  color: var(--text-main);
+  letter-spacing: -0.2px;
+}
+
+/* 상단 헤더 */
+.hdr {
+  height: 72px;
+  padding: 0 34px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(214, 233, 223, 0.9);
+  box-shadow: 0 8px 28px rgba(66, 121, 100, 0.08);
+}
+
+.hdr-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--mint-100), var(--sky-100));
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.7);
+}
+
+.hdr-title {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.hdr-sub {
+  font-size: 12px;
+  color: var(--text-sub);
+  font-weight: 600;
+}
+
+.hdr-badge {
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #dff5e9, #e7f5f8);
+  color: var(--mint-700);
+  padding: 8px 16px;
+  box-shadow: inset 0 0 0 1px rgba(58,158,110,.16);
+}
+
+/* 메인 여백 */
+.content {
+  padding: 30px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+/* 페이지 타이틀 영역 */
+.content > div:first-child {
+  animation: fadeUp .28s ease-out;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* KPI 카드 */
+.kpi-grid {
+  grid-template-columns: repeat(5, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  min-height: 104px;
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  background: var(--card) !important;
+  border: 1px solid rgba(255,255,255,.7) !important;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px);
+}
+
+.kpi-card::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  top: -28px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(191, 224, 234, 0.45);
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(59, 117, 94, 0.16);
+}
+
+.kpi-val {
+  font-size: 34px;
+  letter-spacing: -2px;
+}
+
+.kpi-lbl {
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+
+/* 검색/필터 툴바 */
+.toolbar {
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(255,255,255,.8);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px);
+  margin-bottom: 18px;
+}
+
+.toolbar input,
+.toolbar select {
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  padding: 0 16px;
+  color: var(--text-main);
+}
+
+.toolbar input:focus,
+.toolbar select:focus {
+  border-color: var(--mint-500);
+  box-shadow: 0 0 0 4px rgba(58,158,110,.12);
+}
+
+.cnt-badge {
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--mint-50);
+  border: 1px solid var(--line);
+  color: var(--mint-700);
+}
+
+.add-btn {
+  height: 42px;
+  border-radius: 999px;
+  padding: 0 22px;
+  background: linear-gradient(135deg, var(--mint-500), var(--mint-700));
+  box-shadow: 0 10px 24px rgba(58,158,110,.25);
+}
+
+.add-btn:hover {
+  background: linear-gradient(135deg, #45ad7b, #1f6b48);
+}
+
+
+/* 보드 전체 */
+.board-wrap {
+  padding: 6px 2px 14px;
+}
+
+.board {
+  gap: 16px;
+}
+
+.board-col {
+  width: 292px;
+}
+
+.board-col-hdr {
+  min-height: 50px;
+  padding: 14px 16px;
+  border-radius: 18px 18px 8px 8px;
+  background: rgba(255,255,255,.72) !important;
+  border: 1px solid rgba(255,255,255,.82);
+  box-shadow: var(--shadow-card);
+}
+
+.board-col-title {
+  font-size: 14px;
+  color: var(--text-main) !important;
+}
+
+.board-col-cnt {
+  border-radius: 999px;
+  background: rgba(58,158,110,.10);
+  color: var(--mint-700) !important;
+}
+
+.board-col-body {
+  padding: 10px;
+  gap: 10px;
+  border-radius: 8px 8px 20px 20px;
+  background: rgba(255,255,255,.42);
+  border: 1px solid rgba(255,255,255,.65);
+  min-height: 300px;
+}
+
+
+/* 매칭 카드 */
+.board-card,
+.match-card,
+.form-wrap,
+.avail-box,
+.matched-box,
+.avail-input-box {
+  background: rgba(255,255,255,.86);
+  border: 1px solid rgba(255,255,255,.82);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(14px);
+}
+
+.board-card {
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.board-card:hover,
+.match-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(58,158,110,.35);
+  box-shadow: 0 16px 36px rgba(59, 117, 94, 0.16);
+}
+
+.board-card-company {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.board-card-expert {
+  color: var(--text-sub);
+}
+
+.chip {
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: var(--mint-50) !important;
+  color: var(--mint-700) !important;
+}
+
+.avail-dot {
+  height: 6px;
+  border-radius: 999px;
+}
+
+
+/* 목록 카드 */
+.match-card {
+  border-radius: 20px;
+  padding: 18px 22px;
+}
+
+
+/* 상세 페이지 */
+.back-row {
+  border-radius: 18px;
+  background: rgba(255,255,255,.76);
+  border: 1px solid rgba(255,255,255,.82);
+  box-shadow: var(--shadow-card);
+}
+
+.back-btn {
+  border-radius: 999px;
+  background: var(--mint-50);
+  color: var(--mint-700);
+}
+
+.detail-grid {
+  gap: 12px;
+}
+
+.detail-field {
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f7fcfa, #f1f8f6);
+  border: 1px solid var(--line);
+}
+
+.detail-key {
+  color: var(--text-sub);
+}
+
+.detail-val {
+  color: var(--text-main);
+}
+
+
+/* 가용시간 박스 */
+.avail-grid {
+  gap: 16px;
+}
+
+.avail-box {
+  border-radius: 22px;
+  padding: 20px 22px;
+}
+
+.avail-row {
+  padding: 9px 0;
+}
+
+.time-chip {
+  border-radius: 999px;
+  background: var(--mint-100);
+  color: var(--mint-700);
+  padding: 4px 10px;
+}
+
+
+/* 겹치는 슬롯 */
+.matched-box {
+  border-radius: 22px;
+  background: linear-gradient(135deg, rgba(232,245,239,.92), rgba(238,248,251,.92));
+  border: 1px solid rgba(58,158,110,.22);
+}
+
+.slot-confirm-btn {
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--mint-700);
+  border: 1px solid var(--mint-200);
+}
+
+.slot-confirm-btn:hover {
+  background: var(--mint-700);
+  color: #fff;
+}
+
+
+/* 폼 */
+.form-wrap {
+  border-radius: 24px;
+}
+
+.form-section-title {
+  border-bottom-width: 1px;
+}
+
+.form-field input,
+.form-field textarea {
+  border-radius: 14px;
+  background: #fbfefd;
+  border-color: var(--line);
+}
+
+.form-field input:focus,
+.form-field textarea:focus {
+  border-color: var(--mint-500);
+  box-shadow: 0 0 0 4px rgba(58,158,110,.12);
+}
+
+.btn-cancel,
+.btn-submit {
+  border-radius: 999px;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, var(--mint-500), var(--mint-700));
+}
+
+
+/* 달력: 이미지 느낌 핵심 */
+.cal-month-title {
+  font-size: 15px;
+  border-bottom: 0;
+  padding: 10px 0 14px;
+  color: var(--text-main);
+}
+
+.cal-grid {
+  gap: 5px;
+}
+
+.cal-day-hdr {
+  color: var(--text-sub);
+  font-size: 11px;
+}
+
+.cal-cell {
+  border-radius: 14px;
+  font-size: 13px;
+}
+
+.cal-cell.avail {
+  border: 1px solid rgba(255,255,255,.78);
+  background: linear-gradient(135deg, #e9f8ef, #e8f3f6);
+  color: var(--text-main);
+}
+
+.cal-cell.avail:hover {
+  background: linear-gradient(135deg, #d7f1e3, #dbeff4);
+  border-color: rgba(58,158,110,.35);
+  transform: translateY(-2px);
+}
+
+.cal-cell.avail.has-slots {
+  background: linear-gradient(135deg, #c8efd8, #cfeaf1);
+  color: var(--mint-700);
+  box-shadow: inset 0 0 0 1px rgba(58,158,110,.25);
+}
+
+.cal-cell.avail.selected {
+  background: linear-gradient(135deg, var(--mint-500), var(--sky-500));
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(58,158,110,.28);
+}
+
+.cal-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--mint-500);
+}
+
+.cal-cell.avail.selected .cal-dot {
+  background: rgba(255,255,255,.75);
+}
+
+/* 기존 CSS 오타 보정 */
+.cal-cell.avail.selected.sun-col,
+.cal-cell.avail.selected.sat-col {
+  color: #fff;
+}
+
+
+/* 이메일 링크용 가용시간 페이지 안쪽 카드 보정 */
+#availScreen > div {
+  background:
+    radial-gradient(circle at 8% 12%, rgba(182, 236, 205, 0.55), transparent 28%),
+    radial-gradient(circle at 92% 8%, rgba(189, 226, 238, 0.62), transparent 32%),
+    linear-gradient(135deg, #edf8f3 0%, #e8f1f8 100%) !important;
+}
+
+#availScreen [style*="box-shadow"] {
+  box-shadow: var(--shadow-soft) !important;
+}
+
+
+/* 반응형 */
+@media (max-width: 1100px) {
+  .kpi-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .detail-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .avail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .hdr {
+    padding: 0 18px;
+  }
+
+  .content {
+    padding: 18px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .toolbar {
+    border-radius: 18px;
+  }
+
+  .board-col {
+    width: 270px;
+  }
+
+  .form-grid,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hdr-badge {
+    display: none;
+  }
+
+  .toolbar input {
+    min-width: 100%;
+  }
+}
+
+/* 예약 화면 반응형 */
+@media (max-width: 760px) {
+  #availScreen [style*="grid-template-columns:62%"] {
+    grid-template-columns: 1fr !important;
+  }
+  #availScreen [style*="position:sticky"] {
+    position: static !important;
+  }
+}
+
+
+/* 3단 Agenda 레이아웃 반응형 */
+@media (max-width: 900px) {
+  #availScreen [style*="grid-template-columns:220px"] {
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas: "cal cal" "time agenda" !important;
+  }
+}
+@media (max-width: 600px) {
+  #availScreen [style*="grid-template-columns:220px"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* buildAdd 반응형 */
+  #appRoot [style*="grid-template-columns:1fr 1fr;gap:0"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -133,7 +702,12 @@ body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:#f1f
     <div class="hdr-title">해외인증지원단</div>
     <div class="hdr-sub">멘토링 상담예약 관리 시스템</div>
   </div>
-  <div class="hdr-badge" id="syncBadge">● 연결 중...</div>
+  <div id="hdrBackBtn" style="display:none;margin-left:auto;">
+    <button onclick="VIEW.page='list';render();document.getElementById('hdrBackBtn').style.display='none';"
+      style="padding:8px 18px;background:#e8f5ef;border:1.5px solid #a0d4b8;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;color:#1a6640;transition:all .15s;"
+      onmouseover="this.style.background='#2d7a55';this.style.color='#fff'"
+      onmouseout="this.style.background='#e8f5ef';this.style.color='#1a6640'">← 목록으로</button>
+  </div>
 </div>
 
 <div id="loadingScreen">
@@ -158,10 +732,10 @@ let FORM = {};
 let AVAIL_INPUT = { matchId: '', role: '', name: '', slots: {} };
 
 const STATUS_CFG = {
-  '대기중':  { bg:'#fef9c3', color:'#854d0e', col:'#fde047' },
-  '입력중':  { bg:'#dbeafe', color:'#1d4ed8', col:'#60a5fa' },
-  '매칭완료':{ bg:'#dcfce7', color:'#15803d', col:'#4ade80' },
-  '확정완료':{ bg:'#ede9fe', color:'#5b21b6', col:'#a78bfa' },
+  '대기중':  { bg:'#fef8e7', color:'#8a6200', col:'#f5c842' },
+  '입력중':  { bg:'#e0f2ec', color:'#1a6640', col:'#4ab87a' },
+  '매칭완료':{ bg:'#c8e6d4', color:'#155a38', col:'#3a9e6e' },
+  '확정완료':{ bg:'#d4ede2', color:'#0f4027', col:'#2d7a55' },
   '취소':    { bg:'#fee2e2', color:'#991b1b', col:'#f87171' },
 };
 const STATUS_ORDER = ['대기중','입력중','매칭완료','확정완료','취소'];
@@ -180,9 +754,13 @@ function toDateStr(d) {
 function normDate(raw) {
   if (!raw) return '';
   var s = String(raw).trim();
+  // 이미 yyyy-MM-dd 형식
   if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  // yyyy-MM-dd HH:mm:ss 형식 → 앞 10자리만
+  if (/^\d{4}-\d{2}-\d{2} /.test(s)) return s.slice(0, 10);
+  // Date 파싱 시도
   var d = new Date(s);
-  return isNaN(d.getTime()) ? s : toDateStr(d);
+  return isNaN(d.getTime()) ? s.slice(0, 10) : toDateStr(d);
 }
 function dispDate(raw) {
   var n = normDate(raw); if (!n) return String(raw||'');
@@ -215,20 +793,23 @@ function loadDashboard() {
       DATA.avail   = data['가용시간']||[];
       document.getElementById('loadingScreen').style.display='none';
       document.getElementById('mainScreen').style.display='block';
-      var b = document.getElementById('syncBadge');
-      b.textContent='● 실시간 연동'; b.style.background='rgba(16,185,129,.25)';
+
       render();
     })
     .catch(function(err){
       document.getElementById('loadingScreen').innerHTML =
         '<div style="text-align:center;color:#dc2626;font-size:14px;">❌ 데이터 불러오기 실패<br><small style="color:#94a3b8;">'+err.message+'</small><br><br>'
-        +'<button onclick="loadDashboard()" style="padding:10px 20px;background:#2563eb;color:#fff;border:none;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;">다시 시도</button></div>';
+        +'<button onclick="loadDashboard()" style="padding:10px 20px;background:#2d7a55;color:#fff;border:none;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;">다시 시도</button></div>';
     });
 }
 
 function render() {
   var root = document.getElementById('appRoot');
-  if (VIEW.page==='list')   root.innerHTML = buildList();
+  var hb = document.getElementById('hdrBackBtn');
+  if (VIEW.page==='list') {
+    root.innerHTML = buildList();
+    if(hb) hb.style.display='none';
+  }
   if (VIEW.page==='add')    root.innerHTML = buildAdd();
   if (VIEW.page==='detail') root.innerHTML = buildDetail(VIEW.selectedId);
 }
@@ -247,9 +828,9 @@ function buildList() {
   var kpiHtml = STATUS_ORDER.map(function(s){
     var c=STATUS_CFG[s]||{bg:'#f1f5f9',color:'#374151',col:'#94a3b8'};
     var active = _statusFilter===s;
-    return '<div class="kpi-card" style="background:'+c.bg+';border-color:'+(active?c.color:'transparent')+'" onclick="setStatusFilter(\''+s+'\')">'
-      +'<div class="kpi-val" style="color:'+c.color+'">'+(counts[s]||0)+'</div>'
-      +'<div class="kpi-lbl" style="color:'+c.color+'">'+s+'</div>'
+    return '<div class="kpi-card" style="background:'+c.bg+';border-color:'+(active?c.color:'transparent')+';box-shadow:'+(active?'0 0 0 3px '+c.color+'44,0 10px 28px '+c.color+'28':'none')+';transform:'+(active?'translateY(-3px)':'none')+'" onclick="setStatusFilter(\''+s+'\')">'
+      +'<div class="kpi-val" style="color:'+c.color+';font-size:'+(active?'34px':'28px')+'">'+(counts[s]||0)+'</div>'
+      +'<div class="kpi-lbl" style="color:'+c.color+';font-weight:'+(active?'900':'700')+'">'+(active?'● ':'')+s+'</div>'
       +'</div>';
   }).join('');
 
@@ -282,7 +863,7 @@ function buildList() {
   }
 
   return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">'
-    +'<div><div style="font-size:22px;font-weight:900;color:#1e3a5f;letter-spacing:-.5px;">멘토링 상담예약 관리</div>'
+    +'<div><div style="font-size:22px;font-weight:900;color:#1a3d2b;letter-spacing:-.5px;">멘토링 상담예약 관리</div>'
     +'<div style="font-size:13px;color:#64748b;margin-top:3px;">배정된 기업-전문가 매칭의 일정 조율 현황</div></div>'
     +'<button class="add-btn" onclick="showAdd()">+ 새 매칭 추가</button>'
     +'</div>'
@@ -314,21 +895,21 @@ function buildBoardCard(m) {
     +'<div class="board-card-company">'+(m['기업명']||'-')+'</div>'
     +'<div class="board-card-expert">👨‍💼 '+(m['전문가명']||'-')+'</div>'
     +'</div>'
-    +(matched.length>0?'<span style="font-size:10px;padding:3px 7px;border-radius:6px;background:#ede9fe;color:#5b21b6;font-weight:800;white-space:nowrap;">✨'+matched.length+'</span>':'')
+    +(matched.length>0?'<span style="font-size:10px;padding:3px 7px;border-radius:6px;background:#c8e6d4;color:#155a38;font-weight:800;white-space:nowrap;">✨'+matched.length+'</span>':'')
     +'</div>'
     +'<div class="board-card-meta">'
     +(m['전문분야']?'<span class="chip" style="background:#f1f5f9;color:#475569;">🎓 '+m['전문분야']+'</span>':'')
-    +(m['희망인증']?'<span class="chip" style="background:#eff6ff;color:#1d4ed8;">📋 '+m['희망인증']+'</span>':'')
-    +(m['확정슬롯']?'<span class="chip" style="background:#f0fdf4;color:#15803d;">📅 '+m['확정슬롯']+'</span>':'')
+    +(m['희망인증']?'<span class="chip" style="background:#e8f5ef;color:#1a6640;">📋 '+m['희망인증']+'</span>':'')
+    +(m['확정슬롯']?'<span class="chip" style="background:#e8f5ef;color:#155a38;">📅 '+m['확정슬롯']+'</span>':'')
     +'</div>'
     +'<div class="avail-bar" style="margin-top:10px;">'
-    +'<div class="avail-dot" style="background:'+(compAvail>0?'#4ade80':'#e2e8f0')+'" title="기업 가용시간"></div>'
-    +'<div class="avail-dot" style="background:'+(expAvail>0?'#60a5fa':'#e2e8f0')+'" title="전문가 가용시간"></div>'
+    +'<div class="avail-dot" style="background:'+(compAvail>0?'#3a9e6e':'#e2e8f0')+'" title="기업 가용시간"></div>'
+    +'<div class="avail-dot" style="background:'+(expAvail>0?'#4ab87a':'#e2e8f0')+'" title="전문가 가용시간"></div>'
     +'</div>'
     +'<div style="display:flex;gap:5px;margin-top:6px;">'
-    +'<span style="font-size:10px;color:'+(compAvail>0?'#15803d':'#94a3b8')+';font-weight:700;">🏢 '+(compAvail>0?'완료':'미입력')+'</span>'
+    +'<span style="font-size:10px;color:'+(compAvail>0?'#155a38':'#94a3b8')+';font-weight:700;">🏢 '+(compAvail>0?'완료':'미입력')+'</span>'
     +'<span style="font-size:10px;color:#94a3b8;margin:0 2px;">·</span>'
-    +'<span style="font-size:10px;color:'+(expAvail>0?'#1d4ed8':'#94a3b8')+';font-weight:700;">👨‍💼 '+(expAvail>0?'완료':'미입력')+'</span>'
+    +'<span style="font-size:10px;color:'+(expAvail>0?'#1a6640':'#94a3b8')+';font-weight:700;">👨‍💼 '+(expAvail>0?'완료':'미입력')+'</span>'
     +'</div>'
     +'</div>';
 }
@@ -344,11 +925,11 @@ function buildMatchCard(m) {
     +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">'
     +'<div style="flex:1;min-width:0;">'
     +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;flex-wrap:wrap;">'
-    +'<span style="font-size:16px;font-weight:900;color:#1e3a5f;">'+(m['기업명']||'-')+'</span>'
+    +'<span style="font-size:16px;font-weight:900;color:#1a3d2b;">'+(m['기업명']||'-')+'</span>'
     +'<span style="color:#cbd5e1;font-size:13px;">↔</span>'
     +'<span style="font-size:14px;font-weight:800;color:#374151;">'+(m['전문가명']||'-')+'</span>'
     +'<span class="badge" style="background:'+c.bg+';color:'+c.color+';">'+stat+'</span>'
-    +(m['확정슬롯']?'<span style="font-size:12px;color:#15803d;background:#f0fdf4;padding:3px 9px;border-radius:20px;border:1px solid #bbf7d0;font-weight:700;">📅 '+m['확정슬롯']+'</span>':'')
+    +(m['확정슬롯']?'<span style="font-size:12px;color:#155a38;background:#e8f5ef;padding:3px 9px;border-radius:20px;border:1px solid #8dcaab;font-weight:700;">📅 '+m['확정슬롯']+'</span>':'')
     +'</div>'
     +'<div style="font-size:12px;color:#64748b;display:flex;gap:14px;flex-wrap:wrap;align-items:center;">'
     +'<span>👤 '+(m['기업담당자']||'-')+'</span>'
@@ -357,38 +938,59 @@ function buildMatchCard(m) {
     +'<span style="color:#cbd5e1;font-size:11px;">'+(m['생성일시']||'')+'</span>'
     +'</div></div>'
     +'<div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;">'
-    +'<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(compAvail>0?'#dcfce7':'#fee2e2')+';color:'+(compAvail>0?'#15803d':'#991b1b')+';">🏢 기업 '+(compAvail>0?'✓ 완료':'미입력')+'</span>'
-    +'<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(expAvail>0?'#dbeafe':'#fee2e2')+';color:'+(expAvail>0?'#1d4ed8':'#991b1b')+';">👨‍💼 전문가 '+(expAvail>0?'✓ 완료':'미입력')+'</span>'
-    +(matched.length>0?'<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:800;background:#ede9fe;color:#5b21b6;border:1px solid #c4b5fd;">✨ 겹치는 슬롯 '+matched.length+'개</span>':'')
+    +'<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(compAvail>0?'#c8e6d4':'#fee2e2')+';color:'+(compAvail>0?'#155a38':'#991b1b')+';">🏢 기업 '+(compAvail>0?'✓ 완료':'미입력')+'</span>'
+    +'<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:700;background:'+(expAvail>0?'#e0f2ec':'#fee2e2')+';color:'+(expAvail>0?'#1a6640':'#991b1b')+';">👨‍💼 전문가 '+(expAvail>0?'✓ 완료':'미입력')+'</span>'
+    +(matched.length>0?'<span style="font-size:12px;padding:4px 10px;border-radius:7px;font-weight:800;background:#c8e6d4;color:#155a38;border:1px solid #c4b5fd;">✨ 겹치는 슬롯 '+matched.length+'개</span>':'')
     +'</div></div></div>';
 }
 
 // ══ 새 매칭 추가 ══
 function buildAdd() {
   var f=FORM;
-  return '<div style="max-width:760px;">'
-    +'<div class="back-row"><button class="back-btn" onclick="VIEW.page=\'list\';render()">← 목록으로</button>'
-    +'<div style="font-size:17px;font-weight:900;color:#1e3a5f;">새 매칭 추가</div></div>'
-    +'<div class="form-wrap">'
-    +'<div class="form-section-title" style="color:#2563eb;border-color:#bfdbfe;">🏢 기업 정보</div>'
-    +'<div class="form-grid">'
+  return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:calc(100vh - 62px);">'
+
+    // 왼쪽: 안내 패널
+    +'<div style="background:linear-gradient(160deg,#1a3d2b 0%,#2d7a55 60%,#3a9e6e 100%);padding:52px 44px;display:flex;flex-direction:column;justify-content:center;">'
+    +'<div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.6);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">New Matching</div>'
+    +'<div style="font-size:32px;font-weight:900;color:#fff;letter-spacing:-.8px;line-height:1.2;margin-bottom:12px;">새 멘토링<br>매칭 추가</div>'
+    +'<div style="font-size:15px;color:rgba(255,255,255,.75);line-height:1.8;margin-bottom:36px;">기업과 전문가를 연결하면<br>자동으로 이메일이 발송되고<br>가용시간 조율이 시작됩니다.</div>'
+    +'<div style="display:flex;flex-direction:column;gap:14px;">'
+    +'<div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📧</div><span style="font-size:13px;color:rgba(255,255,255,.85);font-weight:600;">추가 즉시 양쪽에 이메일 자동 발송</span></div>'
+    +'<div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">📅</div><span style="font-size:13px;color:rgba(255,255,255,.85);font-weight:600;">가용시간 입력 링크 자동 제공</span></div>'
+    +'<div style="display:flex;align-items:center;gap:12px;"><div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">✨</div><span style="font-size:13px;color:rgba(255,255,255,.85);font-weight:600;">겹치는 시간 자동 감지 후 알림</span></div>'
+    +'</div>'
+    +'</div>'
+
+    // 오른쪽: 입력 폼
+    +'<div style="background:#fff;padding:48px 44px;">'
+    +'<div style="max-width:480px;margin:0 auto;">'
+
+    // 기업 정보
+    +'<div style="font-size:11px;font-weight:800;color:#3a9e6e;letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #e8f5ef;">🏢 기업 정보</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">'
     +fld('기업명','기업명 *',f.기업명,true)+fld('기업담당자','담당자명 *',f.기업담당자,true)
     +fld('기업이메일','기업 이메일 *',f.기업이메일,true,'email')+fld('기업연락처','연락처',f.기업연락처,false,'tel')
     +'</div>'
-    +'<div class="form-section-title" style="color:#d97706;border-color:#fde68a;">👨‍💼 전문가 정보</div>'
-    +'<div class="form-grid">'
+
+    // 전문가 정보
+    +'<div style="font-size:11px;font-weight:800;color:#d97706;letter-spacing:.8px;text-transform:uppercase;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid #fef3c7;">👨‍💼 전문가 정보</div>'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">'
     +fld('전문가명','전문가명 *',f.전문가명,true)+fld('전문가이메일','전문가 이메일 *',f.전문가이메일,true,'email')
     +fld('전문분야','전문분야',f.전문분야)+fld('희망인증','희망인증명',f.희망인증)
     +'</div>'
-    +'<div class="form-field" style="margin-bottom:22px;">'
-    +'<label>메모 (선택)</label>'
-    +'<textarea id="fi-메모" rows="2" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:9px;font-size:13px;font-family:inherit;resize:vertical;outline:none;" placeholder="특이사항 등">'+(f.메모||'')+'</textarea>'
+
+    // 메모
+    +'<div class="form-field" style="margin-bottom:28px;">'
+    +'<label style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:8px;">📝 메모 (선택)</label>'
+    +'<textarea id="fi-메모" rows="3" style="width:100%;padding:12px 16px;border:1.5px solid #e2e8f0;border-radius:12px;font-size:13px;font-family:inherit;resize:vertical;outline:none;transition:border-color .15s;" placeholder="특이사항 등">'+(f.메모||'')+'</textarea>'
     +'</div>'
-    +'<div class="info-box">📧 <b>추가 즉시</b> 기업 담당자와 전문가에게 가용시간 입력 안내 이메일이 자동 발송됩니다.</div>'
-    +'<div class="form-actions">'
-    +'<button class="btn-cancel" onclick="VIEW.page=\'list\';render()">취소</button>'
-    +'<button class="btn-submit" id="submitAddBtn" onclick="submitAdd()">매칭 추가 + 이메일 발송</button>'
-    +'</div></div></div>';
+
+    // 버튼
+    +'<button class="btn-submit" id="submitAddBtn" onclick="submitAdd()" style="width:100%;padding:16px;border-radius:14px;font-size:15px;letter-spacing:-.2px;">매칭 추가 + 이메일 자동 발송 →</button>'
+    +'<button class="btn-cancel" onclick="VIEW.page=\'list\';render();var hb=document.getElementById(\'hdrBackBtn\');if(hb)hb.style.display=\'none\';" style="width:100%;margin-top:10px;padding:12px;border-radius:14px;">취소</button>'
+
+    +'</div></div>'
+    +'</div>';
 }
 
 function fld(key,label,val,required,type){
@@ -409,8 +1011,7 @@ function buildDetail(matchId) {
 
   return '<div>'
     +'<div class="back-row">'
-    +'<button class="back-btn" onclick="VIEW.page=\'list\';render()">← 목록으로</button>'
-    +'<div style="font-size:16px;font-weight:900;color:#1e3a5f;">'+m['기업명']+' ↔ '+m['전문가명']+'</div>'
+    +'<div style="font-size:16px;font-weight:900;color:#1a3d2b;">'+m['기업명']+' ↔ '+m['전문가명']+'</div>'
     +'<span class="badge" style="background:'+c.bg+';color:'+c.color+';">'+stat+'</span>'
     +(stat!=='취소'&&stat!=='확정완료'
       ?'<button onclick="cancelMatch(\''+matchId+'\')" style="margin-left:auto;padding:6px 13px;background:#fee2e2;color:#991b1b;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">취소</button>'
@@ -435,9 +1036,9 @@ function buildDetail(matchId) {
 }
 
 function buildAvailBox(role,rows,name) {
-  var color =role==='기업'?'#2563eb':'#d97706';
-  var bg    =role==='기업'?'#eff6ff':'#fffbeb';
-  var border=role==='기업'?'#bfdbfe':'#fde68a';
+  var color =role==='기업'?'#2d7a55':'#1a6640';
+  var bg    =role==='기업'?'#e8f5ef':'#f0faf5';
+  var border=role==='기업'?'#a0d4b8':'#8dcaab';
   var has   =rows.length>0;
   var body  =has
     ?rows.map(function(r){
@@ -452,7 +1053,7 @@ function buildAvailBox(role,rows,name) {
   return '<div class="avail-box" style="background:'+bg+';border-color:'+border+';">'
     +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'
     +'<div style="font-size:14px;font-weight:800;color:'+color+';">'+(role==='기업'?'🏢':'👨‍💼')+' '+(name||role)+' 가용시간</div>'
-    +'<span style="font-size:12px;padding:4px 11px;border-radius:20px;font-weight:700;background:'+(has?'#dcfce7':'#fee2e2')+';color:'+(has?'#15803d':'#991b1b')+';">'+(has?'✓ 입력완료':'미입력')+'</span>'
+    +'<span style="font-size:12px;padding:4px 11px;border-radius:20px;font-weight:700;background:'+(has?'#c8e6d4':'#fee2e2')+';color:'+(has?'#155a38':'#991b1b')+';">'+(has?'✓ 입력완료':'미입력')+'</span>'
     +'</div>'+body+'</div>';
 }
 
@@ -463,9 +1064,9 @@ function buildMatchedUI(slots,matchId,confirmedSlot,stat) {
   slots.forEach(function(s){
     var isConf=confirmedSlot===s.label;
     html+='<div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;'
-      +'background:'+(isConf?'#ede9fe':'#fff')+';border-radius:11px;border:1.5px solid '+(isConf?'#8b5cf6':'#e2e8f0')+';gap:10px;">'
+      +'background:'+(isConf?'#e8f5ef':'#fff')+';border-radius:11px;border:1.5px solid '+(isConf?'#3a9e6e':'#daeee3')+';gap:10px;">'
       +'<div style="display:flex;align-items:center;gap:10px;">'
-      +'<span style="font-size:15px;font-weight:900;color:#1e3a5f;">'+s.label+'</span>'
+      +'<span style="font-size:15px;font-weight:900;color:#1a3d2b;">'+s.label+'</span>'
       +(isConf?'<span style="font-size:11px;color:#5b21b6;font-weight:800;background:#ede9fe;padding:2px 9px;border-radius:6px;">✓ 확정됨</span>':'')
       +'</div>';
     if(stat!=='확정완료'&&stat!=='취소'){
@@ -497,48 +1098,52 @@ function buildAvailInputUI(matchId,role,m) {
     var isActive=role===r;
     return '<button onclick="AVAIL_INPUT.role=\''+r+'\';AVAIL_INPUT.name=\''+nm+'\';render();"'
       +' style="flex:1;padding:11px;border-radius:10px;cursor:pointer;font-family:inherit;'
-      +'border:2px solid '+(isActive?'#2563eb':'#e2e8f0')+';'
-      +'background:'+(isActive?'#eff6ff':'#fff')+';'
+      +'border:1.5px solid '+(isActive?'#2d7a55':'#c8e6d4')+';'
+      +'background:'+(isActive?'#e8f5ef':'#fff')+';'
       +'font-size:13px;font-weight:'+(isActive?'900':'600')+';'
-      +'color:'+(isActive?'#2563eb':'#64748b')+';">'
+      +'color:'+(isActive?'#2d7a55':'#6b9e85')+';">'
       +(r==='기업'?'🏢':'👨‍💼')+' '+nm+' ('+r+')</button>';
   }).join('');
 
   var dateHtml='';
   if(role){
-    dateHtml='<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">'
-      // 달력
-      +'<div>'
-      +'<div style="font-size:13px;font-weight:800;color:#1e3a5f;margin-bottom:12px;">📅 날짜 선택</div>'
+    dateHtml='<div style="display:grid;grid-template-columns:55% 1fr;gap:14px;align-items:start;">'
+      // 달력 (좌)
+      +'<div style="background:#f3faf6;border-radius:16px;padding:18px 20px;border:1px solid #daeee3;">'
+      +'<div style="font-size:13px;font-weight:900;color:#1a3d2b;margin-bottom:14px;">📅 날짜 선택</div>'
       +buildAdminCalendar(dateOptions,slots,selDate)
       +'</div>'
-      // 시간
-      +'<div>'
-      +'<div style="font-size:13px;font-weight:800;color:#1e3a5f;margin-bottom:4px;">🕐 시간 선택</div>'
-      +'<div style="font-size:12px;color:#64748b;margin-bottom:12px;font-weight:600;">'+dispDate(selDate)+'</div>'
-      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;">'
+      // 시간 + 요약 (우, sticky)
+      +'<div style="position:sticky;top:80px;">'
+      +'<div style="background:#f3faf6;border-radius:16px;padding:18px 20px;border:1px solid #daeee3;margin-bottom:12px;">'
+      +'<div style="font-size:13px;font-weight:900;color:#1a3d2b;margin-bottom:6px;">🕐 시간 선택</div>'
+      +'<div style="font-size:12px;color:#3a9e6e;font-weight:700;margin-bottom:14px;padding:6px 12px;background:#e8f5ef;border-radius:8px;border:1px solid #a0d4b8;">'+dispDate(selDate)+'</div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'
       +HOURS.map(function(h){
         var isOn=slots[selDate]&&slots[selDate].includes(h);
         return '<button onclick="toggleTime(\''+selDate+'\',\''+h+'\')"'
-          +' style="padding:13px 8px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:14px;font-weight:800;'
-          +'border:2px solid '+(isOn?'#2563eb':'#e2e8f0')+';'
-          +'background:'+(isOn?'#2563eb':'#fff')+';'
+          +' style="padding:12px 6px;border-radius:9px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:800;transition:all .15s;'
+          +'border:1.5px solid '+(isOn?'#2d7a55':'#c8e6d4')+';'
+          +'background:'+(isOn?'linear-gradient(135deg,#3a9e6e,#2d7a55)':'#fff')+';'
           +'color:'+(isOn?'#fff':'#374151')+';">'+h+'</button>';
       }).join('')
       +'</div>'
-      // 요약
+      +'</div>'
+      // 요약 카드
       +(function(){
         var entries=Object.entries(slots).filter(function(e){return e[1].length>0;});
-        if(!entries.length) return '<div style="font-size:12px;color:#94a3b8;padding:12px;background:#f8fafc;border-radius:9px;text-align:center;">선택된 가용시간이 없습니다</div>';
-        var h2='<div style="padding:14px 16px;background:#f0fdf4;border-radius:10px;border:1.5px solid #bbf7d0;margin-bottom:12px;">'
-          +'<div style="font-size:12px;font-weight:800;color:#15803d;margin-bottom:8px;">✅ 선택된 가용시간</div>';
+        if(!entries.length) return '<div style="font-size:12px;color:#94a3b8;padding:12px;background:#f8fafc;border-radius:10px;text-align:center;border:1px dashed #c8e6d4;">선택된 가용시간이 없습니다</div>';
+        var h2='<div style="padding:14px 16px;background:rgba(255,255,255,.9);border-radius:14px;border:1px solid rgba(58,158,110,.2);margin-bottom:12px;box-shadow:0 4px 12px rgba(58,158,110,.08);">'
+          +'<div style="font-size:12px;font-weight:900;color:#155a38;margin-bottom:10px;">✅ 선택된 가용시간</div>';
         entries.forEach(function(e){
-          h2+='<div class="avail-row"><span class="avail-date-lbl" style="font-size:12px;color:#15803d;">'+dispDate(e[0])+'</span>'
-            +'<div class="avail-times">'+e[1].map(function(t){return '<span class="time-chip" style="background:rgba(5,150,105,.1);color:#15803d;">'+t+'</span>';}).join('')+'</div></div>';
+          h2+='<div style="margin-bottom:8px;padding:8px 10px;background:linear-gradient(135deg,#f3faf6,#eef8fb);border-radius:9px;border:1px solid rgba(58,158,110,.12);">'
+            +'<div style="font-size:11px;font-weight:800;color:#1a6640;margin-bottom:4px;">'+dispDate(e[0])+'</div>'
+            +'<div style="display:flex;flex-wrap:wrap;gap:4px;">'+e[1].map(function(t){return '<span style="background:#3a9e6e;color:#fff;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;">'+t+'</span>';}).join('')+'</div>'
+            +'</div>';
         });
         return h2+'</div>';
       })()
-      +'<button onclick="submitAdminAvail(\''+matchId+'\')" style="width:100%;padding:13px;border:none;border-radius:11px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;">가용시간 제출 →</button>'
+      +'<button onclick="submitAdminAvail(\''+matchId+'\')" style="width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#3a9e6e,#1f6b48);color:#fff;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 6px 18px rgba(58,158,110,.3);">가용시간 제출 →</button>'
       +'</div>'
       +'</div>';
   } else {
@@ -546,7 +1151,7 @@ function buildAvailInputUI(matchId,role,m) {
   }
 
   return '<div class="avail-input-box">'
-    +'<div style="font-size:14px;font-weight:900;color:#1e3a5f;margin-bottom:16px;">📝 가용시간 직접 입력 <span style="font-size:12px;color:#94a3b8;font-weight:600;">(담당자 대신 입력 시)</span></div>'
+    +'<div style="font-size:14px;font-weight:900;color:#1a3d2b;margin-bottom:16px;">📝 가용시간 직접 입력 <span style="font-size:12px;color:#94a3b8;font-weight:600;">(담당자 대신 입력 시)</span></div>'
     +'<div style="display:flex;gap:10px;margin-bottom:16px;">'+roleHtml+'</div>'
     +dateHtml
     +'</div>';
@@ -587,8 +1192,8 @@ function buildAdminCalendar(dateOptions,slots,selDate) {
 
 // ══ 인터랙션 ══
 function setStatusFilter(s){_statusFilter=_statusFilter===s?'전체':s;render();}
-function showAdd(){VIEW.page='add';FORM={기업명:'',기업담당자:'',기업이메일:'',기업연락처:'',전문가명:'',전문가이메일:'',전문분야:'',희망인증:'',메모:''};render();}
-function showDetail(id){VIEW.page='detail';VIEW.selectedId=id;AVAIL_INPUT={matchId:id,role:'',name:'',slots:{}};_selDate='';render();}
+function showAdd(){VIEW.page='add';FORM={기업명:'',기업담당자:'',기업이메일:'',기업연락처:'',전문가명:'',전문가이메일:'',전문분야:'',희망인증:'',메모:''};render();var hb=document.getElementById('hdrBackBtn');if(hb)hb.style.display='block';}
+function showDetail(id){VIEW.page='detail';VIEW.selectedId=id;AVAIL_INPUT={matchId:id,role:'',name:'',slots:{}};_selDate='';render();var hb=document.getElementById('hdrBackBtn');if(hb)hb.style.display='block';}
 function selectDate(d){_selDate=d;render();}
 function toggleTime(date,time){
   if(!AVAIL_INPUT.slots[date]) AVAIL_INPUT.slots[date]=[];
@@ -660,9 +1265,9 @@ function loadAvailPage(matchId,role){
       var match=(data['멘토링_매칭']||[]).find(function(m){return m['매칭ID']===matchId;});
       if(!match){sc.innerHTML='<div style="text-align:center;padding:80px;"><div style="font-size:52px;margin-bottom:16px;">❌</div><div style="font-size:17px;font-weight:800;">유효하지 않은 링크입니다.</div></div>';return;}
       if(match['상태']==='확정완료'){
-        sc.innerHTML='<div style="min-height:calc(100vh-60px);display:flex;align-items:center;justify-content:center;background:#f0fdf4;">'
+        sc.innerHTML='<div style="min-height:calc(100vh-60px);display:flex;align-items:center;justify-content:center;background:#e8f5ef;">'
           +'<div style="text-align:center;padding:48px;"><div style="font-size:52px;margin-bottom:16px;">✅</div>'
-          +'<div style="font-size:20px;font-weight:900;color:#065f46;">이미 일정이 확정되었습니다.</div>'
+          +'<div style="font-size:20px;font-weight:900;color:#155a38;">이미 일정이 확정되었습니다.</div>'
           +'<div style="font-size:14px;color:#64748b;margin-top:10px;">확정 일정: '+(match['확정슬롯']||'')+'</div></div></div>';
         return;
       }
@@ -702,8 +1307,8 @@ function renderAvailInput(match,role,existingAvail){
 }
 
 function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
-  var color=role==='기업'?'#2563eb':'#d97706';
-  var icon =role==='기업'?'🏢':'👨‍💼';
+  var color=role==='기업'?'#2d7a55':'#1a6640';
+  var icon =role==='기업'?'🏢':'👨\u200d💼';
   var other=role==='기업'?match['전문가명']:match['기업명'];
 
   var availSet={};
@@ -711,6 +1316,7 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
   var months={};
   dateOptions.forEach(function(d){var ym=d.slice(0,7);if(!months[ym])months[ym]=[];months[ym].push(d);});
 
+  // 월별 캘린더
   var calHtml='';
   Object.keys(months).sort().forEach(function(ym){
     var year=parseInt(ym.slice(0,4)),month=parseInt(ym.slice(5,7));
@@ -729,84 +1335,114 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
       var dowCls=dow===0?' sun-col':dow===6?' sat-col':'';
       if(isAvail){
         var cls='cal-cell avail'+dowCls+(isSel?' selected':hasSlots?' has-slots':'');
-        calHtml+='<div id="datebtn-'+dd+'" class="'+cls+'" onclick="selectAvailDate(\''+dd+'\')">'
-          +'<span>'+day+'</span>'
-          +(hasSlots&&!isSel?'<span class="cal-dot"></span>':'')
-          +(isSel?'<span class="cal-dot"></span>':'')
-          +'</div>';
+        calHtml+='<div id="datebtn-'+dd+'" class="'+cls+'" onclick="selectAvailDate(\''+dd+'\')"><span>'+day+'</span>'+(hasSlots&&!isSel?'<span class="cal-dot"></span>':'')+(isSel?'<span class="cal-dot"></span>':'')+'</div>';
       } else {
         calHtml+='<div class="cal-cell disabled'+dowCls+'">'+day+'</div>';
       }
     }
-    calHtml+='</div><div style="margin-bottom:16px;"></div>';
+    calHtml+='</div><div style="margin-bottom:14px;"></div>';
   });
 
+  // 시간 버튼
+  var selLabel=window._availSelDate?dispDate(window._availSelDate):'날짜를 선택하세요';
   var timeHtml=HOURS.map(function(h){
     var isOn=window._availSlots[window._availSelDate]&&window._availSlots[window._availSelDate].includes(h);
     return '<button onclick="toggleAvailTime(\''+h+'\')" id="timebtn-'+h.replace(':','-')+'"'
-      +' style="padding:16px 8px;border-radius:10px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;'
-      +'border:2px solid '+(isOn?'#2563eb':'#e2e8f0')+';'
-      +'background:'+(isOn?'#2563eb':'#fff')+';'
+      +' style="width:100%;padding:14px;border-radius:11px;cursor:pointer;font-family:inherit;font-size:15px;font-weight:800;transition:all .15s;text-align:center;'
+      +'border:1.5px solid '+(isOn?'#2d7a55':'#daeee3')+';'
+      +'background:'+(isOn?'linear-gradient(135deg,#3a9e6e,#2d7a55)':'#fff')+';'
       +'color:'+(isOn?'#fff':'#374151')+';">'+h+'</button>';
   }).join('');
 
-  var selLabel=window._availSelDate?dispDate(window._availSelDate):'날짜를 선택하세요';
+  return '<div style="min-height:calc(100vh - 62px);background:radial-gradient(circle at 8% 12%,rgba(182,236,205,.55),transparent 28%),radial-gradient(circle at 92% 8%,rgba(189,226,238,.62),transparent 32%),linear-gradient(135deg,#edf8f3 0%,#e8f1f8 100%);">'
+    +'<div style="padding:24px;max-width:1300px;margin:0 auto;">'
 
-  return '<div style="min-height:calc(100vh - 60px);background:#f1f5f9;">'
-    +'<div style="padding:24px;max-width:960px;margin:0 auto;">'
-
-    // 안내 카드
-    +'<div style="background:#fff;border-radius:18px;padding:22px 28px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.07);">'
-    +'<div style="display:flex;align-items:center;gap:14px;margin-bottom:14px;">'
-    +'<div style="width:50px;height:50px;border-radius:13px;background:'+color+'18;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">'+icon+'</div>'
-    +'<div><div style="font-size:18px;font-weight:900;color:#1e3a5f;letter-spacing:-.3px;">'+name+'님, 안녕하세요!</div>'
-    +'<div style="font-size:13px;color:#64748b;margin-top:3px;">상담 상대: <b style="color:#374151;">'+other+'</b></div></div>'
+    // 상단 안내 카드
+    +'<div style="background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.82);border-radius:20px;padding:20px 26px;margin-bottom:20px;box-shadow:0 6px 24px rgba(59,117,94,.1);display:flex;align-items:center;gap:16px;flex-wrap:wrap;">'
+    +'<div style="width:48px;height:48px;border-radius:14px;background:'+color+'18;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;border:1px solid '+color+'22;">'+icon+'</div>'
+    +'<div style="flex:1;min-width:0;">'
+    +'<div style="font-size:17px;font-weight:900;color:#1a3d2b;letter-spacing:-.3px;">'+name+'님, 가용시간을 선택해주세요</div>'
+    +'<div style="font-size:13px;color:#64748b;margin-top:2px;">상담 상대: <b style="color:#2d7a55;">'+other+'</b> · 📋 '+match['기업명']+' · 📌 '+(match['희망인증']||'-')+'</div>'
     +'</div>'
-    +'<div style="display:flex;gap:20px;flex-wrap:wrap;background:#f8fafc;border-radius:11px;padding:13px 18px;font-size:13px;color:#374151;line-height:1.8;">'
-    +'<span>📋 <b>기업명:</b> '+match['기업명']+'</span>'
-    +'<span>👨‍💼 <b>전문가:</b> '+match['전문가명']+'</span>'
-    +'<span>📌 <b>희망인증:</b> '+(match['희망인증']||'-')+'</span>'
-    +'</div></div>'
+    +(alreadySub?'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;padding:10px 16px;font-size:12px;color:#92400e;font-weight:700;flex-shrink:0;">⚠️ 이미 입력하셨습니다. 재입력 시 교체됩니다.</div>':'')
+    +'</div>'
 
-    +(alreadySub?'<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:13px;padding:14px 18px;margin-bottom:18px;font-size:13px;color:#92400e;font-weight:600;">⚠️ 이미 가용시간을 입력하셨습니다. 다시 입력하면 기존 내용이 교체됩니다.</div>':'')
+    // 3단 레이아웃
+    +'<div style="display:grid;grid-template-columns:220px 170px 1fr;gap:16px;align-items:start;">'
 
-    // 달력 + 시간 (2단)
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">'
+    // ─ 왼쪽: Agenda 리스트 ─
+    +'<div style="background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.85);border-radius:20px;padding:18px 16px;box-shadow:0 6px 24px rgba(59,117,94,.1);position:sticky;top:80px;max-height:calc(100vh - 130px);overflow-y:auto;">'
+    +'<div style="font-size:12px;font-weight:900;color:#1a3d2b;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #e4f0e9;display:flex;align-items:center;gap:6px;">📋 선택한 가용일정</div>'
+    +'<div id="agendaList">'+buildAgendaListHTML()+'</div>'
+    +'</div>'
 
-    // 좌: 달력
-    +'<div style="background:#fff;border-radius:18px;padding:22px 24px;box-shadow:0 2px 10px rgba(0,0,0,.07);">'
-    +'<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:16px;">📅 날짜 선택</div>'
+    // ─ 가운데: 시간 선택 ─
+    +'<div style="background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.85);border-radius:20px;padding:18px 16px;box-shadow:0 6px 24px rgba(59,117,94,.1);position:sticky;top:80px;">'
+    +'<div style="font-size:12px;font-weight:900;color:#1a3d2b;margin-bottom:8px;">🕐 시간 선택</div>'
+    +'<div style="font-size:12px;color:#3a9e6e;font-weight:700;margin-bottom:14px;padding:7px 12px;background:#e8f5ef;border-radius:9px;border:1px solid #a0d4b8;text-align:center;" id="timeTitle">'+selLabel+'</div>'
+    +'<div style="display:flex;flex-direction:column;gap:7px;">'+timeHtml+'</div>'
+    +'</div>'
+
+    // ─ 오른쪽: 월별 캘린더 ─
+    +'<div style="background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.85);border-radius:20px;padding:22px 24px;box-shadow:0 6px 24px rgba(59,117,94,.1);">'
+    +'<div style="font-size:14px;font-weight:900;color:#1a3d2b;margin-bottom:18px;">📅 날짜 선택</div>'
     +calHtml
-    +'<div style="display:flex;gap:14px;font-size:11px;color:#64748b;margin-top:8px;flex-wrap:wrap;">'
-    +'<span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;"></span>시간 선택됨</span>'
-    +'<span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:3px;background:#2563eb;display:inline-block;"></span>선택 중</span>'
-    +'</div></div>'
-
-    // 우: 시간 + 요약
-    +'<div style="background:#fff;border-radius:18px;padding:22px 24px;box-shadow:0 2px 10px rgba(0,0,0,.07);display:flex;flex-direction:column;">'
-    +'<div style="font-size:15px;font-weight:900;color:#1e3a5f;margin-bottom:4px;">🕐 시간 선택</div>'
-    +'<div style="font-size:13px;color:#64748b;font-weight:600;margin-bottom:16px;" id="timeTitle">'+selLabel+'</div>'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">'+timeHtml+'</div>'
-    +'<div id="availSummary" style="flex:1;">'+buildAvailSummaryHTML()+'</div>'
+    +'<div style="display:flex;gap:14px;font-size:11px;color:#6a8d81;margin-top:10px;flex-wrap:wrap;padding-top:10px;border-top:1px solid #e4f0e9;">'
+    +'<span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#c8efd8,#cfeaf1);border:1px solid rgba(58,158,110,.3);display:inline-block;"></span>시간선택됨</span>'
+    +'<span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:#3a9e6e;display:inline-block;"></span>선택중</span>'
+    +'<span style="display:flex;align-items:center;gap:4px;"><span style="width:8px;height:8px;border-radius:50%;background:#e2e8f0;display:inline-block;"></span>불가</span>'
+    +'</div>'
     +'</div>'
 
     +'</div>'
 
-    +'<button onclick="submitAvailPage()" id="submitAvailBtn" style="width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,#0f2744,#2563eb);color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 5px 18px rgba(37,99,235,.38);letter-spacing:-.3px;">가용시간 제출하기 →</button>'
-    +'<div style="text-align:center;margin-top:16px;font-size:12px;color:#94a3b8;">문의: 해외인증지원단 02-6240-4777</div>'
+    // 제출 버튼
+    +'<button onclick="submitAvailPage()" id="submitAvailBtn" style="width:100%;margin-top:18px;padding:16px;border:none;border-radius:16px;background:linear-gradient(135deg,#3a9e6e,#1f6b48);color:#fff;font-size:16px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 8px 24px rgba(58,158,110,.35);letter-spacing:-.3px;">가용시간 제출하기 →</button>'
+    +'<div style="text-align:center;margin-top:12px;font-size:12px;color:#94a3b8;">문의: 해외인증지원단 02-6240-4777</div>'
     +'</div></div>';
 }
 
 function buildAvailSummaryHTML(){
   var entries=Object.entries(window._availSlots||{}).filter(function(e){return e[1].length>0;});
-  if(!entries.length) return '<div style="font-size:12px;color:#94a3b8;padding:12px;background:#f8fafc;border-radius:9px;text-align:center;">선택된 가용시간이 없습니다</div>';
-  var html='<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px 16px;">'
-    +'<div style="font-size:13px;font-weight:800;color:#15803d;margin-bottom:10px;">✅ 선택된 가용시간</div>';
+  if(!entries.length) return '<div style="font-size:12px;color:#94a3b8;padding:16px;background:rgba(255,255,255,.7);border-radius:14px;text-align:center;border:1px dashed #c8e6d4;">날짜를 클릭해서 가능한 시간을 선택하세요</div>';
+  var html='<div style="background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border:1px solid rgba(58,158,110,.2);border-radius:18px;padding:18px 20px;box-shadow:0 6px 20px rgba(58,158,110,.1);">'
+    +'<div style="font-size:13px;font-weight:900;color:#155a38;margin-bottom:12px;display:flex;align-items:center;gap:6px;">✅ 선택된 가용시간 <span style=\'font-size:11px;background:#3a9e6e;color:#fff;padding:2px 8px;border-radius:999px;font-weight:700;\'>'+entries.length+'일</span></div>';
   entries.forEach(function(e){
-    html+='<div class="avail-row"><span class="avail-date-lbl" style="font-size:12px;color:#15803d;">'+dispDate(e[0])+'</span>'
-      +'<div class="avail-times">'+e[1].map(function(t){return '<span class="time-chip" style="background:rgba(5,150,105,.1);color:#15803d;">'+t+'</span>';}).join('')+'</div></div>';
+    html+='<div style="margin-bottom:10px;padding:10px 12px;background:linear-gradient(135deg,#f3faf6,#eef8fb);border-radius:11px;border:1px solid rgba(58,158,110,.15);">'
+      +'<div style="font-size:12px;font-weight:800;color:#1a6640;margin-bottom:6px;">📅 '+dispDate(e[0])+'</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:5px;">'+e[1].map(function(t){return '<span style="background:linear-gradient(135deg,#3a9e6e,#2d7a55);color:#fff;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;">'+t+'</span>';}).join('')+'</div>'
+      +'</div>';
   });
   return html+'</div>';
+}
+
+function buildAgendaListHTML(){
+  var KD=['일','월','화','수','목','금','토'];
+  var entries=Object.entries(window._availSlots||{}).filter(function(e){return e[1].length>0;}).sort(function(a,b){return a[0].localeCompare(b[0]);});
+  if(!entries.length){
+    return '<div style="text-align:center;padding:20px 10px;color:#94a3b8;">'
+      +'<div style="font-size:28px;margin-bottom:8px;">🗓️</div>'
+      +'<div style="font-size:11px;line-height:1.7;">아직 선택한 시간이 없습니다.<br>오른쪽 달력에서 날짜를<br>고르고 시간을 선택하세요.</div>'
+      +'</div>';
+  }
+  return entries.map(function(e){
+    var d=new Date(e[0]+'T00:00:00');
+    var dow=KD[d.getDay()];
+    var day=d.getDate();
+    var lbl=e[0].slice(5).replace('-','.')+'('+dow+')';
+    return '<div style="display:flex;gap:9px;margin-bottom:11px;padding-bottom:11px;border-bottom:1px solid #f0f7f4;">'
+      +'<div style="flex-shrink:0;width:40px;text-align:center;background:linear-gradient(135deg,#3a9e6e,#2d7a55);border-radius:10px;padding:7px 4px;color:#fff;">'
+      +'<div style="font-size:9px;font-weight:700;opacity:.85;">'+dow+'</div>'
+      +'<div style="font-size:17px;font-weight:900;line-height:1;">'+day+'</div>'
+      +'</div>'
+      +'<div style="flex:1;min-width:0;">'
+      +'<div style="font-size:10px;color:#6b9e85;font-weight:700;margin-bottom:4px;">'+lbl+'</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:3px;">'+e[1].map(function(t){
+        return '<span style="background:linear-gradient(135deg,#e8f5ef,#eef8fb);border:1px solid rgba(58,158,110,.2);color:#1a6640;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:800;">'+t+'</span>';
+      }).join('')+'</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
 }
 
 function selectAvailDate(date){
@@ -825,8 +1461,8 @@ function selectAvailDate(date){
     var btn=document.getElementById('timebtn-'+h.replace(':','-'));
     if(!btn) return;
     var isOn=window._availSlots[date]&&window._availSlots[date].includes(h);
-    btn.style.borderColor=isOn?'#2563eb':'#e2e8f0';
-    btn.style.background =isOn?'#2563eb':'#fff';
+    btn.style.borderColor=isOn?'#2d7a55':'#e2e8f0';
+    btn.style.background =isOn?'#2d7a55':'#fff';
     btn.style.color      =isOn?'#fff':'#374151';
   });
 }
@@ -839,7 +1475,7 @@ function toggleAvailTime(time){
   else{window._availSlots[date].push(time);window._availSlots[date].sort();}
 
   var btn=document.getElementById('timebtn-'+time.replace(':','-'));
-  if(btn){var isOn=window._availSlots[date].includes(time);btn.style.borderColor=isOn?'#2563eb':'#e2e8f0';btn.style.background=isOn?'#2563eb':'#fff';btn.style.color=isOn?'#fff':'#374151';}
+  if(btn){var isOn=window._availSlots[date].includes(time);btn.style.borderColor=isOn?'#2d7a55':'#c8e6d4';btn.style.background=isOn?'#2d7a55':'#fff';btn.style.color=isOn?'#fff':'#374151';}
 
   var calBtn=document.getElementById('datebtn-'+date);
   if(calBtn){
@@ -849,7 +1485,10 @@ function toggleAvailTime(time){
       +(sel?' selected':has?' has-slots':'');
     calBtn.innerHTML='<span>'+parseInt(date.slice(8))+'</span>'+(has&&!sel?'<span class="cal-dot"></span>':'')+(sel?'<span class="cal-dot"></span>':'');
   }
-  document.getElementById('availSummary').innerHTML=buildAvailSummaryHTML();
+  var sumEl=document.getElementById('availSummary');
+  if(sumEl) sumEl.innerHTML=buildAvailSummaryHTML();
+  var agEl=document.getElementById('agendaList');
+  if(agEl) agEl.innerHTML=buildAgendaListHTML();
 }
 
 function submitAvailPage(){
@@ -866,10 +1505,10 @@ function submitAvailPage(){
           '<div style="min-height:calc(100vh-60px);display:flex;align-items:center;justify-content:center;background:#f1f5f9;">'
           +'<div style="text-align:center;padding:48px;background:#fff;border-radius:22px;box-shadow:0 6px 28px rgba(0,0,0,.1);max-width:440px;width:90%;">'
           +'<div style="font-size:60px;margin-bottom:20px;">✅</div>'
-          +'<div style="font-size:20px;font-weight:900;color:#1e3a5f;margin-bottom:10px;">가용시간이 제출되었습니다!</div>'
+          +'<div style="font-size:20px;font-weight:900;color:#1a3d2b;margin-bottom:10px;">가용시간이 제출되었습니다!</div>'
           +'<div style="font-size:14px;color:#64748b;line-height:1.8;">담당자가 상대방의 가용시간과 비교하여<br>최적 일정을 확정 후 안내드릴 예정입니다.</div>'
-          +'<div style="margin-top:22px;padding:16px;background:#f0fdf4;border-radius:12px;">'
-          +entries.map(function(e){return '<div class="avail-row"><span class="avail-date-lbl" style="font-size:13px;color:#15803d;">'+dispDate(e[0])+'</span><div class="avail-times">'+e[1].map(function(t){return '<span class="time-chip" style="background:rgba(5,150,105,.1);color:#15803d;">'+t+'</span>';}).join('')+'</div></div>';}).join('')
+          +'<div style="margin-top:22px;padding:16px;background:#e8f5ef;border-radius:12px;">'
+          +entries.map(function(e){return '<div class="avail-row"><span class="avail-date-lbl" style="font-size:13px;color:#155a38;">'+dispDate(e[0])+'</span><div class="avail-times">'+e[1].map(function(t){return '<span class="time-chip" style="background:rgba(5,150,105,.1);color:#155a38;">'+t+'</span>';}).join('')+'</div></div>';}).join('')
           +'</div>'
           +'<div style="margin-top:20px;font-size:12px;color:#94a3b8;">문의: 해외인증지원단 02-6240-4777</div>'
           +'</div></div>';
