@@ -1081,10 +1081,10 @@ body {
   }
 }
 
-/* ==============================================
-   관리자 2단 대시보드 레이아웃
-============================================== */
-.admin-dashboard {
+/* ═══════════════════════════════════════════════════════
+   관리자 2단 대시보드 — Admin Dashboard Layout
+═══════════════════════════════════════════════════════ */
+.cadmin-wrap {
   display: grid;
   grid-template-columns: 290px 1fr;
   gap: 20px;
@@ -1092,80 +1092,231 @@ body {
   margin-top: 4px;
 }
 @media (max-width: 860px) {
-  .admin-dashboard { grid-template-columns: 1fr; }
+  .cadmin-wrap { grid-template-columns: 1fr; }
 }
-.dash-sidebar { display: flex; flex-direction: column; gap: 14px; }
-.dash-sec { background: #fff; border: 1px solid #daeee3; border-radius: 14px; overflow: hidden; }
-.dash-sec-hdr {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 11px 16px; font-size: 13px; font-weight: 800;
+
+/* ─── 왼쪽 사이드바 ─── */
+.cadmin-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
-.dash-sec-cnt {
-  background: rgba(255,255,255,0.55); padding: 2px 9px;
-  border-radius: 20px; font-size: 12px; font-weight: 700;
+.cadmin-sidebar-sec {
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(58,158,110,.15);
+  border-radius: 16px;
+  overflow: hidden;
 }
-.dash-sec-body {
-  padding: 10px; display: flex; flex-direction: column;
-  gap: 8px; max-height: 340px; overflow-y: auto;
+.cadmin-sec-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: -.2px;
 }
-.dash-mini-card {
-  background: #f8fafb; border: 1px solid #e8f0eb;
-  border-radius: 10px; padding: 10px 13px; cursor: pointer; transition: all .15s;
+.cadmin-sec-cnt {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.55);
 }
-.dash-mini-card:hover { background: #eef8f2; border-color: #b5d8cc; transform: translateX(2px); }
-.dash-mini-card-top { font-size: 13px; font-weight: 800; color: #1a3d2b; margin-bottom: 4px; }
-.dash-mini-card-sub { font-size: 11px; color: #64748b; display: flex; gap: 8px; flex-wrap: wrap; }
-.dash-empty { font-size: 12px; color: #94a3b8; text-align: center; padding: 14px 0; }
-.dash-right-wrap {
-  background: #fff; border: 1px solid #daeee3; border-radius: 16px; padding: 24px;
+.cadmin-sec-body {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 360px;
+  overflow-y: auto;
+  background: rgba(228,240,233,.35);
 }
-.dash-right-hdr {
-  display: flex; align-items: baseline; gap: 10px;
-  margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1.5px solid #e8f5ef;
+.cadmin-sec-body::-webkit-scrollbar { width: 3px; }
+.cadmin-sec-body::-webkit-scrollbar-thumb { background: rgba(58,158,110,.2); border-radius: 3px; }
+.cadmin-sec-empty {
+  text-align: center;
+  padding: 14px 0;
+  font-size: 12px;
+  color: #94a3b8;
 }
-.dash-right-hdr-title { font-size: 20px; font-weight: 900; color: #1a3d2b; letter-spacing: -.4px; }
-.dash-right-hdr-sub { font-size: 13px; color: #64748b; font-weight: 500; }
-.completed-list { display: flex; flex-direction: column; gap: 10px; }
-.completed-item {
-  display: flex; border-radius: 13px; overflow: hidden; cursor: pointer;
-  border: 1px solid #daeee3; background: #f7fdf9; transition: all .18s;
+
+/* ─── 오른쪽 Agenda 메인 영역 ─── */
+.cadmin-main {
+  background: #fff;
+  border-radius: 22px;
+  border: 1px solid rgba(58,158,110,.18);
+  overflow: hidden;
 }
-.completed-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(45,122,85,.09);
-  border-color: #a8d5be;
+
+/* Agenda 헤더 */
+.cadmin-agenda-hdr {
+  padding: 22px 28px 18px;
+  border-bottom: 2px solid #d4ece3;
+  background: linear-gradient(135deg, #f3faf6 0%, #eef8fb 100%);
 }
-.completed-item.is-confirmed { background: #f0fdf6; border-color: #8dcaab; }
-.completed-date {
-  width: 78px; flex-shrink: 0; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; padding: 14px 8px; font-family: inherit;
+.cadmin-agenda-hdr-brand {
+  font-size: 11px;
+  font-weight: 800;
+  color: #3a9e6e;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
 }
-.completed-date.status-matched   { background: #c8e6d4; color: #155a38; }
-.completed-date.status-confirmed { background: #2d7a55; color: #fff; }
-.completed-date.status-pending   { background: #e2e8f0; color: #64748b; }
-.cdate-m { font-size: 11px; font-weight: 700; opacity: .85; }
-.cdate-d { font-size: 28px; font-weight: 900; line-height: 1; margin-top: 2px; }
-.cdate-t {
-  font-size: 10px; font-weight: 700; margin-top: 6px;
-  background: rgba(255,255,255,.35); padding: 2px 6px; border-radius: 4px;
+.cadmin-agenda-hdr-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: #1a3d2b;
+  letter-spacing: -1px;
+  line-height: 1.1;
 }
-.completed-body { flex: 1; padding: 13px 18px; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
-.cbody-row1 { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.cbody-badge { font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 6px; }
-.cbody-field { font-size: 12px; color: #64748b; font-weight: 500; }
-.cbody-names { font-size: 16px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 7px; }
-.cbody-expert { font-size: 14px; font-weight: 600; color: #475569; }
-.cbody-row3 { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-.cbody-meta { font-size: 11px; color: #94a3b8; }
-.cbody-slot {
-  font-size: 11px; font-weight: 700; color: #155a38; background: #e8f5ef;
-  padding: 2px 8px; border-radius: 5px; border: 1px solid #b5d8cc;
+.cadmin-agenda-hdr-title span {
+  font-weight: 400;
+  color: #5a9e7e;
 }
-.cbody-slots-cnt {
-  font-size: 11px; font-weight: 700; color: #5b21b6;
-  background: #ede9fe; padding: 2px 8px; border-radius: 5px;
+.cadmin-agenda-hdr-sub {
+  font-size: 13px;
+  color: #6b9e85;
+  margin-top: 4px;
+  font-weight: 500;
 }
-.completed-empty { padding: 40px 20px; text-align: center; color: #94a3b8; font-size: 14px; }
+
+/* Agenda 리스트 */
+.cadmin-agenda-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 각 행 */
+.cadmin-row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 2px solid #fff;
+  cursor: pointer;
+  transition: filter .15s, transform .1s;
+  min-height: 72px;
+}
+.cadmin-row:last-child { border-bottom: none; }
+.cadmin-row:hover { filter: brightness(.96); transform: translateX(2px); }
+
+/* 날짜 셀 (왼쪽) */
+.cadmin-date {
+  flex-shrink: 0;
+  width: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  text-align: center;
+  border-right: 2px solid rgba(255,255,255,.7);
+}
+.cadmin-dow {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  opacity: .75;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.cadmin-day {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -1.5px;
+}
+.cadmin-time-badge {
+  font-size: 10px;
+  font-weight: 700;
+  margin-top: 5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255,255,255,.4);
+  letter-spacing: .3px;
+}
+
+/* 날짜 셀 색상 — 상태별 */
+.cadmin-date.s-matched  { background: #a8d8be; color: #1a4433; }
+.cadmin-date.s-confirmed { background: #7bbfa8; color: #0f3024; }
+.cadmin-date.s-pending  { background: #b8cfc9; color: #384d48; }
+
+/* 오른쪽 콘텐츠 영역 */
+.cadmin-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 14px 20px;
+  min-width: 0;
+}
+.cadmin-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+.cadmin-bullet {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.cadmin-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #1a3d2b;
+  letter-spacing: -.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+.cadmin-title-exp {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a7a60;
+}
+.cadmin-time {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 800;
+  color: #1a4433;
+  white-space: nowrap;
+}
+.cadmin-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.cadmin-chip {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+.cadmin-chip-status { background: rgba(255,255,255,.6); color: #155a38; border: 1px solid rgba(58,158,110,.25); }
+.cadmin-chip-field  { background: rgba(255,255,255,.45); color: #374151; border: 1px solid rgba(0,0,0,.07); }
+.cadmin-chip-slot   { background: rgba(255,255,255,.5); color: #5b21b6; border: 1px solid rgba(91,33,182,.2); }
+
+/* 행 배경색 팔레트 (4색 순환) */
+.cadmin-row-0 .cadmin-content { background: linear-gradient(135deg, #ddf4eb 0%, #e8f5f0 100%); }
+.cadmin-row-1 .cadmin-content { background: linear-gradient(135deg, #e8f5ef 0%, #f0faf5 100%); }
+.cadmin-row-2 .cadmin-content { background: linear-gradient(135deg, #d4eef9 0%, #e2f4fb 100%); }
+.cadmin-row-3 .cadmin-content { background: linear-gradient(135deg, #e2f4fb 0%, #eef9fd 100%); }
+.cadmin-row-0 .cadmin-date { }
+.cadmin-row-2 .cadmin-date.s-matched  { background: #8ecfc3; }
+.cadmin-row-2 .cadmin-date.s-confirmed { background: #68b5a8; }
+
+/* 빈 상태 */
+.cadmin-empty {
+  padding: 52px 24px;
+  text-align: center;
+  color: #8ab89e;
+  font-size: 14px;
+}
 </style>
 </head>
 <body>
@@ -1312,131 +1463,109 @@ function buildList() {
   var bodyHtml;
 
   if (isBoard) {
-    // == 새 2단 관리자 대시보드 ==
+    // ══════ 새 관리자 2단 대시보드 ══════
     var leftStats  = ['대기중', '입력중', '취소'];
     var rightStats = ['매칭완료', '확정완료'];
 
-    // 왼쪽 사이드바
-    var sidebarHtml = '<div class="dash-sidebar">';
+    bodyHtml = '<div class="cadmin-wrap">';
+
+    // ── [왼쪽] 사이드바: 대기중 / 입력중 / 취소 ──────────────────────────────
+    bodyHtml += '<div class="cadmin-sidebar">';
     leftStats.forEach(function(s) {
-      var c    = STATUS_CFG[s] || { bg: '#f1f5f9', color: '#374151' };
-      var cols = filtered.filter(function(m) { return (m['상태'] || '대기중') === s; });
-      sidebarHtml += '<div class="dash-sec">';
-      sidebarHtml += '<div class="dash-sec-hdr" style="background:'+c.bg+';color:'+c.color+';">' + s + '<span class="dash-sec-cnt">'+cols.length+'</span></div>';
-      sidebarHtml += '<div class="dash-sec-body">';
+      var c    = STATUS_CFG[s] || {bg:'#f1f5f9', color:'#374151'};
+      var cols = filtered.filter(function(m){ return (m['상태']||'대기중') === s; });
+      bodyHtml += '<div class="cadmin-sidebar-sec">';
+      bodyHtml += '<div class="cadmin-sec-hdr" style="background:'+c.bg+';color:'+c.color+';">';
+      bodyHtml += s+'<span class="cadmin-sec-cnt">'+cols.length+'</span>';
+      bodyHtml += '</div>';
+      bodyHtml += '<div class="cadmin-sec-body">';
       if (cols.length === 0) {
-        sidebarHtml += '<div class="dash-empty">해당 항목 없음</div>';
+        bodyHtml += '<div class="cadmin-sec-empty">없음</div>';
       }
-      cols.forEach(function(m) {
-        var id = m['매칭ID'] || '';
-        var compAvail = DATA.avail.filter(function(a){ return a['매칭ID']===id && a['역할']==='기업'; }).length;
-        var expAvail  = DATA.avail.filter(function(a){ return a['매칭ID']===id && a['역할']==='전문가'; }).length;
-        sidebarHtml += '<div class="dash-mini-card" onclick="showDetail(\''+id+'\')">'
-          + '<div class="dash-mini-card-top">' + (m['기업명'] || '-') + '</div>'
-          + '<div class="dash-mini-card-sub">'
-          + '<span>' + (m['전문가명'] || '-') + '</span>'
-          + (m['전문분야'] ? '<span>· ' + m['전문분야'] + '</span>' : '')
-          + '<span style="color:'+(compAvail>0?'#155a38':'#dc2626')+'">기업 '+(compAvail>0?'✓':'✗')+'</span>'
-          + '<span style="color:'+(expAvail>0?'#155a38':'#dc2626')+'">전문가 '+(expAvail>0?'✓':'✗')+'</span>'
-          + '</div></div>';
-      });
-      sidebarHtml += '</div></div>';
+      cols.forEach(function(m){ bodyHtml += buildBoardCard(m); });
+      bodyHtml += '</div>'; // end cadmin-sec-body
+      bodyHtml += '</div>'; // end cadmin-sidebar-sec
     });
-    sidebarHtml += '</div>';
+    bodyHtml += '</div>'; // end cadmin-sidebar
 
-    // 오른쪽 완료 리스트
-    var rightItems = filtered.filter(function(m) {
-      return rightStats.indexOf(m['상태'] || '대기중') !== -1;
+    // ── [오른쪽] Agenda 완료 리스트: 매칭완료 / 확정완료 ─────────────────────
+    bodyHtml += '<div class="cadmin-main">';
+
+    // 헤더
+    bodyHtml += '<div class="cadmin-agenda-hdr">';
+    bodyHtml += '<div class="cadmin-agenda-hdr-brand">Matching Admin</div>';
+    bodyHtml += '<div class="cadmin-agenda-hdr-title">Agenda <span>/ Schedule</span></div>';
+    bodyHtml += '<div class="cadmin-agenda-hdr-sub">Completed mentoring schedule</div>';
+    bodyHtml += '</div>';
+
+    // 리스트
+    var completedItems = filtered.filter(function(m){
+      return rightStats.indexOf(m['상태']||'대기중') > -1;
     });
 
-    var rightHtml = '<div class="dash-right-wrap">';
-    rightHtml += '<div class="dash-right-hdr">'
-      + '<span class="dash-right-hdr-title">Agenda / Schedule</span>'
-      + '<span class="dash-right-hdr-sub">완료된 매칭 일정 리스트</span>'
-      + '</div>';
-    rightHtml += '<div class="completed-list">';
+    bodyHtml += '<div class="cadmin-agenda-list">';
 
-    if (rightItems.length === 0) {
-      rightHtml += '<div class="completed-empty">매칭완료 · 확정완료 항목이 없습니다.</div>';
+    if (completedItems.length === 0) {
+      bodyHtml += '<div class="cadmin-empty">완료된 매칭이 없습니다.</div>';
     }
 
-    rightItems.forEach(function(m) {
+    completedItems.forEach(function(m, idx) {
       var id     = m['매칭ID'] || '';
       var status = m['상태'] || '대기중';
-      var c      = STATUS_CFG[status] || { bg: '#f1f5f9', color: '#374151' };
-      var matched = calcMatchedSlots(id);
+      var c      = STATUS_CFG[status] || {bg:'#f1f5f9', color:'#374151'};
+      var db     = parseDateBox(m);
 
-      // parseDateBox: 생성일시는 절대 사용 안 함
-      var dateBoxCls, dMonth, dDay, dTime;
-      if (status === '확정완료' && m['확정슬롯']) {
-        var raw = m['확정슬롯'];
-        var mMatch = raw.match(/(\d{1,2})월\s*(\d{1,2})일/);
-        var tMatch = raw.match(/(\d{1,2}:\d{2})/);
-        if (mMatch) {
-          dMonth = mMatch[1] + '월';
-          dDay   = mMatch[2];
-        } else {
-          var parts = raw.match(/(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
-          if (parts) { dMonth = parts[2] + '월'; dDay = parts[3]; }
-          else       { dMonth = '확정'; dDay = '완료'; }
-        }
-        dTime = tMatch ? tMatch[1] : '';
-        dateBoxCls = 'status-confirmed';
-      } else if (status === '매칭완료' && matched.length > 0) {
-        var firstSlot = matched[0];
-        var sDate = firstSlot.date;
-        var sParts = sDate.match(/(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/);
-        if (sParts) { dMonth = sParts[2] + '월'; dDay = sParts[3]; }
-        else        { dMonth = '매칭'; dDay = '완료'; }
-        dTime = firstSlot.time || '';
-        dateBoxCls = 'status-matched';
-      } else if (status === '매칭완료') {
-        dMonth = '매칭'; dDay = '대기'; dTime = '';
-        dateBoxCls = 'status-pending';
-      } else {
-        dMonth = '일정'; dDay = '미정'; dTime = '';
-        dateBoxCls = 'status-pending';
-      }
+      // 겹치는 슬롯 수
+      var matched  = (status === '매칭완료') ? calcMatchedSlots(id) : [];
+      var slotCnt  = matched.length;
 
-      var isConf = status === '확정완료';
-      rightHtml += '<div class="completed-item' + (isConf ? ' is-confirmed' : '') + '" onclick="showDetail(\''+id+'\')">'
-        + '<div class="completed-date ' + dateBoxCls + '">'
-        + '<span class="cdate-m">' + dMonth + '</span>'
-        + '<span class="cdate-d">' + dDay   + '</span>'
-        + (dTime ? '<span class="cdate-t">' + dTime + '</span>' : '')
-        + '</div>';
+      // 행 배경 순환 클래스
+      var rowCls = 'cadmin-row cadmin-row-' + (idx % 4);
 
-      rightHtml += '<div class="completed-body">';
-      rightHtml += '<div class="cbody-row1">'
-        + '<span class="cbody-badge" style="background:'+c.bg+';color:'+c.color+';">'+status+'</span>'
-        + (m['전문분야'] ? '<span class="cbody-field">'+m['전문분야']+'</span>' : '')
-        + (m['희망인증'] ? '<span class="cbody-field">· '+m['희망인증']+'</span>' : '')
-        + '</div>';
-      rightHtml += '<div class="cbody-names">'
-        + (m['기업명'] || '-')
-        + '<span style="color:#cbd5e1;font-size:13px;">×</span>'
-        + '<span class="cbody-expert">' + (m['전문가명'] || '-') + '</span>'
-        + '</div>';
-      rightHtml += '<div class="cbody-row3">';
-      if (m['확정슬롯']) rightHtml += '<span class="cbody-slot">📅 '+m['확정슬롯']+'</span>';
-      if (matched.length > 0) rightHtml += '<span class="cbody-slots-cnt">✨ 겹치는 슬롯 '+matched.length+'개</span>';
-      if (m['기업담당자']) rightHtml += '<span class="cbody-meta">담당자: '+m['기업담당자']+'</span>';
-      rightHtml += '</div>';
-      rightHtml += '</div>'; // end completed-body
-      rightHtml += '</div>'; // end completed-item
+      bodyHtml += '<div class="'+rowCls+'" onclick="showDetail(\''+id+'\')">'; // row open
+
+      // 날짜 셀
+      bodyHtml += '<div class="cadmin-date '+db.cls+'">';
+      bodyHtml += '<div class="cadmin-dow">'+db.dow+'</div>';
+      bodyHtml += '<div class="cadmin-day">'+db.day+'</div>';
+      if (db.time) bodyHtml += '<div class="cadmin-time-badge">'+db.time+'</div>';
+      bodyHtml += '</div>'; // end cadmin-date
+
+      // 콘텐츠 영역
+      bodyHtml += '<div class="cadmin-content">';
+
+      // 제목 행: bullet · 기업명 × 전문가명 · 시간
+      bodyHtml += '<div class="cadmin-title-row">';
+      bodyHtml += '<span class="cadmin-bullet" style="background:'+c.color+';"></span>';
+      bodyHtml += '<span class="cadmin-title">'
+        + (m['기업명']||'-')
+        + '<span class="cadmin-title-exp"> × '+(m['전문가명']||'-')+'</span>'
+        + '</span>';
+      if (db.time) bodyHtml += '<span class="cadmin-time">'+db.time+'</span>';
+      bodyHtml += '</div>'; // end cadmin-title-row
+
+      // 메타 행: 상태 · 전문분야 · 희망인증 · 확정슬롯 · 슬롯수
+      bodyHtml += '<div class="cadmin-meta">';
+      bodyHtml += '<span class="cadmin-chip cadmin-chip-status" style="background:'+c.bg+';color:'+c.color+';">'+status+'</span>';
+      if (m['전문분야']) bodyHtml += '<span class="cadmin-chip cadmin-chip-field">'+m['전문분야']+'</span>';
+      if (m['희망인증']) bodyHtml += '<span class="cadmin-chip cadmin-chip-field">'+m['희망인증']+'</span>';
+      if (m['확정슬롯']) bodyHtml += '<span class="cadmin-chip cadmin-chip-slot">📅 '+m['확정슬롯']+'</span>';
+      if (slotCnt > 0)  bodyHtml += '<span class="cadmin-chip cadmin-chip-slot">✨ 겹치는 슬롯 '+slotCnt+'개</span>';
+      bodyHtml += '</div>'; // end cadmin-meta
+
+      bodyHtml += '</div>'; // end cadmin-content
+      bodyHtml += '</div>'; // end cadmin-row
     });
 
-    rightHtml += '</div>'; // end completed-list
-    rightHtml += '</div>'; // end dash-right-wrap
-
-    bodyHtml = '<div class="admin-dashboard">' + sidebarHtml + rightHtml + '</div>';
+    bodyHtml += '</div>'; // end cadmin-agenda-list
+    bodyHtml += '</div>'; // end cadmin-main
+    bodyHtml += '</div>'; // end cadmin-wrap
 
   } else {
-    bodyHtml = filtered.length === 0
+    bodyHtml = filtered.length===0
       ? '<div class="empty-state"><div style="font-size:40px;margin-bottom:12px;">📭</div><div style="font-weight:700;margin-bottom:6px;">매칭 내역이 없습니다</div></div>'
-      : '<div class="match-list">' + filtered.map(buildMatchCard).join('') + '</div>';
+      : '<div class="match-list">'+filtered.map(buildMatchCard).join('')+'</div>';
   }
-
   return '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">'
     +'<div><div style="font-size:22px;font-weight:900;color:#1a3d2b;letter-spacing:-.5px;">멘토링 상담예약 관리</div>'
     +'<div style="font-size:13px;color:#64748b;margin-top:3px;">배정된 기업-전문가 매칭의 일정 조율 현황</div></div>'
@@ -2097,6 +2226,59 @@ function submitAvailPage(){
 }
 
 // ══ 유틸 ══
+
+// ── 완료 리스트 날짜 파싱 헬퍼 ──────────────────────────────────────────────
+function parseDateBox(m) {
+  var status = m['상태'] || '대기중';
+  var id     = m['매칭ID'] || '';
+
+  // 확정완료 + 확정슬롯 있음 → 확정슬롯 기준
+  if (status === '확정완료' && m['확정슬롯']) {
+    return parseSlotLabel(m['확정슬롯'], 's-confirmed');
+  }
+  // 매칭완료 → 겹치는 슬롯 첫 번째 기준
+  if (status === '매칭완료') {
+    var matched = calcMatchedSlots(id);
+    if (matched.length > 0) {
+      return parseSlotFromDateStr(matched[0].date, matched[0].time, 's-matched');
+    }
+    // 겹치는 슬롯 없음
+    return { dow: '매칭', day: '대기', time: '', cls: 's-pending', slotCnt: 0 };
+  }
+  // 확정완료인데 슬롯 없음 (예외 케이스)
+  return { dow: '일정', day: '미정', time: '', cls: 's-pending', slotCnt: 0 };
+}
+
+function parseSlotLabel(label, cls) {
+  var KD = ['일','월','화','수','목','금','토'];
+  // 시간 추출
+  var timeMatch = label.match(/(\d{1,2}:\d{2})/);
+  var time = timeMatch ? timeMatch[1] : '';
+  // YYYY-MM-DD 또는 YYYY.MM.DD 형태
+  var fullDate = label.match(/(\d{4})[-.](\d{1,2})[-.](\d{1,2})/);
+  if (fullDate) {
+    var d = new Date(fullDate[1]+'-'+fullDate[2].padStart(2,'0')+'-'+fullDate[3].padStart(2,'0')+'T00:00:00');
+    if (!isNaN(d.getTime())) {
+      return { dow: KD[d.getDay()], day: d.getDate(), time: time, cls: cls };
+    }
+  }
+  // MM월 DD일 / MM.DD 형태
+  var monthDay = label.match(/(\d{1,2})[월./](\d{1,2})/);
+  if (monthDay) {
+    return { dow: parseInt(monthDay[1])+'월', day: parseInt(monthDay[2]), time: time, cls: cls };
+  }
+  return { dow: '완료', day: '일정', time: time, cls: cls };
+}
+
+function parseSlotFromDateStr(dateStr, time, cls) {
+  var KD = ['일','월','화','수','목','금','토'];
+  var d = new Date(dateStr + 'T00:00:00');
+  if (!isNaN(d.getTime())) {
+    return { dow: KD[d.getDay()], day: d.getDate(), time: time, cls: cls };
+  }
+  return { dow: '매칭', day: '완료', time: time, cls: cls };
+}
+
 function calcMatchedSlots(matchId){
   var compRows=DATA.avail.filter(function(a){return a['매칭ID']===matchId&&a['역할']==='기업';});
   var expRows =DATA.avail.filter(function(a){return a['매칭ID']===matchId&&a['역할']==='전문가';});
