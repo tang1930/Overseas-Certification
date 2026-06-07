@@ -1325,7 +1325,7 @@ function buildList() {
       } else {
         cols.forEach(function(m) {
           var id = m['매칭ID'] || m['id'] || '';
-          bodyHtml += '<div class="mini-card" onclick="showDetail(\''+id+'\')">'
+          bodyHtml += '<div class="mini-card" onclick="showDetail(&quot;'+id+'&quot;)">'
             + '<div class="mini-card-co">'+(m['기업명']||'-')+'</div>'
             + '<div class="mini-card-ex">'+(m['전문가명']||'-')+' 전문가</div>'
             + '</div>';
@@ -1362,7 +1362,7 @@ function buildList() {
         var confirmedStr = m['확정슬롯'] ? String(m['확정슬롯']) : '';
         var rc = rowCls[idx % 4];
 
-        bodyHtml += '<div class="cadmin-row '+rc+'" onclick="showDetail(\''+id+'\')">'
+        bodyHtml += '<div class="cadmin-row '+rc+'" onclick="showDetail(&quot;'+id+'&quot;)">'
           + '<div class="cadmin-date '+db.cls+'">'
           + '<div class="cadmin-dow">'+db.dow+'</div>'
           + '<div class="cadmin-day"'+(db.dow==='매칭'||db.dow==='일정'?' style="font-size:16px;letter-spacing:-.5px;"':'')+'>'+db.day+'</div>'
@@ -1386,9 +1386,9 @@ function buildList() {
       });
     }
 
-    bodyHtml += '</div>'   // end cadmin-agenda-list
-      + '</div>'           // end cadmin-main
-      + '</div>';          // end cadmin-wrap
+    bodyHtml += '</div>';  // end cadmin-agenda-list
+    bodyHtml += '</div>';  // end cadmin-main
+    bodyHtml += '</div>';  // end cadmin-wrap
   } else {
     bodyHtml = filtered.length===0
       ? '<div class="empty-state"><div style="font-size:40px;margin-bottom:12px;">📭</div><div style="font-weight:700;margin-bottom:6px;">매칭 내역이 없습니다</div></div>'
@@ -1422,7 +1422,7 @@ function buildBoardCard(m) {
   var expAvail  = DATA.avail.filter(function(a){return a['매칭ID']===id&&a['역할']==='전문가';}).length;
   var matched   = calcMatchedSlots(id);
 
-  return '<div class="board-card" onclick="showDetail(\''+id+'\')">'
+  return '<div class="board-card" onclick="showDetail(&quot;'+id+'&quot;)">'
     +'<div class="board-card-top">'
     +'<div>'
     +'<div class="board-card-company">'+(m['기업명']||'-')+'</div>'
@@ -1454,7 +1454,7 @@ function buildMatchCard(m) {
   var expAvail =DATA.avail.filter(function(a){return a['매칭ID']===id&&a['역할']==='전문가';}).length;
   var matched  =calcMatchedSlots(id);
 
-  return '<div class="match-card" onclick="showDetail(\''+id+'\')">'
+  return '<div class="match-card" onclick="showDetail(&quot;'+id+'&quot;)">'
     +'<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">'
     +'<div style="flex:1;min-width:0;">'
     +'<div style="display:flex;align-items:center;gap:10px;margin-bottom:7px;flex-wrap:wrap;">'
