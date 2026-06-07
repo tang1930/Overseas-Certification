@@ -1123,7 +1123,10 @@ body {
 .cadmin-chip { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
 .cadmin-chip-status { background: rgba(255,255,255,.6); border: 1px solid rgba(58,158,110,.25); }
 .cadmin-chip-field  { background: rgba(255,255,255,.45); color: #374151; border: 1px solid rgba(0,0,0,.07); }
-.cadmin-chip-slot   { background: rgba(255,255,255,.5); color: #5b21b6; border: 1px solid rgba(91,33,182,.2); }
+.cadmin-chip-cert   { background: rgba(209,250,229,.55); color: #065f46; border: 1px solid rgba(6,95,70,.15); }
+.cadmin-chip-slot   { background: rgba(237,233,254,.7); color: #5b21b6; border: 1px solid rgba(91,33,182,.2); }
+.cadmin-chip-date   { background: rgba(237,233,254,.7); color: #5b21b6; border: 1px solid rgba(91,33,182,.2); }
+.cadmin-chip-none   { background: rgba(241,245,249,.7); color: #94a3b8; border: 1px solid rgba(0,0,0,.06); font-style: italic; }
 </style>
 </head>
 <body>
@@ -1280,32 +1283,85 @@ function buildList() {
       '취소':   { bg:'#fee2e2', color:'#991b1b' }
     };
 
-    function parseDateBox(m) {
+    var KD = ['일','월','화','수','목','금','토'];
+
+    // yyyy-MM-dd 또는 M/D 등 다양한 날짜 문자열에서 { year, month, day } 추출
+    // raw Date 문자열(Sat Dec 30 1899...) 완전 차단
+    function parseDateFields(raw) {
+      if (!raw) return null;
+      var s = String(raw).trim();
+      if (/^(Sun|Mon|Tue|Wed|Thu|Fri|Sat)\s/i.test(s)) return null;
+      if (/\b(1899|1900)\b/.test(s)) return null;
+      var m1 = s.match(/(\d{4})[-.](\d{1,2})[-.](\d{1,2})/);
+      if (m1) return { year: parseInt(m1[1]), month: parseInt(m1[2]), day: parseInt(m1[3]) };
+      var m2 = s.match(/(\d{1,2})[\/월](\d{1,2})/);
+      if (m2) return { year: 2026, month: parseInt(m2[1]), day: parseInt(m2[2]) };
+      return null;
+    }
+
+    // 날짜+시간 → "2026.06.12 (목) 14:00" 형식
+    function formatScheduleText(df, time) {
+      if (!df) return '';
+      var d = new Date(df.year, df.month - 1, df.day);
+      var mm = String(df.month).padStart(2, '0');
+      var dd = String(df.day).padStart(2, '0');
+      var base = df.year + '.' + mm + '.' + dd + ' (' + KD[d.getDay()] + ')';
+      return time ? base + ' ' + time : base;
+    }
+
+    // 날짜칸(왼쪽)과 chip(오른쪽)이 같은 데이터를 공유하는 단일 소스 함수
+    function getDisplaySchedule(m) {
       var status = m['상태'] || '대기중';
-      var KD = ['일','월','화','수','목','금','토'];
-      if (status === '확정완료' && m['확정슬롯']) {
-        var s = String(m['확정슬롯']);
-        var md = s.match(/(\d{1,2})[월\/\-.](\d{1,2})/);
-        var tm = s.match(/(\d{1,2}:\d{2})/);
-        if (md) {
-          var d = new Date(2026, parseInt(md[1])-1, parseInt(md[2]));
-          return { dow: KD[d.getDay()], day: md[2], time: tm?tm[1]:'', cls:'s-confirmed', bullet:'#155a38' };
+      // 1순위: 확정완료 + 확정슬롯
+      if ((status === '확정완료') && m['확정슬롯']) {
+        var raw = String(m['확정슬롯']);
+        var df = parseDateFields(raw);
+        var tm = raw.match(/(\d{1,2}:\d{2})/);
+        var time = tm ? tm[1] : '';
+        if (df) {
+          var d = new Date(df.year, df.month - 1, df.day);
+          return {
+            dow: KD[d.getDay()], day: String(df.day), time: time,
+            cls: 's-confirmed', bullet: '#155a38',
+            chipType: 'confirmed',
+            chipText: '📅 ' + formatScheduleText(df, time),
+            slotCnt: 0
+          };
         }
       }
-      if (status === '매칭완료') {
+      // 2순위: 매칭완료/확정완료 + calcMatchedSlots
+      if (status === '매칭완료' || status === '확정완료') {
         var mid = m['매칭ID'] || m['id'] || '';
         var slots = calcMatchedSlots(mid);
         if (slots && slots.length > 0) {
           var first = slots[0];
-          var dp = first.date.split('-');
+          var dp = (first.date || '').split('-');
           if (dp.length === 3) {
-            var d2 = new Date(parseInt(dp[0]), parseInt(dp[1])-1, parseInt(dp[2]));
-            return { dow: KD[d2.getDay()], day: dp[2].replace(/^0/,''), time: first.time, cls:'s-matched', bullet:'#3a9e6e', slotCnt: slots.length };
+            var yr = parseInt(dp[0]), mo = parseInt(dp[1]), dy = parseInt(dp[2]);
+            var d2 = new Date(yr, mo - 1, dy);
+            var df2 = { year: yr, month: mo, day: dy };
+            var firstText = formatScheduleText(df2, first.time);
+            return {
+              dow: KD[d2.getDay()], day: String(dy), time: first.time,
+              cls: status === '확정완료' ? 's-confirmed' : 's-matched',
+              bullet: status === '확정완료' ? '#155a38' : '#3a9e6e',
+              chipType: 'slot',
+              chipText: slots.length === 1 ? '✨ ' + firstText : '✨ 겹치는 슬롯 ' + slots.length + '개',
+              slotCnt: slots.length
+            };
           }
         }
-        return { dow:'매칭', day:'대기', time:'', cls:'s-pending', bullet:'#3a9e6e', slotCnt:0 };
+        return {
+          dow: '매칭', day: '대기', time: '',
+          cls: 's-pending', bullet: '#3a9e6e',
+          chipType: 'none', chipText: '', slotCnt: 0
+        };
       }
-      return { dow:'일정', day:'미정', time:'', cls:'s-pending', bullet:'#155a38' };
+      return {
+        dow: '일정', day: '미정', time: '',
+        cls: 's-pending', bullet: '#155a38',
+        chipType: 'none', chipText: '', slotCnt: 0
+      };
     }
 
     bodyHtml = '<div class="cadmin-wrap">';
@@ -1356,30 +1412,38 @@ function buildList() {
         var id     = m['매칭ID'] || m['id'] || '';
         var status = m['상태'] || '대기중';
         var sc     = STATUS_CFG[status] || { bg:'#f1f5f9', color:'#374151' };
-        var db     = parseDateBox(m);
-        var slots  = calcMatchedSlots(id);
-        var slotCnt = slots ? slots.length : 0;
-        var confirmedStr = m['확정슬롯'] ? String(m['확정슬롯']) : '';
-        var rc = rowCls[idx % 4];
+        var ds     = getDisplaySchedule(m);   // 단일 소스: 날짜칸 + chip 공유
+        var rc     = rowCls[idx % 4];
+
+        // 날짜칸: 일정 없으면 작은 폰트로 "매칭/일정" 표시
+        var dayStyle = (ds.dow==='매칭'||ds.dow==='일정') ? ' style="font-size:16px;letter-spacing:-.5px;"' : '';
+
+        // 오른쪽 일정 chip
+        var scheduleChip = '';
+        if (ds.chipText) {
+          var chipCls = ds.chipType === 'confirmed' ? 'cadmin-chip-date' : 'cadmin-chip-slot';
+          scheduleChip = '<span class="cadmin-chip ' + chipCls + '">' + ds.chipText + '</span>';
+        } else {
+          scheduleChip = '<span class="cadmin-chip cadmin-chip-none">일정 미정</span>';
+        }
 
         bodyHtml += '<div class="cadmin-row '+rc+'" onclick="showDetail(&quot;'+id+'&quot;)">'
-          + '<div class="cadmin-date '+db.cls+'">'
-          + '<div class="cadmin-dow">'+db.dow+'</div>'
-          + '<div class="cadmin-day"'+(db.dow==='매칭'||db.dow==='일정'?' style="font-size:16px;letter-spacing:-.5px;"':'')+'>'+db.day+'</div>'
-          + (db.time ? '<div class="cadmin-time-badge">'+db.time+'</div>' : '')
+          + '<div class="cadmin-date '+ds.cls+'">'
+          + '<div class="cadmin-dow">'+ds.dow+'</div>'
+          + '<div class="cadmin-day"'+dayStyle+'>'+ds.day+'</div>'
+          + (ds.time ? '<div class="cadmin-time-badge">'+ds.time+'</div>' : '')
           + '</div>'
           + '<div class="cadmin-content">'
           + '<div class="cadmin-title-row">'
-          + '<span class="cadmin-bullet" style="background:'+db.bullet+';"></span>'
+          + '<span class="cadmin-bullet" style="background:'+ds.bullet+';"></span>'
           + '<span class="cadmin-title">'+(m['기업명']||'-')+' <span class="cadmin-title-exp">× '+(m['전문가명']||'-')+'</span></span>'
-          + (db.time ? '<span class="cadmin-time">'+db.time+'</span>' : '')
+          + (ds.time ? '<span class="cadmin-time">'+ds.time+'</span>' : '')
           + '</div>'
           + '<div class="cadmin-meta">'
           + '<span class="cadmin-chip cadmin-chip-status" style="background:'+sc.bg+';color:'+sc.color+';">'+status+'</span>'
           + (m['전문분야'] ? '<span class="cadmin-chip cadmin-chip-field">'+m['전문분야']+'</span>' : '')
-          + (m['희망인증'] ? '<span class="cadmin-chip cadmin-chip-field">'+m['희망인증']+'</span>' : '')
-          + (confirmedStr ? '<span class="cadmin-chip cadmin-chip-slot">📅 '+confirmedStr+'</span>'
-             : (slotCnt > 0 ? '<span class="cadmin-chip cadmin-chip-slot">✨ 겹치는 슬롯 '+slotCnt+'개</span>' : ''))
+          + (m['희망인증'] ? '<span class="cadmin-chip cadmin-chip-cert">'+m['희망인증']+'</span>' : '')
+          + scheduleChip
           + '</div>'
           + '</div>'
           + '</div>';
