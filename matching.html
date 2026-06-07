@@ -1165,6 +1165,277 @@ body {
 .cadmin-chip-field  { background: rgba(255,255,255,.45); color: #374151; border: 1px solid rgba(0,0,0,.07); }
 .cadmin-chip-slot   { background: rgba(255,255,255,.5); color: #5b21b6; border: 1px solid rgba(91,33,182,.2); }
 
+
+/* ══ AV2: 가용시간 선택 화면 ══ */
+.av2-wrap {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #edfbf3 0%, #e8f5ef 40%, #f0f9ff 100%);
+  display: flex; flex-direction: column;
+  font-family: 'Noto Sans KR', -apple-system, sans-serif;
+  padding: 0 0 0;
+}
+
+/* 헤더 카드 */
+.av2-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  background: #fff; border-bottom: 1px solid #e2e8f0;
+  padding: 20px 32px; flex-wrap: wrap;
+}
+.av2-header-left { display: flex; align-items: center; gap: 18px; }
+.av2-avatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  border: 2px solid #6ee7b7;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.av2-header-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.av2-step-badge {
+  background: #1a8c5a; color: #fff;
+  font-size: 10px; font-weight: 900; letter-spacing: 1px;
+  padding: 2px 8px; border-radius: 999px;
+}
+.av2-step-label { font-size: 12px; color: #64748b; font-weight: 600; }
+.av2-header-name { font-size: 20px; font-weight: 900; color: #1a2e22; letter-spacing: -.4px; margin-bottom: 6px; }
+.av2-header-meta { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #475569; flex-wrap: wrap; }
+.av2-header-meta b { color: #1a8c5a; font-weight: 800; }
+.av2-meta-sep { color: #cbd5e1; }
+.av2-warn-box {
+  background: #fffbeb; border: 1.5px solid #fcd34d;
+  border-radius: 10px; padding: 12px 18px;
+  font-size: 13px; font-weight: 700; color: #92400e;
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* 본문 3단 */
+.av2-body {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) 240px 260px;
+  gap: 16px;
+  padding: 20px 24px;
+  flex: 1; align-items: start;
+}
+
+/* 공통 패널 */
+.av2-panel {
+  background: #fff; border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.03);
+  overflow: hidden;
+}
+.av2-panel-hdr { padding: 18px 20px 12px; border-bottom: 1px solid #f1f5f9; }
+.av2-agenda-hdr { display: flex; align-items: center; justify-content: space-between; }
+.av2-panel-title {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 15px; font-weight: 900; color: #1a2e22; margin-bottom: 3px;
+}
+.av2-panel-sub { font-size: 12px; color: #64748b; }
+.av2-step-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #1a8c5a; color: #fff;
+  font-size: 12px; font-weight: 900;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.av2-total-chip {
+  font-size: 11.5px; font-weight: 800;
+  background: #dcfce7; color: #166534;
+  padding: 3px 10px; border-radius: 999px;
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* 달력 패널 */
+.av2-cal-panel { }
+.av2-cal-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; padding: 16px 16px 0;
+}
+.av2-month-block { padding: 0 8px 16px; }
+.av2-month-title {
+  text-align: center; font-size: 14px; font-weight: 800; color: #1a2e22;
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.av2-dow-row {
+  display: grid; grid-template-columns: repeat(7,1fr);
+  margin-bottom: 4px;
+}
+.av2-dow {
+  text-align: center; font-size: 11px; font-weight: 700;
+  color: #94a3b8; padding: 4px 0;
+}
+.av2-dow.av2-sun { color: #ef4444; }
+.av2-dow.av2-sat { color: #3b82f6; }
+.av2-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.av2-day {
+  aspect-ratio: 1; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 600; position: relative;
+  flex-direction: column; gap: 1px;
+  transition: all .12s;
+}
+.av2-day.avail {
+  cursor: pointer; color: #1a2e22;
+  border: 1.5px solid #d1fae5; background: #f0fdf4;
+}
+.av2-day.avail:hover { border-color: #1a8c5a; background: #dcfce7; }
+.av2-day.avail.has-slots { border-color: #1a8c5a; background: #bbf7d0; font-weight: 800; }
+.av2-day.avail.selected {
+  background: #1a8c5a; color: #fff;
+  border-color: #155a38; font-weight: 900;
+  box-shadow: 0 2px 8px rgba(26,140,90,.35);
+}
+.av2-day.disabled { color: #d1d5db; font-weight: 400; }
+.av2-day.av2-sun { color: #ef4444; }
+.av2-day.av2-sat { color: #3b82f6; }
+.av2-day.avail.selected.av2-sun,
+.av2-day.avail.selected.av2-sat { color: #fff; }
+.av2-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: #1a8c5a; flex-shrink: 0;
+}
+.av2-day.avail.selected .av2-dot { background: rgba(255,255,255,.8); }
+.av2-cal-legend {
+  display: flex; gap: 16px; padding: 12px 20px 16px;
+  border-top: 1px solid #f1f5f9; flex-wrap: wrap;
+}
+.av2-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #64748b; }
+.av2-legend-dot {
+  width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0;
+}
+.av2-legend-dot.sel { background: #1a8c5a; }
+.av2-legend-dot.avail { background: #f0fdf4; border: 1.5px solid #1a8c5a; }
+.av2-legend-dot.dis { background: #f1f5f9; border: 1.5px solid #e2e8f0; }
+
+/* 시간 선택 패널 */
+.av2-time-panel { }
+.av2-sel-date-box {
+  margin: 14px 16px 12px;
+  background: #f0fdf4; border: 1.5px solid #bbf7d0;
+  border-radius: 10px; padding: 10px 14px;
+  font-size: 13px; font-weight: 700; color: #166534;
+}
+.av2-time-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 8px; padding: 0 16px 14px;
+}
+.av2-time-btn {
+  padding: 13px 8px;
+  border: 1.5px solid #e2e8f0; border-radius: 10px;
+  background: #fff; color: #374151;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: all .12s;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.av2-time-btn:hover { border-color: #1a8c5a; background: #f0fdf4; color: #1a8c5a; }
+.av2-time-btn.on {
+  background: #1a8c5a; color: #fff;
+  border-color: #155a38;
+  box-shadow: 0 2px 8px rgba(26,140,90,.3);
+}
+.av2-check { font-size: 11px; }
+.av2-time-legend {
+  display: flex; gap: 10px; padding: 10px 16px 14px;
+  border-top: 1px solid #f1f5f9; flex-wrap: wrap;
+}
+
+/* 선택 요약 패널 */
+.av2-agenda-scroll {
+  padding: 10px 14px; display: flex; flex-direction: column; gap: 8px;
+  min-height: 120px;
+}
+.av2-agenda-item {
+  display: flex; align-items: center; gap: 10px;
+  background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 10px; padding: 10px 12px;
+  transition: border-color .12s;
+}
+.av2-agenda-item:hover { border-color: #1a8c5a; }
+.av2-agenda-date { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.av2-agenda-dot { color: #1a8c5a; font-size: 8px; }
+.av2-agenda-lbl { font-size: 12.5px; font-weight: 800; color: #1a2e22; white-space: nowrap; }
+.av2-agenda-times { flex: 1; display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; }
+.av2-agenda-time {
+  background: #dcfce7; color: #166534;
+  font-size: 11.5px; font-weight: 700;
+  padding: 3px 8px; border-radius: 999px;
+}
+.av2-agenda-del {
+  background: none; border: 1px solid #e2e8f0; border-radius: 6px;
+  color: #94a3b8; font-size: 12px; cursor: pointer;
+  padding: 3px 7px; flex-shrink: 0;
+  transition: all .12s;
+}
+.av2-agenda-del:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+.av2-agenda-empty {
+  text-align: center; padding: 24px 12px; color: #94a3b8;
+}
+.av2-info-box {
+  margin: 0 14px 10px;
+  background: #fffbeb; border: 1px solid #fde68a;
+  border-radius: 10px; padding: 12px 14px;
+}
+.av2-info-title { font-size: 12px; font-weight: 800; color: #92400e; margin-bottom: 6px; }
+.av2-info-items { font-size: 11.5px; color: #78350f; line-height: 1.8; }
+.av2-contact-box {
+  margin: 0 14px 16px;
+  background: #f8fafc; border-radius: 9px;
+  padding: 10px 14px; font-size: 12px; color: #475569;
+}
+
+/* 하단 액션 바 */
+.av2-action-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #fff; border-top: 1px solid #e2e8f0;
+  padding: 14px 28px; gap: 16px; flex-wrap: wrap;
+  position: sticky; bottom: 0; z-index: 10;
+}
+.av2-action-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
+.av2-action-cal { font-size: 18px; }
+.av2-action-cnt { font-weight: 700; color: #1a2e22; }
+.av2-action-cnt b { color: #1a8c5a; font-size: 18px; }
+.av2-action-sep { color: #cbd5e1; }
+.av2-action-preview-label { font-size: 12px; color: #64748b; }
+.av2-preview-chip {
+  background: #f0fdf4; border: 1.5px solid #bbf7d0;
+  color: #166534; font-size: 12.5px; font-weight: 700;
+  padding: 4px 12px; border-radius: 999px; white-space: nowrap;
+}
+.av2-extra-cnt { font-size: 12px; color: #64748b; }
+.av2-action-right { display: flex; align-items: center; gap: 10px; }
+.av2-btn-reset {
+  padding: 11px 24px; border: 1.5px solid #e2e8f0;
+  border-radius: 9px; background: #fff; color: #64748b;
+  font-size: 13px; font-weight: 700; font-family: inherit; cursor: pointer;
+  transition: all .12s;
+}
+.av2-btn-reset:hover { border-color: #94a3b8; color: #374151; }
+.av2-btn-submit {
+  padding: 12px 28px;
+  background: linear-gradient(135deg, #1a8c5a, #155a38);
+  border: none; border-radius: 9px; color: #fff;
+  font-size: 14px; font-weight: 900; font-family: inherit; cursor: pointer;
+  box-shadow: 0 3px 12px rgba(26,140,90,.35);
+  transition: all .12s; white-space: nowrap; letter-spacing: -.2px;
+}
+.av2-btn-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(26,140,90,.45); }
+.av2-btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.av2-action-note {
+  text-align: center; padding: 8px 0 12px;
+  font-size: 11.5px; color: #94a3b8;
+}
+
+/* 반응형 */
+@media (max-width: 960px) {
+  .av2-body { grid-template-columns: 1fr 1fr; }
+  .av2-agenda-panel { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .av2-body { grid-template-columns: 1fr; padding: 12px; }
+  .av2-cal-grid { grid-template-columns: 1fr; }
+  .av2-header { padding: 14px 16px; }
+  .av2-action-bar { padding: 12px 16px; }
+}
 </style>
 </head>
 <body>
@@ -2075,6 +2346,10 @@ function renderAvailInput(match,role,existingAvail){
   window._availMatchId=matchId;
   window._availRole=role;
   window._availName=name;
+  window._lastMatch=match;
+  window._lastRole=role;
+  window._lastName=name;
+  window._lastDateOpts=dateOptions;
 
   if(alreadySub){
     myAvail.forEach(function(a){
@@ -2087,24 +2362,28 @@ function renderAvailInput(match,role,existingAvail){
 }
 
 function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
-  var color=role==='기업'?'#2d7a55':'#1a6640';
-  var icon =role==='기업'?'🏢':'👨\u200d💼';
-  var other=role==='기업'?match['전문가명']:match['기업명'];
+  var color = role==='기업' ? '#2d7a55' : '#1a6640';
+  var icon  = role==='기업' ? '🏢' : '👨\u200d💼';
+  var other = role==='기업' ? match['전문가명'] : match['기업명'];
+  var KD    = ['일','월','화','수','목','금','토'];
 
-  var availSet={};
-  dateOptions.forEach(function(d){availSet[d]=true;});
-  var months={};
-  dateOptions.forEach(function(d){var ym=d.slice(0,7);if(!months[ym])months[ym]=[];months[ym].push(d);});
+  // ── 달력: 2개월씩 묶어 2열 렌더링 ──
+  var availSet = {};
+  dateOptions.forEach(function(d){ availSet[d] = true; });
+  var months = {};
+  dateOptions.forEach(function(d){ var ym=d.slice(0,7); if(!months[ym])months[ym]=[]; months[ym].push(d); });
 
-  // ── 월별 캘린더 HTML ──
-  var calHtml='';
-  Object.keys(months).sort().forEach(function(ym){
-    var year=parseInt(ym.slice(0,4)),month=parseInt(ym.slice(5,7));
+  var monthKeys = Object.keys(months).sort();
+  var calHtml = '<div class="av2-cal-grid">';
+  monthKeys.forEach(function(ym){
+    var year=parseInt(ym.slice(0,4)), month=parseInt(ym.slice(5,7));
     var firstDay=new Date(year,month-1,1).getDay();
     var lastDate=new Date(year,month,0).getDate();
-    calHtml+='<div class="cal-month-title">'+year+'년 '+month+'월</div>';
-    calHtml+='<div class="cal-grid">';
-    KO_DAYS.forEach(function(d,i){calHtml+='<div class="cal-day-hdr'+(i===0?' sun':i===6?' sat':'')+'">'+ d+'</div>';});
+    calHtml += '<div class="av2-month-block">';
+    calHtml += '<div class="av2-month-title">'+year+'년 '+month+'월</div>';
+    calHtml += '<div class="av2-dow-row">';
+    KD.forEach(function(d,i){ calHtml+='<div class="av2-dow'+(i===0?' av2-sun':i===6?' av2-sat':'')+'">'+d+'</div>'; });
+    calHtml += '</div><div class="av2-days-grid">';
     for(var e=0;e<firstDay;e++) calHtml+='<div></div>';
     for(var day=1;day<=lastDate;day++){
       var dd=ym+'-'+String(day).padStart(2,'0');
@@ -2112,73 +2391,134 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
       var isAvail=!!availSet[dd];
       var isSel=dd===window._availSelDate;
       var hasSlots=window._availSlots[dd]&&window._availSlots[dd].length>0;
-      var dowCls=dow===0?' sun-col':dow===6?' sat-col':'';
+      var dowCls=(dow===0?' av2-sun':dow===6?' av2-sat':'');
       if(isAvail){
-        var cls='cal-cell avail'+dowCls+(isSel?' selected':hasSlots?' has-slots':'');
-        calHtml+='<div id="datebtn-'+dd+'" class="'+cls+'" onclick="selectAvailDate(\''+dd+'\')"><span>'+day+'</span>'+(hasSlots&&!isSel?'<span class="cal-dot"></span>':'')+(isSel?'<span class="cal-dot"></span>':'')+'</div>';
+        var cls='av2-day avail'+dowCls+(isSel?' selected':hasSlots?' has-slots':'');
+        calHtml+='<div id="datebtn-'+dd+'" class="'+cls+'" onclick="selectAvailDate(\''+dd+'\')">'+day+(hasSlots?'<span class="av2-dot"></span>':'')+'</div>';
       } else {
-        calHtml+='<div class="cal-cell disabled'+dowCls+'">'+day+'</div>';
+        calHtml+='<div class="av2-day disabled'+dowCls+'">'+day+'</div>';
       }
     }
-    calHtml+='</div><div style="margin-bottom:14px;"></div>';
+    calHtml += '</div></div>';
   });
+  calHtml += '</div>';
 
-  // ── 시간 버튼 HTML ──
-  var selLabel=window._availSelDate?dispDate(window._availSelDate):'날짜를 선택하세요';
-  var timeHtml=HOURS.map(function(h){
-    var isOn=window._availSlots[window._availSelDate]&&window._availSlots[window._availSelDate].includes(h);
-    return '<button onclick="toggleAvailTime(\''+h+'\')" id="timebtn-'+h.replace(':','-')+'" class="time-btn'+(isOn?' on':'')+'">'+h+'</button>';
+  // ── 시간 버튼 ──
+  var selLabel = window._availSelDate ? dispDate(window._availSelDate) : '날짜를 먼저 선택하세요';
+  var timeHtml = HOURS.map(function(h){
+    var isOn = window._availSlots[window._availSelDate] && window._availSlots[window._availSelDate].includes(h);
+    return '<button onclick="toggleAvailTime(\''+h+'\')" id="timebtn-'+h.replace(':','-')+'" class="av2-time-btn'+(isOn?' on':'')+'">'+h+(isOn?'<span class="av2-check">✓</span>':'')+'</button>';
   }).join('');
 
-  return '<div class="avail-page-wrap">'
-    +'<div class="avail-page-inner">'
+  // ── 선택 요약 전체 카운트 (액션 바용) ──
+  var totalCnt = Object.values(window._availSlots||{}).filter(function(v){return v.length>0;}).length;
+  var firstEntry = Object.entries(window._availSlots||{}).filter(function(e){return e[1].length>0;}).sort()[0];
+  var previewText = firstEntry
+    ? firstEntry[0].slice(5).replace('-','.') + '(' + KD[new Date(firstEntry[0]+'T00:00:00').getDay()] + ') ' + firstEntry[1][0]
+    : '';
+  var extraCnt = totalCnt > 1 ? ' 외 '+(totalCnt-1)+'건' : '';
 
-    // 안내 카드
-    +'<div class="avail-info-card">'
-    +'<div class="avail-info-card-icon" style="background:'+color+'18;border:1px solid '+color+'22;">'+icon+'</div>'
-    +'<div style="flex:1;min-width:0;">'
-    +'<div class="avail-info-card-name">'+name+'님, 가용시간을 선택해주세요</div>'
-    +'<div class="avail-info-card-sub">상담 상대: <b style="color:#2d7a55;">'+other+'</b> · 📋 '+match['기업명']+' · 📌 '+(match['희망인증']||'-')+'</div>'
-    +'</div>'
-    +(alreadySub?'<div class="avail-warn-badge">⚠️ 이미 입력하셨습니다. 재입력 시 교체됩니다.</div>':'')
-    +'</div>'
+  return (
+    '<div class="av2-wrap">'
 
-    // 3단 레이아웃: 날짜 → 시간 → 결과
-    +'<div class="schedule-template-layout">'
-
-    // 왼쪽: 월별 캘린더
-    +'<div class="sch-panel month-calendar-panel">'
-    +'<div class="sch-panel-title">📅 날짜 선택</div>'
-    +calHtml
-    +'<div class="cal-legend">'
-    +'<span style="display:flex;align-items:center;gap:4px;"><span class="cal-legend-dot" style="background:linear-gradient(135deg,#c8efd8,#cfeaf1);border:1px solid rgba(58,158,110,.3);"></span>시간선택됨</span>'
-    +'<span style="display:flex;align-items:center;gap:4px;"><span class="cal-legend-dot" style="background:#3a9e6e;"></span>선택중</span>'
-    +'<span style="display:flex;align-items:center;gap:4px;"><span class="cal-legend-dot" style="background:#e2e8f0;"></span>불가</span>'
-    +'</div>'
-    +'</div>'
-
-    // 가운데: 시간 선택
-    +'<div class="sch-panel time-ruler-panel">'
-    +'<div class="sch-panel-title">🕐 시간 선택</div>'
-    +'<span class="time-ruler-date-lbl" id="timeTitle">'+selLabel+'</span>'
-    +'<div class="time-ruler-list">'+timeHtml+'</div>'
-    +'</div>'
-
-    // 오른쪽: Agenda 일정 리스트
-    +'<div class="agenda-panel">'
-    +'<div class="sch-panel-title">📋 선택한 가용일정</div>'
-    +'<div id="agendaList">'+buildAgendaListHTML()+'</div>'
+    // ── 헤더 카드 ──
+    +'<div class="av2-header">'
+      +'<div class="av2-header-left">'
+        +'<div class="av2-avatar">'+icon+'</div>'
+        +'<div class="av2-header-info">'
+          +'<div class="av2-header-top">'
+            +'<span class="av2-step-badge">STEP 2</span>'
+            +'<span class="av2-step-label">일정 선택</span>'
+          +'</div>'
+          +'<div class="av2-header-name">'+name+'님, 가용시간을 선택해주세요</div>'
+          +'<div class="av2-header-meta">'
+            +'<span>상담 상대: <b>'+other+'</b></span>'
+            +'<span class="av2-meta-sep">·</span>'
+            +'<span>품목: '+(match['전문분야']||'-')+'</span>'
+            +'<span class="av2-meta-sep">·</span>'
+            +'<span>인증: '+(match['희망인증']||'-')+'</span>'
+          +'</div>'
+        +'</div>'
+      +'</div>'
+      +(alreadySub
+        ?'<div class="av2-warn-box">⚠ 이미 입력하셨습니다. 재입력 시 교체됩니다.</div>'
+        :'')
     +'</div>'
 
+    // ── 본문 3단 ──
+    +'<div class="av2-body">'
+
+      // 1) 날짜 선택 패널
+      +'<div class="av2-panel av2-cal-panel">'
+        +'<div class="av2-panel-hdr">'
+          +'<div class="av2-panel-title"><span class="av2-step-num">1</span>날짜 선택</div>'
+          +'<div class="av2-panel-sub">가능한 날짜를 먼저 선택하세요.</div>'
+        +'</div>'
+        +calHtml
+        +'<div class="av2-cal-legend">'
+          +'<span class="av2-legend-item"><span class="av2-legend-dot sel"></span>선택한 날짜</span>'
+          +'<span class="av2-legend-item"><span class="av2-legend-dot avail"></span>선택 가능 날짜</span>'
+        +'</div>'
+      +'</div>'
+
+      // 2) 시간 선택 패널
+      +'<div class="av2-panel av2-time-panel">'
+        +'<div class="av2-panel-hdr">'
+          +'<div class="av2-panel-title"><span class="av2-step-num">2</span>시간 선택</div>'
+          +'<div class="av2-panel-sub">시간은 복수 선택할 수 있습니다.</div>'
+        +'</div>'
+        +'<div class="av2-sel-date-box" id="timeTitle">📅 '+selLabel+'</div>'
+        +'<div class="av2-time-grid">'+timeHtml+'</div>'
+        +'<div class="av2-time-legend">'
+          +'<span class="av2-legend-item"><span class="av2-legend-dot sel"></span>선택됨</span>'
+          +'<span class="av2-legend-item"><span class="av2-legend-dot avail"></span>선택 가능</span>'
+          +'<span class="av2-legend-item"><span class="av2-legend-dot dis"></span>선택 불가</span>'
+        +'</div>'
+      +'</div>'
+
+      // 3) 선택 요약 패널
+      +'<div class="av2-panel av2-agenda-panel">'
+        +'<div class="av2-panel-hdr av2-agenda-hdr">'
+          +'<div>'
+            +'<div class="av2-panel-title"><span class="av2-step-num">3</span>선택한 가용일정</div>'
+          +'</div>'
+          +'<span class="av2-total-chip" id="totalChip">총 '+totalCnt+'건 선택</span>'
+        +'</div>'
+        +'<div id="agendaList" class="av2-agenda-scroll">'+buildAgendaListHTML()+'</div>'
+        +'<div class="av2-info-box">'
+          +'<div class="av2-info-title">ℹ 안내</div>'
+          +'<div class="av2-info-items">'
+            +'<div>• 선택한 시간은 기업 측과 공유됩니다.</div>'
+            +'<div>• 제출 후에는 수정 요청이 가능합니다.</div>'
+          +'</div>'
+        +'</div>'
+        +'<div class="av2-contact-box">🎧 문의: 해외인증지원단 02-6240-4777</div>'
+      +'</div>'
+
     +'</div>'
 
-    // 제출 버튼 (fixed bar)
-    +'<div class="avail-submit-fixed">'
-    +'<button onclick="submitAvailPage()" id="submitAvailBtn" class="avail-submit-btn">가용시간 제출하기 →</button>'
-    +'<div style="text-align:center;margin-top:8px;font-size:11px;color:#94a3b8;">문의: 해외인증지원단 02-6240-4777</div>'
+    // ── 하단 액션 바 ──
+    +'<div class="av2-action-bar">'
+      +'<div class="av2-action-left">'
+        +'<span class="av2-action-cal">📅</span>'
+        +'<span class="av2-action-cnt">선택된 일정 <b id="actionCnt">'+totalCnt+'</b>건</span>'
+        +(totalCnt>0
+          ?'<span class="av2-action-sep">|</span><span class="av2-action-preview-label">미리보기</span>'
+           +'<span class="av2-preview-chip" id="previewChip">'+previewText+'</span>'
+           +(totalCnt>1?'<span class="av2-extra-cnt" id="extraCnt">외 '+(totalCnt-1)+'건</span>':'<span id="extraCnt"></span>')
+          :'<span id="previewChip"></span><span id="extraCnt"></span>')
+      +'</div>'
+      +'<div class="av2-action-right">'
+        +'<button class="av2-btn-reset" onclick="if(confirm(\'선택한 일정을 모두 초기화하시겠습니까?\')){window._availSlots={};var sc=document.getElementById(\'availScreen\');sc.innerHTML=buildAvailPageHTML(window._lastMatch,window._lastRole,window._lastName,window._lastDateOpts,false);}">초기화</button>'
+        +'<button class="av2-btn-submit" onclick="submitAvailPage()" id="submitAvailBtn">가용시간 제출하기 →</button>'
+      +'</div>'
     +'</div>'
-    +'</div></div>';
+    +'<div class="av2-action-note">🔒 제출 버튼을 누르면 선택한 일정이 저장되고 기업과 공유됩니다.</div>'
+
+    +'</div>'
+  );
 }
+
 
 function buildAvailSummaryHTML(){
   var entries=Object.entries(window._availSlots||{}).filter(function(e){return e[1].length>0;});
@@ -2198,38 +2538,54 @@ function buildAgendaListHTML(){
   var KD=['일','월','화','수','목','금','토'];
   var entries=Object.entries(window._availSlots||{}).filter(function(e){return e[1].length>0;}).sort(function(a,b){return a[0].localeCompare(b[0]);});
 
+  // 총 건수 업데이트
+  var cnt = entries.length;
+  var chip = document.getElementById('totalChip');
+  if(chip) chip.textContent = '총 '+cnt+'건 선택';
+  var actionCnt = document.getElementById('actionCnt');
+  if(actionCnt) actionCnt.textContent = cnt;
+  var previewChip = document.getElementById('previewChip');
+  var extraCnt    = document.getElementById('extraCnt');
+  if(previewChip){
+    if(entries.length>0){
+      var fe=entries[0];
+      var d0=new Date(fe[0]+'T00:00:00');
+      previewChip.textContent = fe[0].slice(5).replace('-','.')+' ('+KD[d0.getDay()]+') '+fe[1][0];
+      if(extraCnt) extraCnt.textContent = cnt>1?'외 '+(cnt-1)+'건':'';
+    } else {
+      previewChip.textContent='';
+      if(extraCnt) extraCnt.textContent='';
+    }
+  }
+
   if(!entries.length){
-    return '<div class="agenda-empty-wrap">'
-      +'<div class="agenda-empty-icon">🗓️</div>'
-      +'<div class="agenda-empty-title">선택한 일정이 없습니다</div>'
-      +'<div class="agenda-empty-desc">날짜를 선택한 뒤<br>가능한 시간을 눌러주세요</div>'
+    return '<div class="av2-agenda-empty">'
+      +'<div style="font-size:32px;margin-bottom:8px;">🗓️</div>'
+      +'<div style="font-weight:800;font-size:13px;color:#374151;margin-bottom:4px;">선택한 일정이 없습니다</div>'
+      +'<div style="font-size:12px;color:#94a3b8;">날짜를 선택한 뒤<br>가능한 시간을 눌러주세요</div>'
       +'</div>';
   }
 
   var rows = entries.map(function(e){
     var d   = new Date(e[0]+'T00:00:00');
     var dow = KD[d.getDay()];
-    var day = d.getDate();
-    var lbl = e[0].slice(5).replace('-','.') + ' (' + dow + ')';
+    var mo  = e[0].slice(5,7);
+    var day = e[0].slice(8);
+    var lbl = mo+'.'+day+' ('+dow+')';
     var chips = e[1].map(function(t){
-      return '<span class="agenda-time-chip">'+t+'</span>';
+      return '<span class="av2-agenda-time">'+t+'</span>';
     }).join('');
-    return '<div class="agenda-row">'
-      +'<div class="agenda-date-cell">'
-        +'<div class="agenda-dow">'+dow+'</div>'
-        +'<div class="agenda-day">'+day+'</div>'
+    return '<div class="av2-agenda-item">'
+      +'<div class="av2-agenda-date">'
+        +'<div class="av2-agenda-dot">●</div>'
+        +'<div class="av2-agenda-lbl">'+lbl+'</div>'
       +'</div>'
-      +'<div class="agenda-content">'
-        +'<div class="agenda-title-row">'
-          +'<span class="agenda-bullet"></span>'
-          +'<span class="agenda-date-label">'+lbl+'</span>'
-        +'</div>'
-        +'<div class="agenda-times">'+chips+'</div>'
-      +'</div>'
-      +'</div>';
+      +'<div class="av2-agenda-times">'+chips+'</div>'
+      +'<button class="av2-agenda-del" onclick="(function(){delete window._availSlots[\''+e[0]+'\'];var el=document.getElementById(\'agendaList\');if(el)el.innerHTML=buildAgendaListHTML();var cal=document.getElementById(\'datebtn-'+e[0]+'\');if(cal){cal.className=\'av2-day avail\';cal.innerHTML=\''+parseInt(e[0].slice(8))+'\';}})()" title="삭제">✕</button>'
+    +'</div>';
   }).join('');
 
-  return '<div class="agenda-list">'+rows+'</div>';
+  return rows;
 }
 
 function selectAvailDate(date){
@@ -2238,17 +2594,19 @@ function selectAvailDate(date){
     var d=el.id.replace('datebtn-','');
     var has=window._availSlots[d]&&window._availSlots[d].length>0;
     var sel=d===date;
-    el.className='cal-cell avail'+(new Date(d+'T00:00:00').getDay()===0?' sun-col':new Date(d+'T00:00:00').getDay()===6?' sat-col':'')
+    var dow=new Date(d+'T00:00:00').getDay();
+    el.className='av2-day avail'+(dow===0?' av2-sun':dow===6?' av2-sat':'')
       +(sel?' selected':has?' has-slots':'');
-    el.innerHTML='<span>'+parseInt(d.slice(8))+'</span>'+(has&&!sel?'<span class="cal-dot"></span>':'')+(sel?'<span class="cal-dot"></span>':'');
+    el.innerHTML=parseInt(d.slice(8))+(has?'<span class="av2-dot"></span>':'');
   });
   var t=document.getElementById('timeTitle');
-  if(t) t.textContent=dispDate(date);
+  if(t) t.textContent='📅 '+dispDate(date);
   HOURS.forEach(function(h){
     var btn=document.getElementById('timebtn-'+h.replace(':','-'));
     if(!btn) return;
     var isOn=window._availSlots[date]&&window._availSlots[date].includes(h);
-    btn.className='time-btn'+(isOn?' on':'');
+    btn.className='av2-time-btn'+(isOn?' on':'');
+    btn.innerHTML=h+(isOn?'<span class="av2-check">✓</span>':'');
   });
 }
 
@@ -2266,9 +2624,10 @@ function toggleAvailTime(time){
   if(calBtn){
     var has=window._availSlots[date].length>0;
     var sel=date===window._availSelDate;
-    calBtn.className='cal-cell avail'+(new Date(date+'T00:00:00').getDay()===0?' sun-col':new Date(date+'T00:00:00').getDay()===6?' sat-col':'')
+    var cdow=new Date(date+'T00:00:00').getDay();
+    calBtn.className='av2-day avail'+(cdow===0?' av2-sun':cdow===6?' av2-sat':'')
       +(sel?' selected':has?' has-slots':'');
-    calBtn.innerHTML='<span>'+parseInt(date.slice(8))+'</span>'+(has&&!sel?'<span class="cal-dot"></span>':'')+(sel?'<span class="cal-dot"></span>':'');
+    calBtn.innerHTML=parseInt(date.slice(8))+(has?'<span class="av2-dot"></span>':'');
   }
   var sumEl=document.getElementById('availSummary');
   if(sumEl) sumEl.innerHTML=buildAvailSummaryHTML();
