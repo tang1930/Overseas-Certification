@@ -1168,7 +1168,8 @@ body {
 
 /* ══ AV2: 가용시간 선택 화면 ══ */
 .av2-wrap {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: linear-gradient(135deg, #edfbf3 0%, #e8f5ef 45%, #f0f9ff 100%);
   display: flex; flex-direction: column;
   font-family: 'Noto Sans KR', -apple-system, sans-serif;
@@ -1178,6 +1179,11 @@ body {
   max-width: 100%;
   padding: 20px 28px 28px;
   box-sizing: border-box;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 /* ── 헤더 카드 ── */
@@ -1224,6 +1230,8 @@ body {
   gap: 16px;
   align-items: stretch;
   margin-bottom: 16px;
+  flex: 1;
+  min-height: 0;
 }
 
 /* ── 공통 패널 ── */
@@ -1261,7 +1269,7 @@ body {
 .av2-wrap button:focus, .av2-wrap [onclick]:focus { outline: none; }
 
 /* ── 달력 패널 ── */
-.av2-cal-panel { flex: 1; }
+.av2-cal-panel { display: flex; flex-direction: column; flex: 1; }
 .av2-cal-hdr { display: flex; align-items: flex-start; justify-content: space-between; }
 .av2-cal-nav { display: flex; align-items: center; gap: 6px; }
 .av2-nav-btn {
@@ -1278,6 +1286,7 @@ body {
 .av2-cal-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 0 28px; padding: 20px 24px 8px;
+  flex: 1;
 }
 .av2-month-block { min-width: 0; padding: 0 0 16px; }
 .av2-month-title {
@@ -1350,8 +1359,8 @@ body {
 .av2-legend-dot.dis { background: #f1f5f9; border: 1.5px solid #e2e8f0; }
 
 /* ── 시간 선택 패널 ── */
-.av2-time-panel { display: flex; flex-direction: column; }
-.av2-time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 18px 18px; }
+.av2-time-panel { display: flex; flex-direction: column; flex: 1; }
+.av2-time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 18px 18px; flex: 1; align-content: start; }
 .av2-sel-date-box {
   margin: 14px 18px 12px;
   background: #f0fdf4; border: 1.5px solid #bbf7d0;
