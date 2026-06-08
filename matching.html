@@ -1169,17 +1169,26 @@ body {
 /* ══ AV2: 가용시간 선택 화면 ══ */
 .av2-wrap {
   min-height: 100vh;
-  background: linear-gradient(135deg, #edfbf3 0%, #e8f5ef 40%, #f0f9ff 100%);
+  background: linear-gradient(135deg, #edfbf3 0%, #e8f5ef 45%, #f0f9ff 100%);
   display: flex; flex-direction: column;
   font-family: 'Noto Sans KR', -apple-system, sans-serif;
-  padding: 0 0 0;
+}
+.av2-container {
+  width: min(1500px, calc(100vw - 64px));
+  margin: 0 auto;
+  padding: 24px 0 32px;
 }
 
-/* 헤더 카드 */
+/* ── 헤더 카드 ── */
 .av2-header {
-  display: flex; align-items: center; justify-content: space-between; gap: 20px;
-  background: #fff; border-bottom: 1px solid #e2e8f0;
-  padding: 20px 32px; flex-wrap: wrap;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 22px;
+  padding: 22px 28px;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 28px rgba(15,90,56,.08);
+  flex-wrap: wrap;
 }
 .av2-header-left { display: flex; align-items: center; gap: 18px; }
 .av2-avatar {
@@ -1207,23 +1216,20 @@ body {
   white-space: nowrap; flex-shrink: 0;
 }
 
-/* 본문 3단 */
+/* ── 본문 3단 ── */
 .av2-body {
   display: grid;
-  grid-template-columns: minmax(580px, 1.7fr) minmax(260px, 0.65fr) minmax(300px, 0.75fr);
+  grid-template-columns: minmax(580px, 1.45fr) minmax(260px, .55fr) minmax(300px, .65fr);
   gap: 20px;
-  max-width: 1540px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 22px 28px 100px;
   align-items: start;
+  margin-bottom: 20px;
 }
 
-/* 공통 패널 */
+/* ── 공통 패널 ── */
 .av2-panel {
-  background: #fff; border-radius: 14px;
+  background: #fff; border-radius: 16px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 16px rgba(0,0,0,.03);
+  box-shadow: 0 2px 8px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.04);
   overflow: hidden;
 }
 .av2-panel-hdr { padding: 18px 20px 12px; border-bottom: 1px solid #f1f5f9; }
@@ -1247,39 +1253,62 @@ body {
   white-space: nowrap; flex-shrink: 0;
 }
 
-/* 달력 패널 */
-.av2-cal-panel { }
+/* ── 달력 패널 ── */
+.av2-cal-hdr { display: flex; align-items: flex-start; justify-content: space-between; }
+.av2-cal-nav { display: flex; align-items: center; gap: 6px; }
+.av2-nav-btn {
+  height: 32px; min-width: 32px; padding: 0 10px;
+  border: 1.5px solid #e2e8f0; border-radius: 8px;
+  background: #fff; color: #374151;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: all .12s;
+}
+.av2-nav-btn:hover:not(:disabled) { border-color: #1a8c5a; color: #1a8c5a; background: #f0fdf4; }
+.av2-nav-btn:disabled { color: #cbd5e1; cursor: default; }
+.av2-nav-today { font-size: 12px; }
+
 .av2-cal-grid {
   display: grid; grid-template-columns: 1fr 1fr;
-  gap: 0 8px; padding: 12px 16px 0;
+  gap: 0 28px; padding: 20px 24px 8px;
 }
-.av2-month-block { padding: 0 8px 16px; }
+.av2-month-block { min-width: 0; padding: 0 0 16px; }
 .av2-month-title {
   text-align: center; font-size: 14px; font-weight: 800; color: #1a2e22;
   margin-bottom: 10px; padding-bottom: 8px;
   border-bottom: 1px solid #f1f5f9;
+  user-select: none; -webkit-user-select: none; caret-color: transparent;
 }
 .av2-dow-row {
   display: grid; grid-template-columns: repeat(7,1fr);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 .av2-dow {
   text-align: center; font-size: 11px; font-weight: 700;
   color: #94a3b8; padding: 4px 0;
+  user-select: none; -webkit-user-select: none; caret-color: transparent;
 }
 .av2-dow.av2-sun { color: #ef4444; }
 .av2-dow.av2-sat { color: #3b82f6; }
-.av2-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
+.av2-days-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 7px; }
+
+/* 날짜 셀 — 커서/포커스 완전 차단 */
+.av2-day,
+.av2-day * {
+  user-select: none; -webkit-user-select: none;
+  caret-color: transparent; outline: none;
+}
 .av2-day {
-  height: 44px; min-height: 44px;
-  border-radius: 10px;
+  height: 46px; min-height: 46px;
+  border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 13.5px; font-weight: 600;
+  font-size: 13.5px; font-weight: 700;
   flex-direction: column; gap: 2px;
   border: 1.5px solid transparent;
   background: transparent;
   transition: all .12s;
+  cursor: default;
 }
+.av2-day:focus, .av2-day:focus-visible { outline: none; box-shadow: none; }
 .av2-day.avail {
   cursor: pointer; color: #1a2e22;
   border-color: #d8f3e4; background: #fff;
@@ -1301,35 +1330,20 @@ body {
   background: #1a8c5a; flex-shrink: 0;
 }
 .av2-day.avail.selected .av2-dot { background: rgba(255,255,255,.8); }
-.av2-cal-hdr { display: flex; align-items: flex-start; justify-content: space-between; }
-.av2-cal-nav { display: flex; align-items: center; gap: 6px; }
-.av2-nav-btn {
-  height: 32px; min-width: 32px; padding: 0 10px;
-  border: 1.5px solid #e2e8f0; border-radius: 8px;
-  background: #fff; color: #374151;
-  font-size: 13px; font-weight: 700; font-family: inherit;
-  cursor: pointer; transition: all .12s;
-}
-.av2-nav-btn:hover:not(:disabled) { border-color: #1a8c5a; color: #1a8c5a; background: #f0fdf4; }
-.av2-nav-btn:disabled { color: #cbd5e1; cursor: default; }
-.av2-nav-today { font-size: 12px; }
 
 .av2-cal-legend {
-  display: flex; gap: 16px; padding: 12px 20px 16px;
+  display: flex; gap: 16px; padding: 12px 24px 16px;
   border-top: 1px solid #f1f5f9; flex-wrap: wrap;
 }
 .av2-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #64748b; }
-.av2-legend-dot {
-  width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0;
-}
+.av2-legend-dot { width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0; }
 .av2-legend-dot.sel { background: #1a8c5a; }
 .av2-legend-dot.avail { background: #f0fdf4; border: 1.5px solid #1a8c5a; }
 .av2-legend-dot.dis { background: #f1f5f9; border: 1.5px solid #e2e8f0; }
 
-/* 시간 선택 패널 */
-.av2-time-panel { }
+/* ── 시간 선택 패널 ── */
 .av2-sel-date-box {
-  margin: 14px 16px 12px;
+  margin: 14px 18px 12px;
   background: #f0fdf4; border: 1.5px solid #bbf7d0;
   border-radius: 10px; padding: 10px 14px;
   font-size: 13px; font-weight: 700; color: #166534;
@@ -1354,26 +1368,29 @@ body {
 }
 .av2-check { font-size: 11px; }
 .av2-time-legend {
-  display: flex; gap: 10px; padding: 10px 16px 14px;
+  display: flex; gap: 10px; padding: 10px 18px 16px;
   border-top: 1px solid #f1f5f9; flex-wrap: wrap;
 }
 
-/* 선택 요약 패널 */
+/* ── 선택 요약 패널 ── */
 .av2-agenda-scroll {
-  padding: 10px 14px; display: flex; flex-direction: column; gap: 8px;
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 10px;
   min-height: 120px;
 }
 .av2-agenda-item {
-  display: flex; align-items: center; gap: 10px;
-  background: #f8fafc; border: 1px solid #e2e8f0;
-  border-radius: 10px; padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 80px 1fr 30px;
+  align-items: center; gap: 10px;
+  min-height: 54px;
+  background: #f8fffb; border: 1px solid #d8f3e4;
+  border-radius: 12px; padding: 10px 12px;
   transition: border-color .12s;
 }
 .av2-agenda-item:hover { border-color: #1a8c5a; }
-.av2-agenda-date { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-.av2-agenda-dot { color: #1a8c5a; font-size: 8px; }
-.av2-agenda-lbl { font-size: 12.5px; font-weight: 800; color: #1a2e22; white-space: nowrap; }
-.av2-agenda-times { flex: 1; display: flex; flex-wrap: wrap; gap: 4px; justify-content: flex-start; }
+.av2-agenda-date { display: flex; align-items: center; gap: 5px; }
+.av2-agenda-dot { color: #1a8c5a; font-size: 8px; flex-shrink: 0; }
+.av2-agenda-lbl { font-size: 12.5px; font-weight: 800; color: #1a2e22; }
+.av2-agenda-times { display: flex; flex-wrap: wrap; gap: 4px; }
 .av2-agenda-time {
   background: #dcfce7; color: #166534;
   font-size: 11.5px; font-weight: 700;
@@ -1382,13 +1399,11 @@ body {
 .av2-agenda-del {
   background: none; border: 1px solid #e2e8f0; border-radius: 6px;
   color: #94a3b8; font-size: 12px; cursor: pointer;
-  padding: 3px 7px; flex-shrink: 0;
+  padding: 4px 7px; justify-self: end;
   transition: all .12s;
 }
 .av2-agenda-del:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
-.av2-agenda-empty {
-  text-align: center; padding: 24px 12px; color: #94a3b8;
-}
+.av2-agenda-empty { text-align: center; padding: 28px 12px; color: #94a3b8; }
 .av2-info-box {
   margin: 0 14px 10px;
   background: #fffbeb; border: 1px solid #fde68a;
@@ -1402,12 +1417,14 @@ body {
   padding: 10px 14px; font-size: 12px; color: #475569;
 }
 
-/* 하단 액션 바 */
+/* ── 하단 액션 카드 ── */
 .av2-action-bar {
   display: flex; align-items: center; justify-content: space-between;
-  background: #fff; border-top: 1px solid #e2e8f0;
-  padding: 14px 28px; gap: 16px; flex-wrap: wrap;
-  position: sticky; bottom: 0; z-index: 10;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 18px;
+  padding: 16px 24px; gap: 16px; flex-wrap: wrap;
+  box-shadow: 0 8px 28px rgba(15,90,56,.08);
 }
 .av2-action-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 14px; }
 .av2-action-cal { font-size: 18px; }
@@ -1417,7 +1434,7 @@ body {
 .av2-action-preview-label { font-size: 12px; color: #64748b; }
 .av2-preview-chip {
   background: #f0fdf4; border: 1.5px solid #bbf7d0;
-  color: #166534; font-size: 12.5px; font-weight: 700;
+  color: #166634; font-size: 12.5px; font-weight: 700;
   padding: 4px 12px; border-radius: 999px; white-space: nowrap;
 }
 .av2-extra-cnt { font-size: 12px; color: #64748b; }
@@ -1440,20 +1457,26 @@ body {
 .av2-btn-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(26,140,90,.45); }
 .av2-btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
 .av2-action-note {
-  text-align: center; padding: 8px 0 12px;
+  text-align: center; padding: 10px 0 0;
   font-size: 11.5px; color: #94a3b8;
 }
 
+
 /* 반응형 */
+@media (max-width: 1100px) {
+  .av2-body { grid-template-columns: minmax(0, 1.4fr) minmax(240px, .55fr) minmax(260px, .65fr); }
+}
 @media (max-width: 960px) {
   .av2-body { grid-template-columns: 1fr 1fr; }
   .av2-agenda-panel { grid-column: 1 / -1; }
+  .av2-container { width: min(100%, calc(100vw - 32px)); }
 }
 @media (max-width: 640px) {
-  .av2-body { grid-template-columns: 1fr; padding: 12px; }
-  .av2-cal-grid { grid-template-columns: 1fr; }
+  .av2-body { grid-template-columns: 1fr; }
+  .av2-cal-grid { grid-template-columns: 1fr; gap: 0; }
   .av2-header { padding: 14px 16px; }
   .av2-action-bar { padding: 12px 16px; }
+  .av2-container { padding: 12px 0 24px; }
 }
 </style>
 </head>
@@ -2435,9 +2458,9 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
       var dowCls=(dow===0?' av2-sun':dow===6?' av2-sat':'');
       if(isAvail){
         var cls='av2-day avail'+dowCls+(isSel?' selected':hasSlots?' has-slots':'');
-        calHtml+='<div id="datebtn-'+dd+'" class="'+cls+'" onclick="selectAvailDate(\''+dd+'\')">'+day+(hasSlots?'<span class="av2-dot"></span>':'')+'</div>';
+        calHtml+='<div id="datebtn-'+dd+'" class="'+cls+'" tabindex="-1" onclick="selectAvailDate(\''+dd+'\')">'+day+(hasSlots?'<span class="av2-dot"></span>':'')+'</div>';
       } else {
-        calHtml+='<div class="av2-day disabled'+dowCls+'">'+day+'</div>';
+        calHtml+='<div class="av2-day disabled'+dowCls+'" tabindex="-1">'+day+'</div>';
       }
     }
     calHtml += '</div></div>';
@@ -2461,6 +2484,7 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
 
   return (
     '<div class="av2-wrap">'
+    +'<div class="av2-container">'
 
     // ── 헤더 카드 ──
     +'<div class="av2-header">'
@@ -2563,6 +2587,7 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
     +'</div>'
     +'<div class="av2-action-note">🔒 제출 버튼을 누르면 선택한 일정이 저장되고 기업과 공유됩니다.</div>'
 
+    +'</div>'  // av2-container
     +'</div>'
   );
 }
@@ -2645,6 +2670,7 @@ function selectAvailDate(date){
     var dow=new Date(d+'T00:00:00').getDay();
     el.className='av2-day avail'+(dow===0?' av2-sun':dow===6?' av2-sat':'')
       +(sel?' selected':has?' has-slots':'');
+    el.setAttribute('tabindex','-1');
     el.innerHTML=parseInt(d.slice(8))+(has?'<span class="av2-dot"></span>':'');
   });
   var t=document.getElementById('timeTitle');
