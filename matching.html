@@ -726,7 +726,7 @@ body {
     radial-gradient(circle at 92% 8%, rgba(189,226,238,.62), transparent 32%),
     linear-gradient(135deg, #edf8f3 0%, #e8f1f8 100%);
 }
-/* ── 가용시간 입력 페이지 래퍼 ── */
+/* ── 희망시간 입력 페이지 래퍼 ── */
 .avail-page-inner {
   max-width: 1160px;
   width: 100%;
@@ -1166,7 +1166,7 @@ body {
 .cadmin-chip-slot   { background: rgba(255,255,255,.5); color: #5b21b6; border: 1px solid rgba(91,33,182,.2); }
 
 
-/* ══ AV2: 가용시간 선택 화면 ══ */
+/* ══ AV2: 희망시간 선택 화면 ══ */
 .av2-wrap {
   min-height: 100vh;
   background: linear-gradient(135deg, #edfbf3 0%, #e8f5ef 45%, #f0f9ff 100%);
@@ -1487,6 +1487,203 @@ body {
   .av2-action-bar { padding: 12px 16px; }
   .av2-container { padding: 12px 16px 20px; }
 }
+
+/* ══════════════════════════════════════════════════════
+   det2 — 매칭 상세보기 개선 UI
+══════════════════════════════════════════════════════ */
+.det2-wrap {
+  display: flex; flex-direction: column; gap: 20px;
+  font-family: 'Noto Sans KR', -apple-system, sans-serif;
+}
+
+/* ── 상단 헤더 ── */
+.det2-header {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 20px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 22px 26px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.05);
+}
+.det2-header-left { flex: 1; min-width: 0; }
+.det2-breadcrumb { font-size: 12px; color: #94a3b8; margin-bottom: 6px; }
+.det2-bc-sep { margin: 0 6px; }
+.det2-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.det2-title { font-size: 22px; font-weight: 900; color: #0f2d1c; letter-spacing: -.5px; margin: 0; }
+.det2-status-badge {
+  font-size: 12px; font-weight: 800; padding: 4px 13px;
+  border-radius: 999px; white-space: nowrap;
+}
+.det2-status-summary { font-size: 12.5px; color: #64748b; margin-bottom: 10px; }
+.det2-next-action {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12.5px; font-weight: 600;
+  padding: 7px 14px; border-radius: 10px;
+  border: 1px solid; max-width: 100%; flex-wrap: wrap;
+}
+.det2-header-actions {
+  display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-top: 4px;
+}
+.det2-btn {
+  padding: 8px 16px; border-radius: 9px;
+  font-size: 12.5px; font-weight: 800; font-family: inherit;
+  cursor: pointer; transition: all .15s; border: 1.5px solid transparent;
+}
+.det2-btn-cancel {
+  background: #fff1f2; color: #be123c; border-color: #fecdd3;
+}
+.det2-btn-cancel:hover { background: #ffe4e6; }
+.det2-btn-delete {
+  background: #dc2626; color: #fff;
+}
+.det2-btn-delete:hover { background: #b91c1c; }
+
+/* ── 공통 2열 레이아웃 ── */
+.det2-two-col {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+/* ── 기업/전문가 정보 카드 ── */
+.det2-card {
+  background: #fff; border: 1px solid #e2e8f0;
+  border-radius: 20px; padding: 22px 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.det2-card-hdr {
+  display: flex; align-items: center; gap: 13px;
+  margin-bottom: 18px; padding-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.det2-card-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.det2-icon-corp { background: #e8f5ef; }
+.det2-icon-exp  { background: #eff6ff; }
+.det2-card-title { font-size: 14px; font-weight: 900; color: #1a2e22; }
+.det2-card-sub   { font-size: 11px; color: #94a3b8; margin-top: 1px; }
+.det2-fields { display: flex; flex-direction: column; gap: 11px; }
+.det2-field  { display: flex; align-items: baseline; gap: 10px; }
+.det2-label  { font-size: 11.5px; color: #94a3b8; font-weight: 600; min-width: 76px; flex-shrink: 0; }
+.det2-value  { font-size: 13.5px; color: #1a2e22; font-weight: 700; }
+.det2-email  { font-size: 12px; color: #1a6640; }
+
+/* ── 희망시간 카드 ── */
+.det2-avail-card {
+  border-radius: 20px; padding: 20px 22px;
+  border: 1.5px solid; box-shadow: 0 2px 10px rgba(0,0,0,.04);
+  display: flex; flex-direction: column;
+}
+.det2-avail-has  { background: #f0fdf6; border-color: #86efac; }
+.det2-avail-miss { background: #fff7f7; border-color: #fca5a5; }
+.det2-avail-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px; padding-bottom: 13px;
+  border-bottom: 1px dashed rgba(0,0,0,.08);
+}
+.det2-avail-title-row { display: flex; align-items: center; gap: 8px; }
+.det2-avail-icon  { font-size: 16px; }
+.det2-avail-title { font-size: 14px; font-weight: 900; color: #0f2d1c; }
+.det2-avail-badge {
+  font-size: 11px; font-weight: 800;
+  padding: 3px 11px; border-radius: 999px;
+}
+.det2-avail-ok    { background: #dcfce7; color: #166534; }
+.det2-avail-empty { background: #fee2e2; color: #991b1b; }
+.det2-avail-list  { display: flex; flex-direction: column; gap: 0; }
+.det2-avail-date-block { padding: 10px 0; }
+.det2-avail-divider { border-top: 1px dotted #d1fae5; margin-top: 2px; }
+.det2-avail-date-lbl {
+  font-size: 12.5px; font-weight: 800; color: #166534; margin-bottom: 8px;
+}
+.det2-avail-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.det2-time-chip {
+  background: #fff; color: #166534;
+  border: 1.5px solid #6ee7b7;
+  font-size: 12px; font-weight: 800;
+  padding: 4px 12px; border-radius: 999px;
+}
+.det2-avail-summary {
+  margin-top: 12px; font-size: 11.5px; color: #166534;
+  font-weight: 700; text-align: right;
+  padding-top: 10px; border-top: 1px solid #d1fae5;
+}
+.det2-avail-empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center; padding: 28px 16px; gap: 6px; flex: 1;
+}
+.det2-avail-empty-icon { font-size: 34px; opacity: .35; }
+.det2-avail-empty-msg  { font-size: 13px; color: #be123c; font-weight: 700; }
+.det2-avail-empty-sub  { font-size: 11.5px; color: #94a3b8; text-align: center; }
+
+/* ── 희망시간 직접 입력 섹션 ── */
+.det2-input-section {
+  background: #fff; border: 1px solid #e2e8f0;
+  border-radius: 20px; padding: 22px 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.04);
+}
+.det2-input-section-hdr { margin-bottom: 16px; }
+.det2-input-section-title { font-size: 15px; font-weight: 900; color: #0f2d1c; margin-bottom: 3px; }
+.det2-input-section-sub   { font-size: 12px; color: #94a3b8; }
+.det2-role-tabs { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+.det2-role-tab {
+  flex: 1; min-width: 140px;
+  padding: 11px 16px; border-radius: 12px;
+  font-size: 13px; font-weight: 700; font-family: inherit;
+  cursor: pointer; transition: all .15s;
+  border: 1.5px solid #d1fae5; background: #fff; color: #64748b;
+  text-align: center;
+}
+.det2-role-tab:hover { border-color: #6ee7b7; color: #166534; background: #f0fdf4; }
+.det2-role-tab-active {
+  background: #f0fdf6; border-color: #22c55e;
+  color: #166534; font-weight: 900;
+  box-shadow: 0 0 0 3px rgba(34,197,94,.12);
+}
+.det2-input-body { }
+.det2-input-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 20px; gap: 8px;
+  border: 2px dashed #d1fae5; border-radius: 14px;
+  background: #f8fffe;
+}
+.det2-input-empty-icon { font-size: 36px; opacity: .4; }
+.det2-input-empty-msg  { font-size: 14px; font-weight: 700; color: #0f2d1c; }
+.det2-input-empty-sub  { font-size: 12px; color: #94a3b8; text-align: center; max-width: 320px; }
+.det2-sel-date-box {
+  font-size: 12px; font-weight: 700; color: #166534;
+  background: #f0fdf4; border: 1px solid #bbf7d0;
+  border-radius: 8px; padding: 7px 12px; margin-bottom: 10px; text-align: center;
+}
+.det2-submit-btn {
+  width: 100%; margin-top: 12px; padding: 12px;
+  border: none; border-radius: 11px;
+  background: linear-gradient(135deg, #1a8c5a, #0f5e3a);
+  color: #fff; font-size: 13.5px; font-weight: 900;
+  cursor: pointer; font-family: inherit;
+  box-shadow: 0 4px 14px rgba(26,140,90,.3);
+  transition: all .15s;
+}
+.det2-submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(26,140,90,.4); }
+.det2-summary-empty {
+  font-size: 11px; color: #94a3b8; padding: 10px;
+  background: #f8fafc; border-radius: 8px;
+  text-align: center; border: 1px dashed #e2e8f0;
+}
+.det2-summary-label { font-size: 11px; font-weight: 900; color: #166634; margin-bottom: 8px; }
+.det2-summary-row { margin-bottom: 7px; padding: 8px 10px; background: #f0fdf4; border-radius: 9px; border: 1px solid rgba(34,197,94,.15); }
+.det2-summary-date { font-size: 10px; font-weight: 800; color: #166534; margin-bottom: 4px; }
+.det2-summary-chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.det2-summary-chip { background: #22c55e; color: #fff; border-radius: 999px; padding: 2px 7px; font-size: 10px; font-weight: 700; }
+
+/* ── 반응형 ── */
+@media (max-width: 768px) {
+  .det2-two-col { grid-template-columns: 1fr; }
+  .det2-header { flex-direction: column; }
+  .det2-title { font-size: 17px; }
+}
+
 </style>
 </head>
 <body>
@@ -1672,7 +1869,7 @@ function loadDashboard() {
     .then(function(r){return r.json();})
     .then(function(data){
       DATA.matches = data['멘토링_매칭']||[];
-      DATA.avail   = data['가용시간']||[];
+      DATA.avail   = data['희망시간']||[];
       document.getElementById('loadingScreen').style.display='none';
       document.getElementById('mainScreen').style.display='block';
 
@@ -1944,8 +2141,8 @@ function buildBoardCard(m) {
     +(m['확정슬롯']?'<span class="chip" style="background:#e8f5ef;color:#155a38;">📅 '+(cleanScheduleText&&cleanScheduleText(m['확정슬롯'])||m['확정슬롯'])+'</span>':'')
     +'</div>'
     +'<div class="avail-bar" style="margin-top:10px;">'
-    +'<div class="avail-dot" style="background:'+(compAvail>0?'#3a9e6e':'#e2e8f0')+'" title="기업 가용시간"></div>'
-    +'<div class="avail-dot" style="background:'+(expAvail>0?'#4ab87a':'#e2e8f0')+'" title="전문가 가용시간"></div>'
+    +'<div class="avail-dot" style="background:'+(compAvail>0?'#3a9e6e':'#e2e8f0')+'" title="기업 희망시간"></div>'
+    +'<div class="avail-dot" style="background:'+(expAvail>0?'#4ab87a':'#e2e8f0')+'" title="전문가 희망시간"></div>'
     +'</div>'
     +'<div style="display:flex;gap:5px;margin-top:6px;">'
     +'<span style="font-size:10px;color:'+(compAvail>0?'#155a38':'#94a3b8')+';font-weight:700;">🏢 '+(compAvail>0?'완료':'미입력')+'</span>'
@@ -2014,7 +2211,7 @@ function buildAdd() {
           +'<div class="add-panel-desc">기업과 전문가 정보를 등록하면<br>상담 일정 조율을 위한 안내가<br>자동으로 시작됩니다.</div>'
           +'<div class="add-panel-features">'
             +'<div class="add-feat-item"><div class="add-feat-icon">✉</div><div><div class="add-feat-title">등록 즉시 양측 안내 메일 발송</div><div class="add-feat-desc">기업과 전문가에게 자동으로 안내 메일이 발송됩니다.</div></div></div>'
-            +'<div class="add-feat-item"><div class="add-feat-icon">🔗</div><div><div class="add-feat-title">가용시간 입력 링크 자동 생성</div><div class="add-feat-desc">전문가의 일정 입력 링크가 자동 생성되어 공유됩니다.</div></div></div>'
+            +'<div class="add-feat-item"><div class="add-feat-icon">🔗</div><div><div class="add-feat-title">희망시간 입력 링크 자동 생성</div><div class="add-feat-desc">전문가의 일정 입력 링크가 자동 생성되어 공유됩니다.</div></div></div>'
             +'<div class="add-feat-item"><div class="add-feat-icon">∿</div><div><div class="add-feat-title">응답 현황과 일정 조율 상태 추적</div><div class="add-feat-desc">양측의 응답 현황과 일정 조율 진행 상태를 확인하세요.</div></div></div>'
           +'</div>'
           +'<div class="add-panel-note">'
@@ -2109,59 +2306,174 @@ function buildDetail(matchId) {
   var matched =calcMatchedSlots(matchId);
   var role    =AVAIL_INPUT.role;
 
-  return '<div>'
-    +'<div class="back-row">'
-    +'<div style="font-size:16px;font-weight:900;color:#1a3d2b;">'+m['기업명']+' ↔ '+m['전문가명']+'</div>'
-    +'<span class="badge" style="background:'+c.bg+';color:'+c.color+';">'+stat+'</span>'
-    +(stat!=='취소'&&stat!=='확정완료'
-      ?'<button onclick="cancelMatch(&quot;'+matchId+'&quot;)" style="margin-left:auto;padding:6px 13px;background:#fee2e2;color:#991b1b;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">취소</button>'
-      :(stat==='취소'
-        ?'<button onclick="deleteMatch(&quot;'+matchId+'&quot;)" style="margin-left:auto;padding:6px 13px;background:#dc2626;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">🗑 영구 삭제</button>'
-        :''))
+  var compHas = compRows.length > 0;
+  var expHas  = expRows.length  > 0;
+
+  // 다음 조치 문구
+  var nextAction = '';
+  var nextBadge  = '';
+  if (!compHas && !expHas) {
+    nextAction = '기업·전문가 모두 희망시간 미입력 — 양측에 입력 요청 필요';
+    nextBadge  = 'warn';
+  } else if (!compHas) {
+    nextAction = '전문가 입력 완료 · 기업 일정 미입력 — 기업 담당자에게 입력 요청 필요';
+    nextBadge  = 'warn';
+  } else if (!expHas) {
+    nextAction = '기업 입력 완료 · 전문가 일정 미입력 — 전문가에게 입력 요청 필요';
+    nextBadge  = 'warn';
+  } else if (matched.length > 0 && stat !== '확정완료') {
+    nextAction = '겹치는 슬롯 ' + matched.length + '개 발견 — 일정 확정 가능';
+    nextBadge  = 'ok';
+  } else if (stat === '확정완료') {
+    nextAction = '일정이 확정되었습니다.';
+    nextBadge  = 'done';
+  } else {
+    nextAction = '양측 입력 완료 — 겹치는 슬롯 확인 필요';
+    nextBadge  = 'ok';
+  }
+
+  var nextColor  = nextBadge==='ok' ? '#155a38' : nextBadge==='done' ? '#1e40af' : '#92400e';
+  var nextBg     = nextBadge==='ok' ? '#f0fdf4' : nextBadge==='done' ? '#eff6ff' : '#fffbeb';
+  var nextBorder = nextBadge==='ok' ? '#86efac' : nextBadge==='done' ? '#bfdbfe' : '#fde68a';
+  var nextIcon   = nextBadge==='ok' ? '✅' : nextBadge==='done' ? '🎉' : '⚠️';
+
+  // 상태 요약 한 줄
+  var statusSummary = (expHas?'전문가 입력완료':'전문가 미입력')
+    + ' · ' + (compHas?'기업 입력완료':'기업 미입력');
+
+  return '<div class="det2-wrap">'
+
+    // ── 상단 헤더 ──
+    +'<div class="det2-header">'
+      +'<div class="det2-header-left">'
+        +'<div class="det2-breadcrumb">매칭관리 <span class="det2-bc-sep">/</span> 상세보기</div>'
+        +'<div class="det2-title-row">'
+          +'<h1 class="det2-title">'+m['기업명']+' ↔ '+m['전문가명']+'</h1>'
+          +'<span class="det2-status-badge" style="background:'+c.bg+';color:'+c.color+';">'+stat+'</span>'
+        +'</div>'
+        +'<div class="det2-status-summary">'+statusSummary+'</div>'
+        // 다음 조치 chip
+        +'<div class="det2-next-action" style="background:'+nextBg+';border-color:'+nextBorder+';color:'+nextColor+';">'
+          +nextIcon+' <strong>다음 조치</strong>: '+nextAction
+        +'</div>'
+      +'</div>'
+      +'<div class="det2-header-actions">'
+        +(stat!=='취소'&&stat!=='확정완료'
+          ?'<button class="det2-btn det2-btn-cancel" onclick="cancelMatch(&quot;'+matchId+'&quot;)">✕ 취소</button>'
+          :(stat==='취소'
+            ?'<button class="det2-btn det2-btn-delete" onclick="deleteMatch(&quot;'+matchId+'&quot;)">🗑 영구 삭제</button>'
+            :''))
+      +'</div>'
     +'</div>'
 
-    +'<div class="form-wrap" style="margin-bottom:16px;">'
-    +'<div class="detail-grid">'
-    +[['기업명',m['기업명']],['전문가명',m['전문가명']],['기업담당자',m['기업담당자']],['전문분야',m['전문분야']],
-      ['기업이메일',m['기업이메일']],['전문가이메일',m['전문가이메일']],['희망인증',m['희망인증']],['확정슬롯',m['확정슬롯']||'-']]
-      .map(function(kv){return '<div class="detail-field"><div class="detail-key">'+kv[0]+'</div><div class="detail-val">'+(kv[1]||'-')+'</div></div>';}).join('')
-    +'</div></div>'
-
-    +'<div class="avail-grid">'
-    +buildAvailBox('기업',compRows,m['기업담당자'])
-    +buildAvailBox('전문가',expRows,m['전문가명'])
+    // ── 1단: 기업/전문가 정보 카드 ──
+    +'<div class="det2-two-col">'
+      // 기업 정보
+      +'<div class="det2-card">'
+        +'<div class="det2-card-hdr">'
+          +'<div class="det2-card-icon det2-icon-corp">🏢</div>'
+          +'<div class="det2-card-hdr-text">'
+            +'<div class="det2-card-title">기업 정보</div>'
+            +'<div class="det2-card-sub">담당자 및 연락처</div>'
+          +'</div>'
+        +'</div>'
+        +'<div class="det2-fields">'
+          +'<div class="det2-field"><span class="det2-label">기업명</span><span class="det2-value">'+(m['기업명']||'-')+'</span></div>'
+          +'<div class="det2-field"><span class="det2-label">기업담당자</span><span class="det2-value">'+(m['기업담당자']||'-')+'</span></div>'
+          +'<div class="det2-field"><span class="det2-label">기업이메일</span><span class="det2-value det2-email">'+(m['기업이메일']||'-')+'</span></div>'
+          +'<div class="det2-field"><span class="det2-label">희망인증</span><span class="det2-value">'+(m['희망인증']||'-')+'</span></div>'
+        +'</div>'
+      +'</div>'
+      // 전문가 정보
+      +'<div class="det2-card">'
+        +'<div class="det2-card-hdr">'
+          +'<div class="det2-card-icon det2-icon-exp">👨‍💼</div>'
+          +'<div class="det2-card-hdr-text">'
+            +'<div class="det2-card-title">전문가 정보</div>'
+            +'<div class="det2-card-sub">전문가 및 연락처</div>'
+          +'</div>'
+        +'</div>'
+        +'<div class="det2-fields">'
+          +'<div class="det2-field"><span class="det2-label">전문가명</span><span class="det2-value">'+(m['전문가명']||'-')+'</span></div>'
+          +'<div class="det2-field"><span class="det2-label">전문분야</span><span class="det2-value">'+(m['전문분야']||'-')+'</span></div>'
+          +'<div class="det2-field"><span class="det2-label">전문가이메일</span><span class="det2-value det2-email">'+(m['전문가이메일']||'-')+'</span></div>'
+          +'<div class="det2-field"><span class="det2-label">확정슬롯</span><span class="det2-value">'+(m['확정슬롯']||'-')+'</span></div>'
+        +'</div>'
+      +'</div>'
     +'</div>'
 
-    +(matched.length>0?buildMatchedUI(matched,matchId,m['확정슬롯'],stat):'')
-    +(stat!=='확정완료'&&stat!=='취소'?buildAvailInputUI(matchId,role,m):'')
+    // ── 2단: 희망시간 비교 카드 ──
+    +'<div class="det2-two-col">'
+      +buildAvailBox('기업', compRows, m['기업담당자'])
+      +buildAvailBox('전문가', expRows, m['전문가명'])
+    +'</div>'
+
+    // ── 겹치는 슬롯 ──
+    +(matched.length>0 ? buildMatchedUI(matched,matchId,m['확정슬롯'],stat) : '')
+
+    // ── 3단: 희망시간 직접 입력 ──
+    +(stat!=='확정완료'&&stat!=='취소' ? buildAvailInputUI(matchId,role,m) : '')
+
     +'</div>';
 }
 
-function buildAvailBox(role,rows,name) {
-  var color =role==='기업'?'#2d7a55':'#1a6640';
-  var bg    =role==='기업'?'#e8f5ef':'#f0faf5';
-  var border=role==='기업'?'#a0d4b8':'#8dcaab';
-  var has   =rows.length>0;
-  var body  =has
-    ?rows.map(function(r){
-        var times=(r['시간목록']||'').split(',').filter(Boolean);
-        return '<div class="avail-row">'
-          +'<span class="avail-date-lbl" style="color:'+color+';">'+dispDate(r['날짜'])+'</span>'
-          +'<div class="avail-times">'+times.map(function(t){return '<span class="time-chip">'+t+'</span>';}).join('')+'</div>'
-          +'</div>';
-      }).join('')
-    :'<div style="font-size:13px;color:#94a3b8;padding:8px 0;">아직 입력되지 않았습니다.</div>';
 
-  return '<div class="avail-box" style="background:'+bg+';border-color:'+border+';">'
-    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">'
-    +'<div style="font-size:14px;font-weight:800;color:'+color+';">'+(role==='기업'?'🏢':'👨‍💼')+' '+(name||role)+' 가용시간</div>'
-    +'<span style="font-size:12px;padding:4px 11px;border-radius:20px;font-weight:700;background:'+(has?'#c8e6d4':'#fee2e2')+';color:'+(has?'#155a38':'#991b1b')+';">'+(has?'✓ 입력완료':'미입력')+'</span>'
-    +'</div>'+body+'</div>';
+function buildAvailBox(role, rows, name) {
+  var has      = rows.length > 0;
+  var isComp   = role === '기업';
+  var icon     = isComp ? '🏢' : '👨‍💼';
+  var label    = (name || role) + ' 희망시간';
+
+  // 상태 배지
+  var badgeHtml = has
+    ? '<span class="det2-avail-badge det2-avail-ok">✓ 입력완료</span>'
+    : '<span class="det2-avail-badge det2-avail-empty">미입력</span>';
+
+  // 본문
+  var bodyHtml;
+  if (has) {
+    // 날짜별 총 시간 슬롯 수 계산
+    var totalSlots = 0;
+    var dateGroups = rows.map(function(r) {
+      var times = (r['시간목록'] || '').split(',').map(function(t){return t.trim();}).filter(Boolean);
+      totalSlots += times.length;
+      return { date: dispDate(r['날짜']), times: times };
+    });
+    var groupHtml = dateGroups.map(function(g, idx) {
+      return '<div class="det2-avail-date-block' + (idx > 0 ? ' det2-avail-divider' : '') + '">'
+        + '<div class="det2-avail-date-lbl">' + g.date + '</div>'
+        + '<div class="det2-avail-chips">'
+        + g.times.map(function(t){ return '<span class="det2-time-chip">' + t + '</span>'; }).join('')
+        + '</div>'
+        + '</div>';
+    }).join('');
+    bodyHtml = '<div class="det2-avail-list">' + groupHtml + '</div>'
+      + '<div class="det2-avail-summary">총 ' + totalSlots + '개 슬롯 입력됨</div>';
+  } else {
+    bodyHtml = '<div class="det2-avail-empty-state">'
+      + '<div class="det2-avail-empty-icon">📋</div>'
+      + '<div class="det2-avail-empty-msg">아직 입력되지 않았습니다.</div>'
+      + '<div class="det2-avail-empty-sub">' + (isComp ? '기업 담당자' : '전문가') + '에게 입력 요청이 필요합니다.</div>'
+      + '</div>';
+  }
+
+  var cardCls = has ? 'det2-avail-card det2-avail-has' : 'det2-avail-card det2-avail-miss';
+  return '<div class="' + cardCls + '">'
+    + '<div class="det2-avail-hdr">'
+      + '<div class="det2-avail-title-row">'
+        + '<span class="det2-avail-icon">' + icon + '</span>'
+        + '<span class="det2-avail-title">' + label + '</span>'
+      + '</div>'
+      + badgeHtml
+    + '</div>'
+    + bodyHtml
+    + '</div>';
 }
+
 
 function buildMatchedUI(slots,matchId,confirmedSlot,stat) {
   var html='<div class="matched-box">'
-    +'<div style="font-size:14px;font-weight:900;color:#5b21b6;margin-bottom:14px;">✨ 겹치는 가용 슬롯 — '+slots.length+'개</div>'
+    +'<div style="font-size:14px;font-weight:900;color:#5b21b6;margin-bottom:14px;">✨ 겹치는 희망 슬롯 — '+slots.length+'개</div>'
     +'<div style="display:flex;flex-direction:column;gap:10px;">';
   slots.forEach(function(s){
     var isConf=confirmedSlot===s.label;
@@ -2183,77 +2495,83 @@ function buildMatchedUI(slots,matchId,confirmedSlot,stat) {
   return html+'</div></div>';
 }
 
-function buildAvailInputUI(matchId,role,m) {
-  var dateOptions=[];
-  var today=new Date();
-  for(var i=1;i<=60;i++){
-    var d=new Date(today); d.setDate(today.getDate()+i);
-    if(d.getDay()===0||d.getDay()===6) continue;
+function buildAvailInputUI(matchId, role, m) {
+  var dateOptions = [];
+  var today = new Date();
+  for (var i = 1; i <= 60; i++) {
+    var d = new Date(today); d.setDate(today.getDate() + i);
+    if (d.getDay() === 0 || d.getDay() === 6) continue;
     dateOptions.push(toDateStr(d));
   }
-  var slots=AVAIL_INPUT.slots;
-  var selDate=_selDate||dateOptions[0]||'';
-  if(!_selDate) _selDate=selDate;
+  var slots   = AVAIL_INPUT.slots;
+  var selDate = _selDate || dateOptions[0] || '';
+  if (!_selDate) _selDate = selDate;
 
-  // 역할 선택 버튼
-  var roleHtml=['기업','전문가'].map(function(r){
-    var nm=r==='기업'?m['기업담당자']:m['전문가명'];
-    var isActive=role===r;
-    return '<button onclick="AVAIL_INPUT.role=\''+r+'\';AVAIL_INPUT.name=\''+nm+'\';render();"'
-      +' style="flex:1;padding:10px;border-radius:10px;cursor:pointer;font-family:inherit;'
-      +'border:1.5px solid '+(isActive?'#2d7a55':'#c8e6d4')+';'
-      +'background:'+(isActive?'#e8f5ef':'#fff')+';'
-      +'font-size:13px;font-weight:'+(isActive?'900':'600')+';'
-      +'color:'+(isActive?'#2d7a55':'#6b9e85')+';transition:all .15s;">'
-      +(r==='기업'?'🏢':'👨\u200d💼')+' '+nm+' ('+r+')</button>';
+  // 역할 선택 탭
+  var tabHtml = ['기업', '전문가'].map(function(r) {
+    var nm = r === '기업' ? m['기업담당자'] : m['전문가명'];
+    var isActive = role === r;
+    return '<button onclick="AVAIL_INPUT.role=\'' + r + '\';AVAIL_INPUT.name=\'' + nm + '\';render();"'
+      + ' class="det2-role-tab' + (isActive ? ' det2-role-tab-active' : '') + '">'
+      + (r === '기업' ? '🏢' : '👨\u200d💼') + ' ' + nm + ' (' + r + ')'
+      + '</button>';
   }).join('');
 
   // 요약 HTML
-  var summaryHtml=(function(){
-    var entries=Object.entries(slots).filter(function(e){return e[1].length>0;});
-    if(!entries.length) return '<div style="font-size:11px;color:#94a3b8;padding:10px;background:#fff;border-radius:8px;text-align:center;border:1px dashed #c8e6d4;">선택된 가용시간이 없습니다</div>';
-    var h='<div style="font-size:11px;font-weight:900;color:#155a38;margin-bottom:8px;">✅ 선택된 가용시간</div>';
-    entries.forEach(function(e){
-      h+='<div style="margin-bottom:7px;padding:8px 10px;background:linear-gradient(135deg,#f3faf6,#eef8fb);border-radius:9px;border:1px solid rgba(58,158,110,.12);">'
-        +'<div style="font-size:10px;font-weight:800;color:#1a6640;margin-bottom:4px;">'+dispDate(e[0])+'</div>'
-        +'<div style="display:flex;flex-wrap:wrap;gap:3px;">'+e[1].map(function(t){return '<span style="background:#3a9e6e;color:#fff;border-radius:999px;padding:2px 7px;font-size:10px;font-weight:700;">'+t+'</span>';}).join('')+'</div>'
-        +'</div>';
+  var summaryHtml = (function() {
+    var entries = Object.entries(slots).filter(function(e) { return e[1].length > 0; });
+    if (!entries.length) return '<div class="det2-summary-empty">선택된 희망시간이 없습니다</div>';
+    var h = '<div class="det2-summary-label">✅ 선택된 희망시간</div>';
+    entries.forEach(function(e) {
+      h += '<div class="det2-summary-row">'
+        + '<div class="det2-summary-date">' + dispDate(e[0]) + '</div>'
+        + '<div class="det2-summary-chips">' + e[1].map(function(t) {
+            return '<span class="det2-summary-chip">' + t + '</span>';
+          }).join('') + '</div>'
+        + '</div>';
     });
     return h;
   })();
 
   var bodyHtml = role
     ? '<div class="admin-schedule-layout">'
-      // 달력
-      +'<div class="admin-cal-panel">'
-      +'<div class="admin-panel-title">📅 날짜 선택</div>'
-      +buildAdminCalendar(dateOptions,slots,selDate)
-      +'</div>'
-      // 시간 선택
-      +'<div class="admin-time-panel">'
-      +'<div class="admin-panel-title">🕐 시간 선택</div>'
-      +'<div style="font-size:11px;color:#3a9e6e;font-weight:700;margin-bottom:10px;padding:5px 10px;background:#e8f5ef;border-radius:7px;border:1px solid #a0d4b8;text-align:center;">'+dispDate(selDate)+'</div>'
-      +'<div class="admin-time-grid">'
-      +HOURS.map(function(h){
-        var isOn=slots[selDate]&&slots[selDate].includes(h);
-        return '<button onclick="toggleTime(\''+selDate+'\',\''+h+'\')" class="admin-time-btn'+(isOn?' on':'')+'">'+h+'</button>';
-      }).join('')
-      +'</div>'
-      +'</div>'
-      // 요약 + 제출
-      +'<div class="admin-summary-panel">'
-      +summaryHtml
-      +'<button onclick="submitAdminAvail(\''+matchId+'\')" style="width:100%;margin-top:12px;padding:11px;border:none;border-radius:10px;background:linear-gradient(135deg,#3a9e6e,#1f6b48);color:#fff;font-size:13px;font-weight:900;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(58,158,110,.28);">가용시간 제출 →</button>'
-      +'</div>'
-      +'</div>'
-    : '<div style="font-size:13px;color:#94a3b8;text-align:center;padding:16px;background:#f8fafc;border-radius:10px;">위에서 기업 또는 전문가를 선택하세요</div>';
+        + '<div class="admin-cal-panel">'
+          + '<div class="admin-panel-title">📅 날짜 선택</div>'
+          + buildAdminCalendar(dateOptions, slots, selDate)
+        + '</div>'
+        + '<div class="admin-time-panel">'
+          + '<div class="admin-panel-title">🕐 시간 선택</div>'
+          + '<div class="det2-sel-date-box">' + dispDate(selDate) + '</div>'
+          + '<div class="admin-time-grid">'
+          + HOURS.map(function(h) {
+              var isOn = slots[selDate] && slots[selDate].includes(h);
+              return '<button onclick="toggleTime(\'' + selDate + '\',\'' + h + '\')" class="admin-time-btn' + (isOn ? ' on' : '') + '">' + h + '</button>';
+            }).join('')
+          + '</div>'
+        + '</div>'
+        + '<div class="admin-summary-panel">'
+          + summaryHtml
+          + '<button onclick="submitAdminAvail(\'' + matchId + '\')" class="det2-submit-btn">희망시간 제출 →</button>'
+        + '</div>'
+      + '</div>'
+    : '<div class="det2-input-empty">'
+        + '<div class="det2-input-empty-icon">📆</div>'
+        + '<div class="det2-input-empty-msg">위에서 기업 또는 전문가를 선택하세요</div>'
+        + '<div class="det2-input-empty-sub">선택 후 날짜·시간을 입력하면 관리자가 직접 희망시간을 등록할 수 있습니다.</div>'
+      + '</div>';
 
-  return '<div class="avail-input-box">'
-    +'<div style="font-size:14px;font-weight:900;color:#1a3d2b;margin-bottom:14px;">📝 가용시간 직접 입력 <span style="font-size:12px;color:#94a3b8;font-weight:600;">(담당자 대신 입력 시)</span></div>'
-    +'<div style="display:flex;gap:10px;margin-bottom:14px;">'+roleHtml+'</div>'
-    +bodyHtml
-    +'</div>';
+  return '<div class="det2-input-section">'
+    + '<div class="det2-input-section-hdr">'
+      + '<div>'
+        + '<div class="det2-input-section-title">희망시간 직접 입력</div>'
+        + '<div class="det2-input-section-sub">담당자 대신 일정을 입력할 수 있습니다.</div>'
+      + '</div>'
+    + '</div>'
+    + '<div class="det2-role-tabs">' + tabHtml + '</div>'
+    + '<div class="det2-input-body">' + bodyHtml + '</div>'
+    + '</div>';
 }
+
 
 function buildAdminCalendar(dateOptions,slots,selDate) {
   var availSet={};
@@ -2328,7 +2646,7 @@ function submitAdminAvail(matchId){
   fetch(SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'submitAvail',data:data})})
     .then(function(r){return r.json();})
     .then(function(res){
-      if(res.ok){entries.forEach(function(e){DATA.avail.push({매칭ID:matchId,역할:input.role,이름:input.name,날짜:e[0],시간목록:e[1].join(','),입력일시:new Date().toLocaleString('ko-KR')});});AVAIL_INPUT.slots={};render();alert('✅ '+input.role+' 가용시간이 저장되었습니다.');}
+      if(res.ok){entries.forEach(function(e){DATA.avail.push({매칭ID:matchId,역할:input.role,이름:input.name,날짜:e[0],시간목록:e[1].join(','),입력일시:new Date().toLocaleString('ko-KR')});});AVAIL_INPUT.slots={};render();alert('✅ '+input.role+' 희망시간이 저장되었습니다.');}
       else{alert('❌ 오류: '+(res.error||'알 수 없는 오류'));}
     })
     .catch(function(err){alert('❌ 네트워크 오류: '+err.message);});
@@ -2371,7 +2689,7 @@ function deleteMatch(matchId){
     .catch(function(err){alert('❌ 네트워크 오류: '+err.message);});
 }
 
-// ══ 이메일 링크 전용 가용시간 입력 페이지 ══
+// ══ 이메일 링크 전용 희망시간 입력 페이지 ══
 function loadAvailPage(matchId,role){
   var sc=document.getElementById('availScreen');
   sc.innerHTML='<div style="padding:60px;text-align:center;"><div class="spinner" style="margin:0 auto;"></div></div>';
@@ -2387,7 +2705,7 @@ function loadAvailPage(matchId,role){
           +'<div style="font-size:14px;color:#64748b;margin-top:10px;">확정 일정: '+(match['확정슬롯']||'')+'</div></div></div>';
         return;
       }
-      renderAvailInput(match,role,data['가용시간']||[]);
+      renderAvailInput(match,role,data['희망시간']||[]);
     })
     .catch(function(err){sc.innerHTML='<div style="text-align:center;padding:60px;color:#dc2626;">데이터를 불러오지 못했습니다.<br><small>'+err.message+'</small></div>';});
 }
@@ -2504,7 +2822,7 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
             +'<span class="av2-step-badge">STEP 2</span>'
             +'<span class="av2-step-label">일정 선택</span>'
           +'</div>'
-          +'<div class="av2-header-name">'+name+'님, 가용시간을 선택해주세요</div>'
+          +'<div class="av2-header-name">'+name+'님, 희망시간을 선택해주세요</div>'
           +'<div class="av2-header-meta">'
             +'<span>상담 상대: <b>'+other+'</b></span>'
             +'<span class="av2-meta-sep">·</span>'
@@ -2561,7 +2879,7 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
       +'<div class="av2-panel av2-agenda-panel">'
         +'<div class="av2-panel-hdr av2-agenda-hdr">'
           +'<div>'
-            +'<div class="av2-panel-title"><span class="av2-step-num">3</span>선택한 가용일정</div>'
+            +'<div class="av2-panel-title"><span class="av2-step-num">3</span>선택한 희망일정</div>'
           +'</div>'
           +'<span class="av2-total-chip" id="totalChip">총 '+totalCnt+'건 선택</span>'
         +'</div>'
@@ -2591,7 +2909,7 @@ function buildAvailPageHTML(match,role,name,dateOptions,alreadySub){
       +'</div>'
       +'<div class="av2-action-right">'
         +'<button class="av2-btn-reset" onclick="if(confirm(\'선택한 일정을 모두 초기화하시겠습니까?\')){window._availSlots={};var sc=document.getElementById(\'availScreen\');sc.innerHTML=buildAvailPageHTML(window._lastMatch,window._lastRole,window._lastName,window._lastDateOpts,false);}">초기화</button>'
-        +'<button class="av2-btn-submit" onclick="submitAvailPage()" id="submitAvailBtn">가용시간 제출하기 →</button>'
+        +'<button class="av2-btn-submit" onclick="submitAvailPage()" id="submitAvailBtn">희망시간 제출하기 →</button>'
       +'</div>'
     +'</div>'
     +'<div class="av2-action-note">🔒 제출 버튼을 누르면 선택한 일정이 저장되고 기업과 공유됩니다.</div>'
@@ -2606,7 +2924,7 @@ function buildAvailSummaryHTML(){
   var entries=Object.entries(window._availSlots||{}).filter(function(e){return e[1].length>0;});
   if(!entries.length) return '<div style="font-size:12px;color:#94a3b8;padding:16px;background:rgba(255,255,255,.7);border-radius:14px;text-align:center;border:1px dashed #c8e6d4;">날짜를 클릭해서 가능한 시간을 선택하세요</div>';
   var html='<div style="background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border:1px solid rgba(58,158,110,.2);border-radius:18px;padding:18px 20px;box-shadow:0 6px 20px rgba(58,158,110,.1);">'
-    +'<div style="font-size:13px;font-weight:900;color:#155a38;margin-bottom:12px;display:flex;align-items:center;gap:6px;">✅ 선택된 가용시간 <span style=\'font-size:11px;background:#3a9e6e;color:#fff;padding:2px 8px;border-radius:999px;font-weight:700;\'>'+entries.length+'일</span></div>';
+    +'<div style="font-size:13px;font-weight:900;color:#155a38;margin-bottom:12px;display:flex;align-items:center;gap:6px;">✅ 선택된 희망시간 <span style=\'font-size:11px;background:#3a9e6e;color:#fff;padding:2px 8px;border-radius:999px;font-weight:700;\'>'+entries.length+'일</span></div>';
   entries.forEach(function(e){
     html+='<div style="margin-bottom:10px;padding:10px 12px;background:linear-gradient(135deg,#f3faf6,#eef8fb);border-radius:11px;border:1px solid rgba(58,158,110,.15);">'
       +'<div style="font-size:12px;font-weight:800;color:#1a6640;margin-bottom:6px;">📅 '+dispDate(e[0])+'</div>'
@@ -2732,8 +3050,8 @@ function submitAvailPage(){
           '<div style="min-height:calc(100vh-60px);display:flex;align-items:center;justify-content:center;background:#f1f5f9;">'
           +'<div style="text-align:center;padding:48px;background:#fff;border-radius:22px;box-shadow:0 6px 28px rgba(0,0,0,.1);max-width:440px;width:90%;">'
           +'<div style="font-size:60px;margin-bottom:20px;">✅</div>'
-          +'<div style="font-size:20px;font-weight:900;color:#1a3d2b;margin-bottom:10px;">가용시간이 제출되었습니다!</div>'
-          +'<div style="font-size:14px;color:#64748b;line-height:1.8;">담당자가 상대방의 가용시간과 비교하여<br>최적 일정을 확정 후 안내드릴 예정입니다.</div>'
+          +'<div style="font-size:20px;font-weight:900;color:#1a3d2b;margin-bottom:10px;">희망시간이 제출되었습니다!</div>'
+          +'<div style="font-size:14px;color:#64748b;line-height:1.8;">담당자가 상대방의 희망시간과 비교하여<br>최적 일정을 확정 후 안내드릴 예정입니다.</div>'
           +'<div style="margin-top:22px;padding:16px;background:#e8f5ef;border-radius:12px;">'
           +entries.map(function(e){return '<div class="avail-row"><span class="avail-date-lbl" style="font-size:13px;color:#155a38;">'+dispDate(e[0])+'</span><div class="avail-times">'+e[1].map(function(t){return '<span class="time-chip" style="background:rgba(5,150,105,.1);color:#155a38;">'+t+'</span>';}).join('')+'</div></div>';}).join('')
           +'</div>'
@@ -2741,10 +3059,10 @@ function submitAvailPage(){
           +'</div></div>';
       } else {
         alert('❌ 오류: '+(res.error||'다시 시도해주세요.'));
-        if(btn){btn.textContent='가용시간 제출하기 →';btn.disabled=false;}
+        if(btn){btn.textContent='희망시간 제출하기 →';btn.disabled=false;}
       }
     })
-    .catch(function(err){alert('❌ 네트워크 오류: '+err.message);if(btn){btn.textContent='가용시간 제출하기 →';btn.disabled=false;}});
+    .catch(function(err){alert('❌ 네트워크 오류: '+err.message);if(btn){btn.textContent='희망시간 제출하기 →';btn.disabled=false;}});
 }
 
 // ══ 유틸 ══
