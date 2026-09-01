@@ -229,7 +229,7 @@ body{font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif
       <div class="cards" id="kpiCards"></div>
       <div class="charts-row">
         <div class="box">
-          <div class="box-title">📅 월별 상담 접수 추이 (전화·온라인 + 부스상담)</div>
+          <div class="box-title" id="monthTitle">📅 월별 상담 접수 추이</div>
           <div class="legend-row" id="monthLegend"></div>
           <div class="chart-wrap" style="height:190px;"><canvas id="monthChart"></canvas></div>
         </div>
@@ -417,6 +417,80 @@ const SHEET_CONFIG = {
 };
 
 // ══════════════════════════════════════════════════════════════
+//  ★ 신규 시트 자동 인식 설정
+//     - 구글시트에 탭을 새로 만들면 아래 규칙으로 자동 구성됩니다.
+//     - 대시보드에 넣고 싶지 않은 탭 이름은 EXCLUDE_SHEETS에 추가하세요.
+// ══════════════════════════════════════════════════════════════
+const EXCLUDE_SHEETS = ['삭제', '설정', '참고', '템플릿', '메모', '작업용'];
+const AUTO_PALETTE = ['#0891b2','#d97706','#7e3af2','#059669','#dc2626','#0369a1','#c026d3','#65a30d'];
+const AUTO_ICONS   = ['📄','📌','📁','🗂️','📋','🧾','📗','📘'];
+
+const RE_DATE  = /일자|접수일|상담일|날짜|일시/;
+const RE_PRIV  = /연락처|이메일|전화번호|휴대/;
+const RE_LONG  = /내용|사유|비고|제목|요청|답변|의견/;
+const RE_CAT   = /구분|분류|상태|진행|단계|분야|경로|유형|여부|결과/;
+const RE_NO    = /^(No\.?|no\.?|NO\.?|번호|연번)$/;
+
+function isExcluded(name) {
+  return EXCLUDE_SHEETS.some(x => name.includes(x)) || name.startsWith('_');
+}
+
+// 시트 데이터에서 설정을 자동 추론
+function autoConfig(name, rows, idx) {
+  const keys = [...new Set(rows.flatMap(r => Object.keys(r)))].filter(k => k && k.trim());
+  const color = AUTO_PALETTE[idx % AUTO_PALETTE.length];
+  const dateKey = keys.find(k => RE_DATE.test(k)) || '';
+
+  // 필터 컬럼: 값 종류가 2~15개인 분류형 컬럼
+  let filterKey = null;
+  for (const k of keys.filter(k => RE_CAT.test(k))) {
+    const n = new Set(rows.map(r => sv(r[k])).filter(Boolean)).size;
+    if (n >= 2 && n <= 15) { filterKey = k; break; }
+  }
+
+  // 표시 컬럼: 최대 9개 (번호·연락처·이메일 제외)
+  const cols = [];
+  keys.forEach(k => {
+    if (cols.length >= 9 || RE_NO.test(k) || RE_PRIV.test(k)) return;
+    const c = { key: k, label: k.replace(/\n/g, ' ').trim(), width: '120px' };
+    if (k === dateKey)                      { c.isDate = true;  c.width = '88px'; }
+    else if (/기업명|회사명/.test(k))        { c.bold = true;    c.width = '150px'; }
+    else if (k === filterKey)                { c.isBadge = true; c.width = '80px'; }
+    else if (/인증명/.test(k))               { c.accent = true;  c.width = '130px'; }
+    else if (RE_LONG.test(k))                { c.ellipsis = true; c.width = 'auto'; }
+    else if (/전문가|코디|상담자|담당자/.test(k)) { c.muted = true; c.width = '90px'; }
+    cols.push(c);
+  });
+  // 날짜 컬럼은 맨 앞, 긴 텍스트 컬럼은 맨 뒤로 정렬
+  cols.sort((a, b) => (a.isDate ? -1 : b.isDate ? 1 : 0) || (a.ellipsis ? 1 : b.ellipsis ? -1 : 0));
+
+  // 상세 모달: 5개씩 묶어서 전체 컬럼 노출
+  const detailKeys = keys.filter(k => !RE_NO.test(k));
+  const sections = [];
+  for (let i = 0; i < detailKeys.length; i += 5) {
+    sections.push({ group: detailKeys.slice(i, i + 5).map(k => [k, k.replace(/\n/g, ' ').trim()]) });
+  }
+
+  const qk = keys.find(k => /문의|상담내용|신청사유/.test(k));
+  const ak = keys.find(k => /답변/.test(k));
+
+  return {
+    label: name, icon: AUTO_ICONS[idx % AUTO_ICONS.length], dateKey, color,
+    tableColumns: cols, filterKey,
+    searchKeys: keys.filter(k => !RE_PRIV.test(k)),
+    detailSections: sections,
+    qaKeys: (qk || ak) ? { q: qk || '', a: ak || '' } : null,
+    auto: true,
+  };
+}
+
+// 탭 표시 순서: 기존 5개 우선, 이후 신규 시트는 시트 순서대로
+function sheetOrder() {
+  const known = ['전화온라인', '부스상담', '1차 멘토링', '해외인증119', '부처애로'];
+  return [...known.filter(n => SHEETS[n]), ...Object.keys(SHEETS).filter(n => !known.includes(n))];
+}
+
+// ══════════════════════════════════════════════════════════════
 //  전역 상태
 // ══════════════════════════════════════════════════════════════
 let SHEETS = {};
@@ -429,6 +503,7 @@ let DATE_FILTER = { from: null, to: null }; // 'YYYY-MM' 또는 null
 
 function getFilteredRows(rows, dateKey) {
   if (!DATE_FILTER.from && !DATE_FILTER.to) return rows;
+  if (!dateKey) return rows;   // 날짜 컬럼이 없는 시트는 기간필터 미적용
   return rows.filter(r => {
     const d = (r[dateKey] || '').slice(0, 7); // 'YYYY-MM'
     if (!d) return false;
@@ -607,7 +682,14 @@ function dateStr(v) {
   return String(v).slice(0, 10);
 }
 
-// ★ 1단계에서 복사한 웹 앱 URL을 아래에 붙여넣으세요! ★
+// ══════════════════════════════════════════════════════════════
+//  ★★★ 여기만 고치면 됩니다 ★★★
+//
+//  · Apps Script에서 "배포 관리 → 연필 → 새 버전"으로 재배포했다면
+//    → URL이 그대로이므로 아래를 손대지 마세요.
+//  · "새 배포"를 눌러 새 프로젝트/새 URL을 받았다면
+//    → 그 /exec URL을 아래 따옴표 안에 통째로 바꿔 넣으세요.
+// ══════════════════════════════════════════════════════════════
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxzqTy_oD83iweUgAVNziDSiSnJIUrQ7s6ZuqoTyxp0tMEaTx5QMu6hL1v_nGNMkV7S/exec';
 
 function initDashboard() {
@@ -615,17 +697,29 @@ function initDashboard() {
   err.style.display = 'none';
   
   // 로딩 UI 변경
-  document.querySelector('.upload-title').textContent = '데이터를 불러오는 중입니다...';
+  document.querySelector('.upload-title').textContent = '데이터를 불러오는 중입니다... [자동반영판 v2]';
   document.querySelector('.upload-subtitle').textContent = '구글 시트와 동기화하고 있습니다. 잠시만 기다려주세요.';
   document.querySelector('.drop-zone').style.display = 'none';
   document.querySelector('.upload-btn').style.display = 'none';
 
-  fetch(SCRIPT_URL)
+  // 캐시된 옛 응답을 받지 않도록 매번 새로 요청
+  fetch(SCRIPT_URL + (SCRIPT_URL.indexOf('?') > -1 ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' })
     .then(response => response.json())
     .then(data => {
+      // ★ 진단용: 브라우저 콘솔(F12)에서 어떤 시트가 넘어왔는지 확인
+      console.log('[대시보드] GAS 응답 시트:', Object.keys(data));
+      console.log('[대시보드] 제외된 시트:', Object.keys(data).filter(isExcluded));
+
       SHEETS = {};
+      let autoIdx = 0;
       Object.keys(data).forEach(name => {
+        if (isExcluded(name)) return;                 // 제외 대상 탭
         const rows = data[name];
+        if (!Array.isArray(rows) || !rows.length) return;
+
+        // ★ SHEET_CONFIG에 없는 신규 탭 → 자동 설정 생성
+        if (!SHEET_CONFIG[name]) SHEET_CONFIG[name] = autoConfig(name, rows, autoIdx++);
+
         const cfg = SHEET_CONFIG[name];
         if (cfg && cfg.dateKey) {
           rows.forEach(r => {
@@ -636,7 +730,8 @@ function initDashboard() {
       });
 
       const today = new Date().toLocaleDateString('ko-KR');
-      document.getElementById('headerSub').textContent = `2026 전주기/원포인트 진행상황 · ${today} 실시간 연동`;
+      document.getElementById('headerSub').textContent =
+        `자동반영판 v2 · ${today} 연동 · 시트 ${Object.keys(SHEETS).length}개`;
       document.title = `VOC 대시보드 · 실시간 연동`;
 
       document.getElementById('uploadScreen').style.display = 'none';
@@ -675,9 +770,7 @@ function buildTabs() {
   // navBar 표시
   document.getElementById('navBar').style.display = 'block';
 
-  const knownOrder = ['전화온라인','부스상담','1차 멘토링','해외인증119','부처애로'];
-  const sheetNames = [...knownOrder.filter(n => SHEETS[n]),
-    ...Object.keys(SHEETS).filter(n => !knownOrder.includes(n))];
+  const sheetNames = sheetOrder();
 
   sheetNames.forEach(name => {
     const cfg = SHEET_CONFIG[name];
@@ -921,34 +1014,28 @@ function closeModal() { document.getElementById('modal').classList.add('hidden')
 //  KPI 카드
 // ══════════════════════════════════════════════════════════════
 function buildKPI() {
-  const defs = [
-    { key:'전화온라인', label:'전화·온라인', icon:'📱', bg:'#eff6ff', border:'#2563eb', color:'#2563eb' },
-    { key:'부스상담',   label:'부스상담',   icon:'🏪', bg:'#f0fdf4', border:'#0e9f6e', color:'#0e9f6e' },
-    { key:'1차 멘토링', label:'1차 멘토링', icon:'🎓', bg:'#fffbeb', border:'#f59e0b', color:'#f59e0b' },
-    { key:'해외인증119',label:'해외인증119', icon:'🆘', bg:'#fdf2f8', border:'#e74694', color:'#e74694' },
-    { key:'부처애로',   label:'부처애로',   icon:'🏛️', bg:'#f5f3ff', border:'#6366f1', color:'#6366f1' },
-  ];
-  // 기간 필터 적용
   const filterLabel = (DATE_FILTER.from || DATE_FILTER.to)
     ? ` <span style="font-size:10px;color:#2563eb;font-weight:500;">(${(DATE_FILTER.from||'~').replace('-','.')} ~ ${(DATE_FILTER.to||'현재').replace('-','.')})</span>`
     : '';
-  const phoneFilt = getFilteredRows(SHEETS['전화온라인']||[], '접수일');
-  const boothFilt = getFilteredRows(SHEETS['부스상담']||[], '상담일');
-  const mentoFilt = getFilteredRows(SHEETS['1차 멘토링']||[], '접수일');
-  const cert119Filt = getFilteredRows(SHEETS['해외인증119']||[], '접수일');
-  const minFilt  = getFilteredRows(SHEETS['부처애로']||[], '상담일');
-  const filtMap = { '전화온라인':phoneFilt, '부스상담':boothFilt, '1차 멘토링':mentoFilt, '해외인증119':cert119Filt, '부처애로':minFilt };
-  const total = Object.entries(filtMap).reduce((s,[,r]) => s + r.length, 0);
+
+  // ★ 시트 목록을 하드코딩하지 않고 SHEETS 전체를 순회 → 신규 탭 자동 반영
+  const items = sheetOrder().map(name => {
+    const cfg = SHEET_CONFIG[name] || {};
+    return { name, cfg, cnt: getFilteredRows(SHEETS[name] || [], cfg.dateKey || '').length };
+  });
+  const total = items.reduce((s, it) => s + it.cnt, 0);
+
   let html = `<div class="card" style="background:#fff;border:1.5px solid #2563eb33;cursor:default" onclick="showTab('overview')">
     <div class="card-icon">💬</div>
     <div><div class="card-label">총 상담건수${filterLabel}</div><div class="card-value" style="color:#2563eb">${total}</div></div>
   </div>`;
-  defs.forEach(d => {
-    const cnt = (filtMap[d.key] || []).length;
-    if (!cnt) return;
-    html += `<div class="card" style="background:${d.bg};border:1.5px solid ${d.border}33;" onclick="showTab('sheet-${d.key}')">
-      <div class="card-icon">${d.icon}</div>
-      <div><div class="card-label">${d.label}</div><div class="card-value" style="color:${d.color}">${cnt}</div>
+
+  items.forEach(it => {
+    if (!it.cnt) return;
+    const color = it.cfg.color || '#2563eb';
+    html += `<div class="card" style="background:${color}0d;border:1.5px solid ${color}33;" onclick="showTab('sheet-${it.name}')">
+      <div class="card-icon">${it.cfg.icon || '📄'}</div>
+      <div><div class="card-label">${it.cfg.label || it.name}</div><div class="card-value" style="color:${color}">${it.cnt}</div>
       <div class="card-sub">클릭하면 목록으로</div></div>
     </div>`;
   });
@@ -964,27 +1051,43 @@ function renderCharts() {
   const gridC = 'rgba(0,0,0,0.06)', lblC = '#6b7280';
   const base = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } };
 
-  const phone = getFilteredRows(SHEETS['전화온라인'] || [], '접수일');
-  const booth = getFilteredRows(SHEETS['부스상담'] || [], '상담일');
+  // ★ 시트별 기간필터 적용 결과를 한 번에 계산 (신규 시트 자동 포함)
+  const names = sheetOrder();
+  const perSheet = {};
+  names.forEach(n => {
+    const cfg = SHEET_CONFIG[n] || {};
+    perSheet[n] = getFilteredRows(SHEETS[n] || [], cfg.dateKey || '');
+  });
+  const phone = perSheet['전화온라인'] || [];
+  const booth = perSheet['부스상담'] || [];
 
-  // 월별 추이
-  const allDates = [...phone.map(r => r['접수일']||''), ...booth.map(r => r['상담일']||'')].filter(Boolean);
-  const months = [...new Set(allDates.map(d => d.slice(0,7)))].sort();
+  // 월별 추이 — 날짜 컬럼이 있는 모든 시트를 자동으로 계열에 추가
+  const dated = names.filter(n => (SHEET_CONFIG[n] || {}).dateKey);
+  const mSet = new Set();
+  dated.forEach(n => perSheet[n].forEach(r => {
+    const d = String(r[SHEET_CONFIG[n].dateKey] || '').slice(0, 7);
+    if (/^\d{4}-\d{2}$/.test(d)) mSet.add(d);
+  }));
+  const months = [...mSet].sort();
+  const mDatasets = dated.map(n => {
+    const cfg = SHEET_CONFIG[n];
+    return {
+      label: cfg.label || n,
+      data: months.map(m => perSheet[n].filter(r => String(r[cfg.dateKey] || '').startsWith(m)).length),
+      backgroundColor: cfg.color || '#94a3b8', borderRadius: 4, barPercentage: .7,
+    };
+  }).filter(ds => ds.data.some(v => v > 0));
+
   destroyChart('monthChart');
   charts.monthChart = new Chart(document.getElementById('monthChart'), {
     type:'bar',
-    data:{
-      labels: months.map(m => m.split('-')[1] + '월'),
-      datasets:[
-        { label:'전화·온라인', data: months.map(m => phone.filter(r => (r['접수일']||'').startsWith(m)).length), backgroundColor:'#2563eb', borderRadius:4, barPercentage:.5 },
-        { label:'부스상담', data: months.map(m => booth.filter(r => (r['상담일']||'').startsWith(m)).length), backgroundColor:'#0e9f6e', borderRadius:4, barPercentage:.5 }
-      ]
-    },
-    options:{...base, scales:{ x:{grid:{color:gridC},ticks:{color:lblC,font:{size:11}}}, y:{grid:{color:gridC},ticks:{color:lblC,font:{size:11}},beginAtZero:true} }}
+    data:{ labels: months.map(m => m.split('-')[1] + '월'), datasets: mDatasets },
+    options:{...base, scales:{ x:{stacked:true,grid:{color:gridC},ticks:{color:lblC,font:{size:11}}}, y:{stacked:true,grid:{color:gridC},ticks:{color:lblC,font:{size:11}},beginAtZero:true} }}
   });
-  document.getElementById('monthLegend').innerHTML =
-    `<span><span class="legend-dot" style="background:#2563eb"></span>전화·온라인</span>
-     <span><span class="legend-dot" style="background:#0e9f6e"></span>부스상담</span>`;
+  const mTitle = document.getElementById('monthTitle');
+  if (mTitle) mTitle.textContent = '📅 월별 상담 접수 추이 (전체 ' + mDatasets.length + '개 시트)';
+  document.getElementById('monthLegend').innerHTML = mDatasets.map(ds =>
+    `<span><span class="legend-dot" style="background:${ds.backgroundColor}"></span>${ds.label}</span>`).join('');
 
   // 접수 경로
   const chMap = {};
@@ -1030,12 +1133,7 @@ function renderCharts() {
 
   // 수출국 Top10 (기간 필터 적용)
   const ctMap = {};
-  const allSheetRows = [
-    ...phone, ...booth,
-    ...getFilteredRows(SHEETS['1차 멘토링']||[], '접수일'),
-    ...getFilteredRows(SHEETS['해외인증119']||[], '접수일'),
-    ...getFilteredRows(SHEETS['부처애로']||[], '상담일'),
-  ];
+  const allSheetRows = names.flatMap(n => perSheet[n]);   // ★ 전체 시트 자동 집계
   allSheetRows.forEach(r => {
     const raw = sv(r['수출국'] || r['희망수출국'] || '');
     raw.split(/[,\/，]/).forEach(c => { c = c.trim(); if(c && c!=='-') ctMap[c] = (ctMap[c]||0)+1; });
